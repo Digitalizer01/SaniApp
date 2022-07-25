@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_user"
+    app:startDestination="@id/userProfile">
+
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="com.example.saniapp.user.UserProfile"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfile_to_userResident"
+            app:destination="@id/userResident" />
+    </fragment>
+    <fragment
+        android:id="@+id/userResident"
+        android:name="com.example.saniapp.user.UserResident"
+        android:label="fragment_user_resident"
+        tools:layout="@layout/fragment_user_resident" >
+        <action
+            android:id="@+id/action_userResident_to_userResidentMedication"
+            app:destination="@id/userResidentMedication" />
+    </fragment>
+    <fragment
+        android:id="@+id/userResidentMedication"
+        android:name="com.example.saniapp.user.UserResidentMedication"
+        android:label="fragment_user_resident_medication"
+        tools:layout="@layout/fragment_user_resident_medication" />
+</navigation>
