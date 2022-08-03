@@ -81,41 +81,41 @@ class UserProfile : Fragment() {
                     print("New")
                 }
 
-                var text_name = view?.findViewById(R.id.text_user_name) as TextView;
-                var text_surnames = view?.findViewById(R.id.text_user_surnames) as TextView;
-                var text_gender = view?.findViewById(R.id.text_user_gender) as TextView;
-                var text_birthdate = view?.findViewById(R.id.text_user_birthdate) as TextView;
-                var text_email = view?.findViewById(R.id.text_user_email) as TextView;
-                var text_phone = view?.findViewById(R.id.text_user_phone) as TextView;
-                var text_id = view?.findViewById(R.id.text_user_id) as TextView;
+                var text_name = view?.findViewById(R.id.text_user_name) as? TextView;
+                var text_surnames = view?.findViewById(R.id.text_user_surnames) as? TextView;
+                var text_gender = view?.findViewById(R.id.text_user_gender) as? TextView;
+                var text_birthdate = view?.findViewById(R.id.text_user_birthdate) as? TextView;
+                var text_email = view?.findViewById(R.id.text_user_email) as? TextView;
+                var text_phone = view?.findViewById(R.id.text_user_phone) as? TextView;
+                var text_id = view?.findViewById(R.id.text_user_id) as? TextView;
 
-                text_name.setText("Nombre: " + user["Name"]);
-                text_surnames.setText("Apellidos: " + user["Surnames"]);
-                text_gender.setText("Género: " + user["Gender"]);
-                text_birthdate.setText("Fecha nacimiento: " + user["BirthDate"]);
-                text_email.setText("Email: " + user["Email"]);
-                text_phone.setText("Móvil: " + user["Phone"]);
-                text_id.setText("ID: " + id_user);
+                text_name?.setText("Nombre: " + user["Name"]);
+                text_surnames?.setText("Apellidos: " + user["Surnames"]);
+                text_gender?.setText("Género: " + user["Gender"]);
+                text_birthdate?.setText("Fecha nacimiento: " + user["BirthDate"]);
+                text_email?.setText("Email: " + user["Email"]);
+                text_phone?.setText("Móvil: " + user["Phone"]);
+                text_id?.setText("ID: " + id_user);
 
-                var text_residence_name = view?.findViewById(R.id.text_user_residence_name) as TextView;
-                var text_residence_country = view?.findViewById(R.id.text_user_residence_country) as TextView;
-                var text_residence_city = view?.findViewById(R.id.text_user_residence_city) as TextView;
-                var text_residence_provience = view?.findViewById(R.id.text_user_residence_provience) as TextView;
-                var text_residence_street = view?.findViewById(R.id.text_user_residence_street) as TextView;
-                var text_residence_zc = view?.findViewById(R.id.text_user_residence_zc) as TextView;
-                var text_residence_phone = view?.findViewById(R.id.text_user_residence_phone) as TextView;
-                var text_residence_email = view?.findViewById(R.id.text_user_residence_email) as TextView;
-                var text_residence_timetable = view?.findViewById(R.id.text_user_residence_timetable) as TextView;
+                var text_residence_name = view?.findViewById(R.id.text_user_residence_name) as? TextView;
+                var text_residence_country = view?.findViewById(R.id.text_user_residence_country) as? TextView;
+                var text_residence_city = view?.findViewById(R.id.text_user_residence_city) as? TextView;
+                var text_residence_provience = view?.findViewById(R.id.text_user_residence_provience) as? TextView;
+                var text_residence_street = view?.findViewById(R.id.text_user_residence_street) as? TextView;
+                var text_residence_zc = view?.findViewById(R.id.text_user_residence_zc) as? TextView;
+                var text_residence_phone = view?.findViewById(R.id.text_user_residence_phone) as? TextView;
+                var text_residence_email = view?.findViewById(R.id.text_user_residence_email) as? TextView;
+                var text_residence_timetable = view?.findViewById(R.id.text_user_residence_timetable) as? TextView;
 
-                text_residence_name.setText("Nombre: " + residence_name);
-                text_residence_country.setText("País: " + residence["Country"]);
-                text_residence_city.setText("Ciudad: " + residence["City"]);
-                text_residence_provience.setText("Provincia: " + residence["Province"]);
-                text_residence_street.setText("Calle: " + residence["Street"]);
-                text_residence_zc.setText("CP: " + residence["ZC"]);
-                text_residence_phone.setText("Teléfono: " + residence["Phone"]);
-                text_residence_email.setText("Email: " + residence["Email"]);
-                text_residence_timetable.setText("Horario: " + residence["Timetable"]);
+                text_residence_name?.setText("Nombre: " + residence["Name"]);
+                text_residence_country?.setText("País: " + residence["Country"]);
+                text_residence_city?.setText("Ciudad: " + residence["City"]);
+                text_residence_provience?.setText("Provincia: " + residence["Province"]);
+                text_residence_street?.setText("Calle: " + residence["Street"]);
+                text_residence_zc?.setText("CP: " + residence["ZC"]);
+                text_residence_phone?.setText("Teléfono: " + residence["Phone"]);
+                text_residence_email?.setText("Email: " + residence["Email"]);
+                text_residence_timetable?.setText("Horario: " + residence["Timetable"]);
 
                 var mapresidents: HashMap<String, String> = HashMap<String, String>();
                 val itr = residents.keys.iterator()

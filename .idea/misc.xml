@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_main.xml" value="0.13592233009708737" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_residence.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_user.xml" value="0.25" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_profile.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident.xml" value="0.32592592592592595" />

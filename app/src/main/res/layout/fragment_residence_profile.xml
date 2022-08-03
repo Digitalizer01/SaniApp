@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".residence.ResidenceProfile">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/id_linearlayout_residence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_residence_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título residencia" />
+
+            <TextView
+                android:id="@+id/text_residence_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre: " />
+
+            <TextView
+                android:id="@+id/text_residence_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ciudad: " />
+
+            <TextView
+                android:id="@+id/text_residence_provience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Provincia: " />
+
+            <TextView
+                android:id="@+id/text_residence_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="País: " />
+
+            <TextView
+                android:id="@+id/text_residence_street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calle: " />
+
+            <TextView
+                android:id="@+id/text_residence_zc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CP: " />
+
+            <TextView
+                android:id="@+id/text_residence_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: " />
+
+            <TextView
+                android:id="@+id/text_residence_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono: " />
+
+            <TextView
+                android:id="@+id/text_residence_timetable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horario: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="18dp" />
+
+            <Button
+                android:id="@+id/button_residence_staff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Personal" />
+
+            <Button
+                android:id="@+id/button_resident_residents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Residentes" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

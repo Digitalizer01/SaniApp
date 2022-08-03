@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
@@ -52,10 +49,10 @@ class UserResidentMedication : Fragment() {
         return inflater.inflate(R.layout.fragment_user_resident_medication, container, false)
     }
 
-    fun showInfo(residencename: String, weekday: String, idresident: String, layout: LinearLayout, nal: NavController) {
+    fun showInfo(residenceid: String, weekday: String, idresident: String, layout: LinearLayout, nal: NavController) {
         var mapUser: Map<String, String>? = null;
 
-        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/"+residencename+"/Residents/"+idresident+"/Medication/"+weekday+"/").addValueEventListener(object :
+        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/").addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -130,9 +127,90 @@ class UserResidentMedication : Fragment() {
                 edittext_evening_medication.setText(evening_medication);
                 edittext_evening_hour.setText(evening_hour);
 
-                switch_morning_taken.isChecked = false;
-                switch_afternoon_taken.isChecked = true;
-                switch_evening_taken.isChecked = false;
+                if(morning_taken == "Yes") switch_morning_taken.isChecked = true else switch_morning_taken.isChecked = false;
+                if(afternoon_taken == "Yes") switch_afternoon_taken.isChecked = true else switch_afternoon_taken.isChecked = false;
+                if(evening_taken == "Yes") switch_evening_taken.isChecked = true else switch_evening_taken.isChecked = false;
+
+                var btn_update = view?.findViewById(R.id.button_medication_resident_update) as Button;
+
+                btn_update.setOnClickListener{
+
+                    var switch_morning_taken_value = "";
+                    var switch_afternoon_taken_value = "";
+                    var switch_evening_taken_value = "";
+
+                    if(switch_morning_taken.isChecked == true) switch_morning_taken_value = "Yes" else switch_morning_taken_value = "No";
+                    if(switch_afternoon_taken.isChecked == true) switch_afternoon_taken_value = "Yes" else switch_afternoon_taken_value = "No";
+                    if(switch_evening_taken.isChecked == true) switch_evening_taken_value = "Yes" else switch_evening_taken_value = "No";
+
+                    var split_morning_hour = edittext_morning_hour.text.split(":");
+                    var split_afternoon_hour = edittext_afternoon_hour.text.split(":");
+                    var split_evening_hour = edittext_evening_hour.text.split(":");
+
+                    // Morning: 8:00 - 13:59
+                    // Afternoon: 14:00 - 19:59
+                    // Evening: 20:00 - 7:59
+
+                    if ((split_morning_hour[0].toInt() >= 8 && split_morning_hour[0].toInt() <= 13) && (split_afternoon_hour[0].toInt() >= 14 && split_afternoon_hour[0].toInt() <= 19) && (split_evening_hour[0].toInt() >= 20 && split_evening_hour[0].toInt() <= 23) || (split_evening_hour[0].toInt() >= 0 && split_evening_hour[0].toInt() <= 7)) {
+
+                        // Morning
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Hour")
+                            .setValue(edittext_morning_hour.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Medication")
+                            .setValue(edittext_morning_medication.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Taken")
+                            .setValue(switch_morning_taken_value);
+
+                        // Afternoon
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Hour")
+                            .setValue(edittext_afternoon_hour.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Medication")
+                            .setValue(edittext_afternoon_medication.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Taken")
+                            .setValue(switch_afternoon_taken_value);
+
+                        // Evening
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Hour")
+                            .setValue(edittext_evening_hour.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Medication")
+                            .setValue(edittext_evening_medication.text.toString());
+                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Taken")
+                            .setValue(switch_evening_taken_value);
+
+                        print(edittext_morning_hour.text.toString());
+                        print(edittext_morning_medication.text.toString());
+                        print(switch_morning_taken_value);
+
+                        print(edittext_afternoon_hour.text.toString());
+                        print(edittext_afternoon_medication.text.toString());
+                        print(switch_afternoon_taken_value);
+
+                        print(edittext_evening_hour.text.toString());
+                        print(edittext_evening_medication.text.toString());
+                        print(switch_evening_taken_value);
+
+                        val toast = Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        print("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday + " UPDATED");
+                    }
+                    else{
+                        val toast = Toast.makeText(context, "Las horas no son correctas", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        print("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday + " ERROR");
+                    }
+
+                }
 
             }
 
@@ -152,13 +230,13 @@ class UserResidentMedication : Fragment() {
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residencename: String = inputData[0] as String;
+        var residenceid: String = inputData[0] as String;
         var weekday: String = inputData[1] as String;
         var residentmap: HashMap<String, HashMap<String, String>> = inputData[2] as HashMap<String, HashMap<String, String>>;
 
         var idresident: String = residentmap["Data"]?.get("IDPillbox").toString();
 
-        showInfo(residencename, weekday, idresident, layout, nal);
+        showInfo(residenceid, weekday, idresident, layout, nal);
     }
 
     companion object {

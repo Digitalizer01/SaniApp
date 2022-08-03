@@ -52,7 +52,7 @@ class UserResident : Fragment() {
         return inflater.inflate(R.layout.fragment_user_resident, container, false)
     }
 
-    fun showInfo(residencename: String, residentmap: HashMap<String, HashMap<String, String>>, layout: LinearLayout, nal: NavController) {
+    fun showInfo(residenceid: String, residentmap: HashMap<String, HashMap<String, String>>, layout: LinearLayout, nal: NavController) {
         var resident_birthdate: String = "";
         var resident_gender: String = "";
         var resident_idpillbox: String = "";
@@ -96,37 +96,37 @@ class UserResident : Fragment() {
         val bundle = Bundle()
 
         btn_monday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Monday", residentmap);
+            var argdata = arrayOf(residenceid, "Monday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_tuesday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Tuesday", residentmap);
+            var argdata = arrayOf(residenceid, "Tuesday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_wednesday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Wednesday", residentmap);
+            var argdata = arrayOf(residenceid, "Wednesday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_thursday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Thursday", residentmap);
+            var argdata = arrayOf(residenceid, "Thursday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_friday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Friday", residentmap);
+            var argdata = arrayOf(residenceid, "Friday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_saturday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Saturday", residentmap);
+            var argdata = arrayOf(residenceid, "Saturday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
         btn_sunday.setOnClickListener{
-            var argdata = arrayOf(residencename, "Sunday", residentmap);
+            var argdata = arrayOf(residenceid, "Sunday", residentmap);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
@@ -149,9 +149,9 @@ class UserResident : Fragment() {
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residencename = inputData[0];
+        var residenceid = inputData[0];
         var residentmap = inputData[1];
-        showInfo(residencename as String,
+        showInfo(residenceid as String,
             residentmap as HashMap<String, HashMap<String, String>>, layout, nal);
     }
 

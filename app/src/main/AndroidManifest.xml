@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaniApp">
         <activity
+            android:name=".ResidenceActivity"
+            android:exported="false"
+            android:label="@string/title_activity_residence"
+            android:theme="@style/Theme.SaniApp.NoActionBar" />
+        <activity
             android:name=".UserActivity"
             android:exported="false" />
         <activity

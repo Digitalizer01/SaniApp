@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_residence"
+    app:startDestination="@id/residenceProfile">
+
+    <fragment
+        android:id="@+id/residenceProfile"
+        android:name="com.example.saniapp.residence.ResidenceProfile"
+        android:label="fragment_residence_profile"
+        tools:layout="@layout/fragment_residence_profile" />
+</navigation>
