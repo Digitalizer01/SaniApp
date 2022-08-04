@@ -11,6 +11,13 @@
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_profile.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident_medication.xml" value="0.3907407407407407" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_create_staff.xml" value="0.4" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_profile.xml" value="0.4" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_residents.xml" value="0.15489130434782608" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_residents_profile.xml" value="0.264" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_staff.xml" value="0.264" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_staff_profile.xml" value="0.4" />
+        <entry key="..\:/Users/ismael.lazarohidalgo/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident_medication.xml" value="0.21875" />
       </map>
     </option>
   </component>

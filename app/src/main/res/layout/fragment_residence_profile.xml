@@ -86,7 +86,7 @@
                 android:text="Personal" />
 
             <Button
-                android:id="@+id/button_resident_residents"
+                android:id="@+id/button_residence_residents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Residentes" />
