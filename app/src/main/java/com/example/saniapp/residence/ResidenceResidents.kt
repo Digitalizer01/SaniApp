@@ -81,7 +81,7 @@ class ResidenceResidents : Fragment() {
                                 val bundle = Bundle()
                                 var argdata = arrayOf(id_user, value, key, name_surname_resident);
                                 bundle.putSerializable("argdata", argdata);
-                                //nal.navigate(R.id.residenceResidentProfile, bundle);
+                                nal.navigate(R.id.residenceResidentsProfile, bundle);
                             }
                             layout.addView(btn_residence_resident);
                         }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.AdminMenu">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/id_linearlayout_admin_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Admin" />
+
+            <Button
+                android:id="@+id/button_admin_menu_residences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Residencias" />
+
+            <Button
+                android:id="@+id/button_admin_menu_create_residences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear residencia" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

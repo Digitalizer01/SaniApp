@@ -53,8 +53,8 @@ class ResidenceResidentsProfile : Fragment() {
 
     fun showInfo(
         residenceid: String,
-        residencestaffkey: String,
-        residencestafffullname: String,
+        residenceresidentkey: String,
+        residenceresidentfullname: String,
         layout: LinearLayout,
         nal: NavController
     ) {
@@ -62,105 +62,95 @@ class ResidenceResidentsProfile : Fragment() {
 
         var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("Residences/$residenceid/Staff/")
+                .getReference("Residences/$residenceid/Residents/")
                 .addValueEventListener(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                         val snapshotIterator = dataSnapshot.children;
                         val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                        var residencestaffmap: HashMap<String, HashMap<String, String>> =  HashMap<String, HashMap<String, String>>();
+                        var residenceresidentmap: HashMap<String, HashMap<String, String>> =
+                            HashMap<String, HashMap<String, String>>();
                         while (iterator.hasNext()) {
                             var hashmap = iterator.next();
-                            residencestaffmap = hashmap.value as HashMap<String, HashMap<String, String>>;
-                            if (hashmap.key == residencestaffkey) {
-                                var edittext_residence_staff_profile_title =
-                                    view?.findViewById(R.id.text_residence_staff_profile_title) as TextView;
-                                var edittext_residence_staff_profile_name =
-                                    view?.findViewById(R.id.edittext_residence_staff_profile_name) as TextView;
-                                var edittext_residence_staff_profile_surnames =
-                                    view?.findViewById(R.id.edittext_residence_staff_profile_surnames) as TextView;
-                                var edittext_residence_staff_profile_gender =
-                                    view?.findViewById(R.id.edittext_residence_staff_profile_gender) as TextView;
-                                var edittextdate_residence_staff_profile_birthdate =
-                                    view?.findViewById(R.id.edittextdate_residence_staff_profile_birthdate) as TextView;
-                                var edittextemail_residence_staff_profile_email =
-                                    view?.findViewById(R.id.edittextemail_residence_staff_profile_email) as TextView;
-                                var edittextphone_residence_staff_profile_phone =
-                                    view?.findViewById(R.id.edittextphone_residence_staff_profile_phone) as TextView;
+                            residenceresidentmap =
+                                hashmap.value as HashMap<String, HashMap<String, String>>;
+                            if (hashmap.key == residenceresidentkey) {
+                                var edittext_residence_residents_profile_title =
+                                    view?.findViewById(R.id.text_residence_residents_profile_title) as TextView;
+                                var edittext_residence_residents_profile_name =
+                                    view?.findViewById(R.id.edittext_residence_residents_profile_name) as TextView;
+                                var edittext_residence_residents_profile_surnames =
+                                    view?.findViewById(R.id.edittext_residence_residents_profile_surnames) as TextView;
+                                var edittext_residence_residents_profile_gender =
+                                    view?.findViewById(R.id.edittext_residence_residents_profile_gender) as TextView;
+                                var edittextdate_residence_residents_profile_birthdate =
+                                    view?.findViewById(R.id.edittextdate_residence_residents_profile_birthdate) as TextView;
+                                var edittext_residence_residents_profile_id =
+                                    view?.findViewById(R.id.edittext_residence_residents_profile_id) as TextView;
 
-                                edittext_residence_staff_profile_title.setText(
-                                    residencestaffmap["Data"]?.get(
+                                edittext_residence_residents_profile_title.setText(
+                                    residenceresidentmap["Data"]?.get(
                                         "Name"
-                                    ) + " " + residencestaffmap["Data"]?.get(
+                                    ) + " " + residenceresidentmap["Data"]?.get(
                                         "Surnames"
                                     )
                                 );
-                                edittext_residence_staff_profile_name.setText(
-                                    residencestaffmap["Data"]?.get(
+                                edittext_residence_residents_profile_name.setText(
+                                    residenceresidentmap["Data"]?.get(
                                         "Name"
                                     )
                                 );
-                                edittext_residence_staff_profile_surnames.setText(
-                                    residencestaffmap["Data"]?.get(
+                                edittext_residence_residents_profile_surnames.setText(
+                                    residenceresidentmap["Data"]?.get(
                                         "Surnames"
                                     )
                                 );
-                                edittext_residence_staff_profile_gender.setText(
-                                    residencestaffmap["Data"]?.get(
+                                edittext_residence_residents_profile_gender.setText(
+                                    residenceresidentmap["Data"]?.get(
                                         "Gender"
                                     )
                                 );
-                                edittextdate_residence_staff_profile_birthdate.setText(
-                                    residencestaffmap["Data"]?.get(
+                                edittextdate_residence_residents_profile_birthdate.setText(
+                                    residenceresidentmap["Data"]?.get(
                                         "BirthDate"
                                     )
                                 );
-                                edittextemail_residence_staff_profile_email.setText(
-                                    residencestaffmap["Data"]?.get(
-                                        "Email"
-                                    )
-                                );
-                                edittextphone_residence_staff_profile_phone.setText(
-                                    residencestaffmap["Data"]?.get(
-                                        "Phone"
+                                edittext_residence_residents_profile_id.setText(
+                                    residenceresidentmap["Data"]?.get(
+                                        "IDPillbox"
                                     )
                                 );
 
                                 var btn_update =
-                                    view?.findViewById(R.id.button_residence_staff_profile_update) as Button;
+                                    view?.findViewById(R.id.button_residence_residents_profile_update) as Button;
 
                                 btn_update.setOnClickListener {
 
                                     // Name
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Name")
-                                        .setValue(edittext_residence_staff_profile_name.text.toString());
+                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Name")
+                                        .setValue(edittext_residence_residents_profile_name.text.toString());
 
                                     // Surnames
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Surnames")
-                                        .setValue(edittext_residence_staff_profile_surnames.text.toString());
+                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Surnames")
+                                        .setValue(edittext_residence_residents_profile_surnames.text.toString());
 
                                     // Gender
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Gender")
-                                        .setValue(edittext_residence_staff_profile_gender.text.toString());
+                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Gender")
+                                        .setValue(edittext_residence_residents_profile_gender.text.toString());
 
                                     // Birthdate
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/BirthDate")
-                                        .setValue(edittextdate_residence_staff_profile_birthdate.text.toString());
+                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/BirthDate")
+                                        .setValue(edittextdate_residence_residents_profile_birthdate.text.toString());
 
-                                    // Email
+                                    // ID
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Email")
-                                        .setValue(edittextemail_residence_staff_profile_email.text.toString());
-
-                                    // Phone
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Phone")
-                                        .setValue(edittextphone_residence_staff_profile_phone.text.toString());
+                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/IDPillbox")
+                                        .setValue(edittext_residence_residents_profile_id.text.toString());
 
                                     val toast =
                                         Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
@@ -191,12 +181,16 @@ class ResidenceResidentsProfile : Fragment() {
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
         var residenceid = inputData[0];
-        var residencestaffmap = inputData[1];
-        var residencestaffkey = inputData[2];
-        var residencestafffullname = inputData[3];
+        var residenceresidentmap = inputData[1];
+        var residenceresidentkey = inputData[2];
+        var residenceresidentfullname = inputData[3];
 
         showInfo(
-            residenceid as String, residencestaffkey as String, residencestafffullname as String, layout, nal
+            residenceid as String,
+            residenceresidentkey as String,
+            residenceresidentfullname as String,
+            layout,
+            nal
         );
 
         print("Ok");

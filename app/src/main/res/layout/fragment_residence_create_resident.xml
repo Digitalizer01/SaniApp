@@ -3,36 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".residence.ResidenceResidentsProfile">
+    tools:context=".residence.ResidenceCreateResident">
+
+    <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/id_linearlayout_residence_residents_profile"
+            android:id="@+id/id_linearlayout_residence_residents_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/text_residence_residents_profile_title"
+                android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                android:text="Crear residente" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="14dp" />
 
             <TextView
-                android:id="@+id/text_residence_residents_profile_name"
+                android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre: " />
 
             <EditText
-                android:id="@+id/edittext_residence_residents_profile_name"
+                android:id="@+id/edittext_residence_residents_create_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -44,13 +46,13 @@
                 android:layout_height="14dp" />
 
             <TextView
-                android:id="@+id/text_residence_residents_profile_surnames"
+                android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Apellidos: " />
 
             <EditText
-                android:id="@+id/edittext_residence_residents_profile_surnames"
+                android:id="@+id/edittext_residence_residents_create_surnames"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -62,13 +64,13 @@
                 android:layout_height="14dp" />
 
             <TextView
-                android:id="@+id/text_residence_residents_profile_gender"
+                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Género: " />
 
             <EditText
-                android:id="@+id/edittext_residence_residents_profile_gender"
+                android:id="@+id/edittext_residence_residents_create_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -80,13 +82,13 @@
                 android:layout_height="14dp" />
 
             <TextView
-                android:id="@+id/text_residence_residents_profile_birthdate"
+                android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fecha nacimiento: " />
 
             <EditText
-                android:id="@+id/edittextdate_residence_residents_profile_birthdate"
+                android:id="@+id/edittext_residence_residents_create_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -98,13 +100,13 @@
                 android:layout_height="14dp" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ID pastillero y residente: " />
 
             <EditText
-                android:id="@+id/edittext_residence_residents_profile_id"
+                android:id="@+id/edittext_residence_residents_create_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -116,17 +118,11 @@
                 android:layout_height="14dp" />
 
             <Button
-                android:id="@+id/button_residence_residents_profile_update"
+                android:id="@+id/button_residence_residents_create_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Actualizar" />
-
-            <Button
-                android:id="@+id/button_residence_residents_profile_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#DD3434"
-                android:text="Eliminar" />
+                android:text="Crear" />
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

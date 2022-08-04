@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/adminMenu">
+
+    <fragment
+        android:id="@+id/adminMenu"
+        android:name="com.example.saniapp.admin.AdminMenu"
+        android:label="fragment_admin_menu"
+        tools:layout="@layout/fragment_admin_menu" >
+        <action
+            android:id="@+id/action_adminMenu_to_adminResidences"
+            app:destination="@id/adminResidences" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminResidences"
+        android:name="com.example.saniapp.admin.AdminResidences"
+        android:label="fragment_admin_residences"
+        tools:layout="@layout/fragment_admin_residences" />
+</navigation>

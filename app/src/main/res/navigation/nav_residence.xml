@@ -47,10 +47,18 @@
         <action
             android:id="@+id/action_residenceResidents_to_residenceResidentsProfile"
             app:destination="@id/residenceResidentsProfile" />
+        <action
+            android:id="@+id/action_residenceResidents_to_residenceCreateResident"
+            app:destination="@id/residenceCreateResident" />
     </fragment>
     <fragment
         android:id="@+id/residenceResidentsProfile"
         android:name="com.example.saniapp.residence.ResidenceResidentsProfile"
         android:label="fragment_residence_residents_profile"
         tools:layout="@layout/fragment_residence_residents_profile" />
+    <fragment
+        android:id="@+id/residenceCreateResident"
+        android:name="com.example.saniapp.residence.ResidenceCreateResident"
+        android:label="fragment_residence_create_resident"
+        tools:layout="@layout/fragment_residence_create_resident" />
 </navigation>
