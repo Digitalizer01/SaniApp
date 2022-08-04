@@ -1,6 +1,5 @@
 package com.example.saniapp.residence
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -104,13 +103,29 @@ class ResidenceProfile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        super.onViewCreated(view, savedInstanceState)
-        val nal = Navigation.findNavController(view)
-        var layout = view?.findViewById(R.id.id_linearlayout_residence) as LinearLayout
+        super.onViewCreated(view, savedInstanceState);
+        val nal = Navigation.findNavController(view);
+        var layout = view?.findViewById(R.id.id_linearlayout_residence) as LinearLayout;
 
         val user = FirebaseAuth.getInstance().currentUser
 
         showInfo(user?.uid.toString(), layout, nal);
+
+        var btn_residence_staff = view?.findViewById(R.id.button_residence_staff) as Button;
+        btn_residence_staff.setOnClickListener{
+            val bundle = Bundle();
+            var argdata = arrayOf(user?.uid.toString());
+            bundle.putSerializable("argdata", argdata);
+            nal.navigate(R.id.residenceStaff, bundle);
+        }
+
+        var btn_residence_residents = view?.findViewById(R.id.button_residence_residents) as Button;
+        btn_residence_residents.setOnClickListener{
+            val bundle = Bundle();
+            var argdata = arrayOf(user?.uid.toString());
+            bundle.putSerializable("argdata", argdata);
+            nal.navigate(R.id.residenceResidents, bundle);
+        }
 
     }
 

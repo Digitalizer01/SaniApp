@@ -9,5 +9,48 @@
         android:id="@+id/residenceProfile"
         android:name="com.example.saniapp.residence.ResidenceProfile"
         android:label="fragment_residence_profile"
-        tools:layout="@layout/fragment_residence_profile" />
+        tools:layout="@layout/fragment_residence_profile" >
+        <action
+            android:id="@+id/action_residenceProfile_to_residenceStaff"
+            app:destination="@id/residenceStaff" />
+        <action
+            android:id="@+id/action_residenceProfile_to_residenceResidents"
+            app:destination="@id/residenceResidents" />
+    </fragment>
+    <fragment
+        android:id="@+id/residenceStaff"
+        android:name="com.example.saniapp.residence.ResidenceStaff"
+        android:label="fragment_residence_staff"
+        tools:layout="@layout/fragment_residence_staff" >
+        <action
+            android:id="@+id/action_residenceStaff_to_residenceStaffProfile"
+            app:destination="@id/residenceStaffProfile" />
+        <action
+            android:id="@+id/action_residenceStaff_to_residenceCreateStaff"
+            app:destination="@id/residenceCreateStaff" />
+    </fragment>
+    <fragment
+        android:id="@+id/residenceStaffProfile"
+        android:name="com.example.saniapp.residence.ResidenceStaffProfile"
+        android:label="fragment_residence_staff_profile"
+        tools:layout="@layout/fragment_residence_staff_profile" />
+    <fragment
+        android:id="@+id/residenceCreateStaff"
+        android:name="com.example.saniapp.residence.ResidenceCreateStaff"
+        android:label="fragment_residence_create_staff"
+        tools:layout="@layout/fragment_residence_create_staff" />
+    <fragment
+        android:id="@+id/residenceResidents"
+        android:name="com.example.saniapp.residence.ResidenceResidents"
+        android:label="fragment_residence_residents"
+        tools:layout="@layout/fragment_residence_residents" >
+        <action
+            android:id="@+id/action_residenceResidents_to_residenceResidentsProfile"
+            app:destination="@id/residenceResidentsProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/residenceResidentsProfile"
+        android:name="com.example.saniapp.residence.ResidenceResidentsProfile"
+        android:label="fragment_residence_residents_profile"
+        tools:layout="@layout/fragment_residence_residents_profile" />
 </navigation>
