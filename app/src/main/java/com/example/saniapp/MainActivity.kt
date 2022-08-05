@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                                 toast.setMargin(50f, 50f)
                                 toast.show()
 
-                                val i = Intent(this, ResidenceActivity::class.java).apply {
+                                val i = Intent(this, AdminActivity::class.java).apply {
                                     putExtra("Data", "DatoNuevo")
                                 }
 
