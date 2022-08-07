@@ -164,6 +164,21 @@ class ResidenceStaffProfile : Fragment() {
                                     toast.show();
 
                                 }
+
+                                var btn_delete =
+                                    view?.findViewById(R.id.button_residence_staff_profile_delete) as Button;
+
+                                btn_delete.setOnClickListener {
+
+                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey)
+                                        .removeValue()
+
+                                    val toast =
+                                        Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
+                                    toast.show();
+
+                                }
                             }
                         }
                     }

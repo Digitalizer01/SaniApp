@@ -28,6 +28,16 @@
                 android:layout_height="14dp" />
 
             <TextView
+                android:id="@+id/text_residence_staff_profile_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ID: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <TextView
                 android:id="@+id/text_residence_staff_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
