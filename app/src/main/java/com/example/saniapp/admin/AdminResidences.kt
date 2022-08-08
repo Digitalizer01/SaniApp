@@ -68,7 +68,6 @@ class AdminResidences : Fragment() {
                     while (iterator.hasNext()) {
                         var hashmap = iterator.next();
                         residences = hashmap.value as HashMap<String, HashMap<String, String>>;
-                        var btn_residence = Button(context);
 
                         val itr = residences?.keys?.iterator();
                         while (itr?.hasNext() == true) {
@@ -77,6 +76,7 @@ class AdminResidences : Fragment() {
                                 residences?.get(key) as HashMap<String, HashMap<String, String>>;
                             val name_residence = value["Data"]?.get("Name");
 
+                            var btn_residence = Button(context);
                             btn_residence.setText(name_residence);
                             btn_residence.setTextColor(Color.WHITE);
                             btn_residence.setBackgroundColor(Color.rgb(98, 0, 238));
