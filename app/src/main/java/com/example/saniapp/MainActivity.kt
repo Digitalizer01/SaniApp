@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     // 0: admin, 1: residence, 2: staff
     fun checkID(user: String): Int {
         var option: Int = -1;
-/*
+
         // Check if it is admin
         var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Admin/").addValueEventListener(object : ValueEventListener {  override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val snapshotIterator = dataSnapshot.children;
@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        if (option != -1){
+            return option;
+        }
 
         // Check if it is a residence
         info =
@@ -65,10 +68,13 @@ class MainActivity : AppCompatActivity() {
                         // Failed to read value
                     }
                 })
-*/
+
+        if (option != -1){
+            return option;
+        }
 
         // Check if it is a residence staff
-       var info =
+       info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
                     "Residences/"
