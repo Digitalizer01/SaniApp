@@ -13,38 +13,38 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
 
-    // 0: admin, 1: residence, 2: staff
-    fun checkID(user: String): Int {
-        var option: Int = -1;
+    fun enterAdmin(userid: String, intent: Intent){
+        var info =
+            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference(
+                    "Admin/"
+                ).addValueEventListener(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-        // Check if it is admin
-        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Admin/").addValueEventListener(object : ValueEventListener {  override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val snapshotIterator = dataSnapshot.children;
-                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                while (iterator.hasNext()) {
-                    var hashmap = iterator.next();
-                    var idadmin = hashmap.value;
+                        val snapshotIterator = dataSnapshot.children;
+                        val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
+                        var key: String = "";
+                        var hashmap = iterator.next();
+                        key = hashmap.value.toString();
 
-                    if(idadmin == user){
-                        option = 1;
+                        if(key == userid){
+                            startActivity(intent)
+                        }
                     }
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
+    }
 
-        if (option != -1){
-            return option;
-        }
-
-        // Check if it is a residence
-        info =
+    fun enterResidence(userid: String, intent: Intent){
+        var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
                     "Residences/"
@@ -54,12 +54,15 @@ class MainActivity : AppCompatActivity() {
 
                         val snapshotIterator = dataSnapshot.children;
                         val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
+                        var residences: HashMap<String, HashMap<String, String>> =
+                            HashMap<String, HashMap<String, String>>();
                         while (iterator.hasNext()) {
                             var hashmap = iterator.next();
-                            var idresidence = hashmap.key;
+                            residences = hashmap.value as HashMap<String, HashMap<String, String>>;
 
-                            if(idresidence == user){
-                                option = 2;
+                            val key = hashmap.key.toString();
+                            if(userid == key){
+                                startActivity(intent);
                             }
                         }
                     }
@@ -68,13 +71,10 @@ class MainActivity : AppCompatActivity() {
                         // Failed to read value
                     }
                 })
+    }
 
-        if (option != -1){
-            return option;
-        }
-
-        // Check if it is a residence staff
-       info =
+    fun enterStaff(userid: String, intent: Intent){
+        var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
                     "Residences/"
@@ -84,12 +84,15 @@ class MainActivity : AppCompatActivity() {
 
                         val snapshotIterator = dataSnapshot.children;
                         val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
+                        var residence: HashMap<String, HashMap<String, String>> = HashMap<String, HashMap<String, String>>();
                         while (iterator.hasNext()) {
                             var hashmap = iterator.next();
-                            var residence = hashmap.value as HashMap<String, HashMap<String, HashMap<String, String>>>;
-                            var idresidence = residence["Staff"]?.containsKey(user);
-                            if(idresidence == true){
-                                option = 2;
+                            residence = hashmap.value as HashMap<String, HashMap<String, String>>;
+                            if(residence["Staff"] != null){
+                                var residence_staff = residence["Staff"]!! as HashMap<String, String>;
+                                if(residence_staff.containsKey(userid)){
+                                    startActivity(intent);
+                                }
                             }
                         }
                     }
@@ -98,8 +101,6 @@ class MainActivity : AppCompatActivity() {
                         // Failed to read value
                     }
                 })
-
-        return option;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,30 +126,12 @@ class MainActivity : AppCompatActivity() {
                                 toast.setMargin(50f, 50f)
                                 toast.show()
 
-                                var option = checkID(user?.uid.toString());
-                                var i: Intent? = null;
-                                when(option){
-                                    0->{
-                                        // Admin
-                                        i = Intent(this, AdminActivity::class.java).apply {
-                                            putExtra("Data", "DatoNuevo")
-                                        }
-                                    }
-                                    1->{
-                                        // Residence
-                                        i = Intent(this, ResidenceActivity::class.java).apply {
-                                            putExtra("Data", "DatoNuevo")
-                                        }
-                                    }
-                                    2->{
-                                        // Residence staff
-                                        i = Intent(this, UserActivity::class.java).apply {
-                                            putExtra("Data", "DatoNuevo")
-                                        }
-                                    }
-                                }
+                                var mapUser: Map<String, String>? = null;
 
-                                startActivity(i)
+                                enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java));
+                                enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java));
+                                enterStaff(user?.uid.toString(), Intent(this, UserActivity::class.java));
+
                             } else {
                                 val toast = Toast.makeText(this, "No logeado", Toast.LENGTH_SHORT)
                                 toast.setMargin(50f, 50f)

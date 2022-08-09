@@ -65,17 +65,21 @@ class UserProfile : Fragment() {
                 while (iterator.hasNext() && !found) {
                     var hashmap = iterator.next();
                     residence_name = hashmap.key.toString();
-                    residence = hashmap.child("Data").value as HashMap<String, String>;
-                    residents = hashmap.child("Residents").value as HashMap<String, HashMap<HashMap<String, String>, HashMap<String, String>>>;
-                    var staff = hashmap.child("Staff");
-                    var userHashMap: HashMap<String, HashMap<String, HashMap<String, String>>> =
-                        staff.value as HashMap<String, HashMap<String, HashMap<String, String>>>;
-                    user = userHashMap[id_user]?.get("Data")!!;
-                    if(user != null){
-                        found = true;
+                    residence = hashmap.child("Data")!!.value as HashMap<String, String>;
+                    if(hashmap.child("Residents")!!.value != null){
+                        residents = hashmap.child("Residents")!!.value as HashMap<String, HashMap<HashMap<String, String>, HashMap<String, String>>>;
                     }
-                    print("Done");
-                    print("New")
+                    if(hashmap.child("Staff")!! != null){
+                        var staff = hashmap.child("Staff")!!;
+                        if(staff.value != null){
+                            var userHashMap: HashMap<String, HashMap<String, HashMap<String, String>>> =
+                                staff.value as HashMap<String, HashMap<String, HashMap<String, String>>>;
+                            user = userHashMap[id_user]?.get("Data")!!;
+                            if(user != null){
+                                found = true;
+                            }
+                        }
+                    }
                 }
 
                 var text_name = view?.findViewById(R.id.text_user_name) as? TextView;
@@ -113,6 +117,7 @@ class UserProfile : Fragment() {
                 text_residence_phone?.setText("Teléfono: " + residence["Phone"]);
                 text_residence_email?.setText("Email: " + residence["Email"]);
                 text_residence_timetable?.setText("Horario: " + residence["Timetable"]);
+
 
                 var mapresidents: HashMap<String, String> = HashMap<String, String>();
                 val itr = residents.keys.iterator()

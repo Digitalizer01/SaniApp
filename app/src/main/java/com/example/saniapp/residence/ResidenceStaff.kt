@@ -68,13 +68,13 @@ class ResidenceStaff : Fragment() {
                     var hashmap = iterator.next();
                     if (hashmap.key.toString() == "Staff"){
                         residence_staff = hashmap.value as HashMap<String, HashMap<String, String>>;
-                        var btn_residence_staff = Button(context);
 
                         val itr = residence_staff?.keys?.iterator()
                         while (itr?.hasNext() == true) {
                             val key = itr?.next()
                             val value: HashMap<String, HashMap<String, String>> = residence_staff?.get(key) as HashMap<String, HashMap<String, String>>;
                             val name_surname_resident = value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames");
+                            var btn_residence_staff = Button(context);
 
                             btn_residence_staff.setText(name_surname_resident);
                             btn_residence_staff.setTextColor(Color.WHITE);
