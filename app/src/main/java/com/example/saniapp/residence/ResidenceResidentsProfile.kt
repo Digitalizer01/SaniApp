@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
@@ -82,6 +79,14 @@ class ResidenceResidentsProfile : Fragment() {
                                     view?.findViewById(R.id.edittext_residence_residents_profile_name) as TextView;
                                 var edittext_residence_residents_profile_surnames =
                                     view?.findViewById(R.id.edittext_residence_residents_profile_surnames) as TextView;
+                                var spinner_residence_residents_profile_gender =
+                                    view?.findViewById(R.id.spinner_residence_residents_profile_gender) as Spinner;
+                                var opciones = arrayOf("Hombre", "Mujer")
+                                spinner_residence_residents_profile_gender.adapter = ArrayAdapter<String>(
+                                    requireContext(),
+                                    android.R.layout.simple_expandable_list_item_1,
+                                    opciones
+                                )
                                 var edittext_residence_residents_profile_gender =
                                     view?.findViewById(R.id.edittext_residence_residents_profile_gender) as TextView;
                                 var edittextdate_residence_residents_profile_birthdate =
