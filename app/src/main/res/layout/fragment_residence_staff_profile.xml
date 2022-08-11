@@ -90,6 +90,11 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp" />
 
+            <Spinner
+                android:id="@+id/spinner_residence_staff_profile_gender"
+                android:layout_width="match_parent"
+                android:layout_height="39dp" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="14dp" />

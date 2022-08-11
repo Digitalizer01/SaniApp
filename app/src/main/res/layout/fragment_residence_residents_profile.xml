@@ -67,14 +67,6 @@
                 android:layout_height="wrap_content"
                 android:text="Género: " />
 
-            <EditText
-                android:id="@+id/edittext_residence_residents_profile_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Género"
-                android:inputType="textPersonName" />
-
             <Spinner
                 android:id="@+id/spinner_residence_residents_profile_gender"
                 android:layout_width="match_parent"

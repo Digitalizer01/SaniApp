@@ -93,7 +93,7 @@ class UserProfile : Fragment() {
                 text_name?.setText("Nombre: " + user["Name"]);
                 text_surnames?.setText("Apellidos: " + user["Surnames"]);
                 text_gender?.setText("Género: " + user["Gender"]);
-                text_birthdate?.setText("Fecha nacimiento: " + user["BirthDate"]);
+                text_birthdate?.setText("Fecha nacimiento: " + user["Birthdate"]);
                 text_email?.setText("Email: " + user["Email"]);
                 text_phone?.setText("Móvil: " + user["Phone"]);
                 text_id?.setText("ID: " + id_user);

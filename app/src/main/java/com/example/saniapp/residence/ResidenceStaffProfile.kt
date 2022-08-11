@@ -77,8 +77,14 @@ class ResidenceStaffProfile : Fragment() {
                                     view?.findViewById(R.id.edittext_residence_staff_profile_name) as TextView;
                                 var edittext_residence_staff_profile_surnames =
                                     view?.findViewById(R.id.edittext_residence_staff_profile_surnames) as TextView;
-                                var edittext_residence_staff_profile_gender =
-                                    view?.findViewById(R.id.edittext_residence_staff_profile_gender) as TextView;
+                                var spinner_residence_staff_profile_gender =
+                                    view?.findViewById(R.id.spinner_residence_staff_profile_gender) as Spinner;
+                                var genders = arrayOf("Hombre", "Mujer")
+                                spinner_residence_staff_profile_gender.adapter = ArrayAdapter<String>(
+                                    requireContext(),
+                                    android.R.layout.simple_expandable_list_item_1, genders
+                                )
+
                                 var edittextdate_residence_staff_profile_birthdate =
                                     view?.findViewById(R.id.edittextdate_residence_staff_profile_birthdate) as TextView;
                                 var edittextemail_residence_staff_profile_email =
@@ -103,11 +109,13 @@ class ResidenceStaffProfile : Fragment() {
                                         "Surnames"
                                     )
                                 );
-                                edittext_residence_staff_profile_gender.setText(
-                                    residencestaffmap["Data"]?.get(
-                                        "Gender"
-                                    )
-                                );
+                                if(residencestaffmap["Data"]?.get("Gender") == "Male"){
+                                    spinner_residence_staff_profile_gender.setSelection(0);
+                                }
+                                else{
+                                    spinner_residence_staff_profile_gender.setSelection(1);
+                                }
+
                                 edittextdate_residence_staff_profile_birthdate.setText(
                                     residencestaffmap["Data"]?.get(
                                         "BirthDate"
@@ -139,10 +147,18 @@ class ResidenceStaffProfile : Fragment() {
                                         .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Surnames")
                                         .setValue(edittext_residence_staff_profile_surnames.text.toString());
 
+                                    var gender_aux = "";
+                                    if(spinner_residence_staff_profile_gender.selectedItem.toString() == "Hombre"){
+                                        gender_aux = "Male";
+                                    }
+                                    else{
+                                        gender_aux = "Female";
+                                    }
+
                                     // Gender
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                         .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Gender")
-                                        .setValue(edittext_residence_staff_profile_gender.text.toString());
+                                        .setValue(gender_aux);
 
                                     // Birthdate
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")

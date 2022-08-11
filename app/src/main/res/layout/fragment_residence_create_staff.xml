@@ -95,6 +95,11 @@
                 android:hint="Género"
                 android:inputType="textPersonName" />
 
+            <Spinner
+                android:id="@+id/spinner_residence_staff_create_gender"
+                android:layout_width="match_parent"
+                android:layout_height="38dp" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="14dp" />
