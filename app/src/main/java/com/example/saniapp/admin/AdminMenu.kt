@@ -1,15 +1,23 @@
 package com.example.saniapp.admin
 
+import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,7 +73,61 @@ class AdminMenu : Fragment() {
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.adminCreateResidence, bundle);
         }
+/*
+        val useraux = Firebase.auth.currentUser!!
 
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+                val credential = EmailAuthProvider
+                    .getCredential("prueba@gmail.com", "123456")
+
+        // Prompt the user to re-provide their sign-in credentials
+                useraux.reauthenticate(credential)
+                    .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
+
+        Firebase.auth.signOut();
+        var usernuevo = Firebase.auth.signInWithCredential(credential);
+        val usernuevo2 = Firebase.auth.currentUser!!
+
+        usernuevo2.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "User account deleted.")
+                }
+            }
+        println("Hola");
+*/
+
+        //var rootView: View = inflater.inflate(R.layout.fragment_dialog, container, false);
+
+        val builder = AlertDialog.Builder(context);
+        val inflater: LayoutInflater = layoutInflater;
+        val dialogLayout: View = inflater.inflate(R.layout.fragment_dialog, null);
+        val editText: EditText = dialogLayout.findViewById<EditText>(R.id.et_editText);
+
+        val args = this.arguments
+
+        val userinfo: Array<*> = args?.getSerializable("aux") as Array<*>;
+        println("hola")
+
+        with(builder){
+            setTitle("Enter some text!")
+            setPositiveButton("Ok"){dialog, which ->
+                var toast = Toast.makeText(context, editText.text.toString(), Toast.LENGTH_SHORT)
+                toast.setMargin(50f, 50f)
+                toast.show()
+            }
+
+            setNegativeButton("Cancel"){dialog, which ->
+                var toast = Toast.makeText(context, "NO ACEPTADO", Toast.LENGTH_SHORT)
+                toast.setMargin(50f, 50f)
+                toast.show()
+            }
+
+            setView(dialogLayout);
+            show();
+        }
     }
 
     companion object {

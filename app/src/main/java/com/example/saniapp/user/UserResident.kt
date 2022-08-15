@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
@@ -59,7 +57,7 @@ class UserResident : Fragment() {
         var resident_name: String = "";
         var resident_surnames: String = "";
 
-        resident_birthdate = residentmap["Data"]?.get("BirthDate").toString();
+        resident_birthdate = residentmap["Data"]?.get("Birthdate").toString();
         resident_gender = residentmap["Data"]?.get("Gender").toString();
         resident_idpillbox = residentmap["Data"]?.get("IDPillbox").toString();
         resident_name = residentmap["Data"]?.get("Name").toString();
@@ -130,6 +128,65 @@ class UserResident : Fragment() {
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.userResidentMedication, bundle);
         }
+
+        var info2 = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/"+residenceid+"/Residents/"+residentmap["Data"]?.get("IDPillbox").toString()+"/Medication/").addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val snapshotIterator = dataSnapshot.children;
+                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
+
+                var morning_medication: String = "";
+                var morning_hour: String = "";
+                var morning_taken: String = "";
+
+                var afternoon_medication: String = "";
+                var afternoon_hour: String = "";
+                var afternoon_taken: String = "";
+
+                var evening_medication: String = "";
+                var evening_hour: String = "";
+                var evening_taken: String = "";
+
+                while (iterator.hasNext()) {
+                    var hashmap = iterator.next();
+                    val info: HashMap<String, HashMap<String, String>> = hashmap.value as HashMap<String, HashMap<String, String>>;
+                    var takenmorning = info["Morning"]?.get("Taken").toString();
+                    var takenafternoon = info["Afternoon"]?.get("Taken").toString();
+                    var takenevening = info["Evening"]?.get("Taken").toString();
+                    if(takenmorning == "No" || takenafternoon == "No" || takenevening == "No") {
+                        when(hashmap.key)
+                        {
+                            "Monday" -> {
+                                btn_monday.setBackgroundColor(Color.RED);
+                            }
+                            "Tuesday" -> {
+                                btn_tuesday.setBackgroundColor(Color.RED);
+                            }
+                            "Wednesday" -> {
+                                btn_wednesday.setBackgroundColor(Color.RED);
+                            }
+                            "Thursday" -> {
+                                btn_thursday.setBackgroundColor(Color.RED);
+                            }
+                            "Friday" -> {
+                                btn_friday.setBackgroundColor(Color.RED);
+                            }
+                            "Saturday" -> {
+                                btn_saturday.setBackgroundColor(Color.RED);
+                            }
+                            "Sunday" -> {
+                                btn_sunday.setBackgroundColor(Color.RED);
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+            }
+        })
 
         layout.addView(btn_monday);
         layout.addView(btn_tuesday);

@@ -148,71 +148,82 @@ class UserResidentMedication : Fragment() {
                     var split_evening_hour = edittext_evening_hour.text.split(":");
 
                     // Morning: 8:00 - 13:59
+                    try{
+                        if(split_morning_hour[0].toInt() >= 8 && split_morning_hour[0].toInt() <= 13){
+                            // Morning
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Hour")
+                                .setValue(edittext_morning_hour.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Medication")
+                                .setValue(edittext_morning_medication.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Taken")
+                                .setValue(switch_morning_taken_value);
+                        }
+                        else{
+                            val toast = Toast.makeText(context, "Error al actualizar la mañana", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                    catch (e: NumberFormatException){
+                        val toast = Toast.makeText(context, "Error en la hora de mañana", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
                     // Afternoon: 14:00 - 19:59
+                    try{
+                        if(split_afternoon_hour[0].toInt() >= 14 && split_afternoon_hour[0].toInt() <= 19){
+                            // Afternoon
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Hour")
+                                .setValue(edittext_afternoon_hour.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Medication")
+                                .setValue(edittext_afternoon_medication.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Taken")
+                                .setValue(switch_afternoon_taken_value);
+                        }
+                        else{
+                            val toast = Toast.makeText(context, "Error al actualizar la tarde", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                    catch (e: NumberFormatException){
+                        val toast = Toast.makeText(context, "Error en la hora de tarde", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
                     // Evening: 20:00 - 7:59
-
-                    if ((split_morning_hour[0].toInt() >= 8 && split_morning_hour[0].toInt() <= 13) && (split_afternoon_hour[0].toInt() >= 14 && split_afternoon_hour[0].toInt() <= 19) && (split_evening_hour[0].toInt() >= 20 && split_evening_hour[0].toInt() <= 23) || (split_evening_hour[0].toInt() >= 0 && split_evening_hour[0].toInt() <= 7)) {
-
-                        // Morning
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Hour")
-                            .setValue(edittext_morning_hour.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Medication")
-                            .setValue(edittext_morning_medication.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Taken")
-                            .setValue(switch_morning_taken_value);
-
-                        // Afternoon
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Hour")
-                            .setValue(edittext_afternoon_hour.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Medication")
-                            .setValue(edittext_afternoon_medication.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Taken")
-                            .setValue(switch_afternoon_taken_value);
-
-                        // Evening
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Hour")
-                            .setValue(edittext_evening_hour.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Medication")
-                            .setValue(edittext_evening_medication.text.toString());
-                        Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                            .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Taken")
-                            .setValue(switch_evening_taken_value);
-
-                        print(edittext_morning_hour.text.toString());
-                        print(edittext_morning_medication.text.toString());
-                        print(switch_morning_taken_value);
-
-                        print(edittext_afternoon_hour.text.toString());
-                        print(edittext_afternoon_medication.text.toString());
-                        print(switch_afternoon_taken_value);
-
-                        print(edittext_evening_hour.text.toString());
-                        print(edittext_evening_medication.text.toString());
-                        print(switch_evening_taken_value);
-
-                        val toast = Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
-                        toast.show();
-
-                        print("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday + " UPDATED");
+                    try{
+                        if((split_evening_hour[0].toInt() >= 20 && split_evening_hour[0].toInt() <= 23) || (split_evening_hour[0].toInt() >= 0 && split_evening_hour[0].toInt() <= 7)){
+                            // Evening
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Hour")
+                                .setValue(edittext_evening_hour.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Medication")
+                                .setValue(edittext_evening_medication.text.toString());
+                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Taken")
+                                .setValue(switch_evening_taken_value);
+                        }
+                        else{
+                            val toast = Toast.makeText(context, "Error al actualizar la noche", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
-                    else{
-                        val toast = Toast.makeText(context, "Las horas no son correctas", Toast.LENGTH_SHORT);
+                    catch (e: NumberFormatException){
+                        val toast = Toast.makeText(context, "Error en la hora de noche", Toast.LENGTH_SHORT);
                         toast.show();
-
-                        print("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday + " ERROR");
                     }
 
+                    val toast = Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    }
                 }
-
-            }
 
 
             override fun onCancelled(error: DatabaseError) {

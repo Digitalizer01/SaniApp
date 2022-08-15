@@ -127,8 +127,11 @@ class MainActivity : AppCompatActivity() {
                                 toast.show()
 
                                 var mapUser: Map<String, String>? = null;
-
-                                enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java));
+                                var userinfo: ArrayList<String> = ArrayList()
+                                userinfo.add(user?.uid.toString());
+                                userinfo.add(emailText.text.toString());
+                                userinfo.add(passText.text.toString());
+                                enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java).putExtra("userinfo", userinfo));
                                 enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java));
                                 enterStaff(user?.uid.toString(), Intent(this, UserActivity::class.java));
 

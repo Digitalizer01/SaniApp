@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.HashMap
+import kotlin.collections.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -123,17 +123,46 @@ class UserProfile : Fragment() {
                 val itr = residents.keys.iterator()
                 while (itr.hasNext()) {
                     val key = itr.next()
-                    val value: HashMap<String, HashMap<String, String>> = residents[key] as HashMap<String, HashMap<String, String>>;
-                    val name_surname_resident = value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames");
-                    mapresidents.put(key,  value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames"));
+                    val valuehashmap: HashMap<String, HashMap<String, String>> = residents[key] as HashMap<String, HashMap<String, String>>;
+                    val resident_medication = valuehashmap["Medication"];
+                    val name_surname_resident = valuehashmap["Data"]?.get("Name") + " " + valuehashmap["Data"]?.get("Surnames");
+                    mapresidents.put(key,  valuehashmap["Data"]?.get("Name") + " " + valuehashmap["Data"]?.get("Surnames"));
 
                     var btn_resident = Button(context);
                     btn_resident.setText(name_surname_resident);
                     btn_resident.setTextColor(Color.WHITE);
                     btn_resident.setBackgroundColor(Color.rgb(98, 0, 238));
+
+                    var taken = false;
+                    if(resident_medication != null){
+                        valuehashmap?.forEach { (key, value) ->
+                            if(key == "Medication"){
+                                var partsday = value as HashMap<String, HashMap<String, String>>;
+                                partsday?.forEach { (keypartsday, valuepartsday) ->
+                                    var partsdayinfo = valuepartsday as HashMap<String, HashMap<String, String>>;
+                                    partsdayinfo?.forEach { (keypartsdayinfo, valuepartsdayinfo) ->
+                                        if(valuepartsdayinfo["Taken"] == "Yes"){
+                                            taken = true;
+                                            return@forEach;
+                                        }
+                                    }
+                                    if(!taken){
+                                        return@forEach;
+                                    }
+                                }
+                                if(!taken){
+                                    return@forEach;
+                                }
+                            }
+                        }
+                        if(taken){
+                            btn_resident.setBackgroundColor(Color.RED);
+                        }
+                    }
+
                     btn_resident.setOnClickListener{
                         val bundle = Bundle()
-                        var argdata = arrayOf(residence_name, value);
+                        var argdata = arrayOf(residence_name, valuehashmap);
                         bundle.putSerializable("argdata", argdata);
                         nal.navigate(R.id.userResident, bundle);
                     }

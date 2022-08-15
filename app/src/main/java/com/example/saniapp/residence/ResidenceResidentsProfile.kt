@@ -118,7 +118,7 @@ class ResidenceResidentsProfile : Fragment() {
 
                                 edittextdate_residence_residents_profile_birthdate.setText(
                                     residenceresidentmap["Data"]?.get(
-                                        "BirthDate"
+                                        "Birthdate"
                                     )
                                 );
                                 edittext_residence_residents_profile_id.setText(

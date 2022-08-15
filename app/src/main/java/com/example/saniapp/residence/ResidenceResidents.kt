@@ -66,13 +66,14 @@ class ResidenceResidents : Fragment() {
                     var hashmap = iterator.next();
                     if (hashmap.key.toString() == "Residents"){
                         residence_residents = hashmap.value as HashMap<String, HashMap<String, String>>;
-                        var btn_residence_resident = Button(context);
 
                         val itr = residence_residents?.keys?.iterator();
                         while (itr?.hasNext() == true) {
                             val key = itr?.next()
                             val value: HashMap<String, HashMap<String, String>> = residence_residents?.get(key) as HashMap<String, HashMap<String, String>>;
                             val name_surname_resident = value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames");
+
+                            var btn_residence_resident = Button(context);
 
                             btn_residence_resident.setText(name_surname_resident);
                             btn_residence_resident.setTextColor(Color.WHITE);
@@ -92,7 +93,7 @@ class ResidenceResidents : Fragment() {
                         btn_residence_resident_create.setBackgroundColor(Color.RED);
                         btn_residence_resident_create.setOnClickListener{
                             val bundle = Bundle();
-                            //nal.navigate(R.id.residenceCreateResident, bundle);
+                            nal.navigate(R.id.residenceCreateResident, bundle);
                         }
                         layout.addView(btn_residence_resident_create);
 

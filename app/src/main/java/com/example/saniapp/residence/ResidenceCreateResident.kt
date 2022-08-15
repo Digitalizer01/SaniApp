@@ -5,7 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +43,106 @@ class ResidenceCreateResident : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_residence_create_resident, container, false)
+    }
+
+    fun showInfo(
+        userResidence: FirebaseUser?,
+        residenceid: String,
+        layout: LinearLayout,
+        nal: NavController
+    ) {
+        var edittext_residence_residents_create_name =
+            view?.findViewById(R.id.edittext_residence_residents_create_name) as TextView;
+        var edittext_residence_residents_create_surnames =
+            view?.findViewById(R.id.edittext_residence_residents_create_surnames) as TextView;
+        var spinner_residence_residents_create_gender =
+            view?.findViewById(R.id.spinner_residence_residents_create_gender) as Spinner;
+        var genders = arrayOf("Hombre", "Mujer")
+        spinner_residence_residents_create_gender.adapter = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_expandable_list_item_1, genders
+        )
+        var edittext_residence_residents_create_birthdate =
+            view?.findViewById(R.id.edittext_residence_residents_create_birthdate) as TextView;
+        var edittext_residence_residents_create_id =
+            view?.findViewById(R.id.edittext_residence_residents_create_id) as TextView;
+
+        var btn_create =
+            view?.findViewById(R.id.button_residence_residents_create_create) as Button;
+
+        btn_create.setOnClickListener {
+
+            if (edittext_residence_residents_create_name.text.isNotEmpty() &&
+                edittext_residence_residents_create_surnames.text.isNotEmpty() &&
+                spinner_residence_residents_create_gender.selectedItem.toString() != "" &&
+                edittext_residence_residents_create_birthdate.text.isNotEmpty() &&
+                edittext_residence_residents_create_id.text.isNotEmpty()) {
+
+                val toast = Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
+                toast.setMargin(50f, 50f)
+                toast.show()
+                val user = FirebaseAuth.getInstance().currentUser
+
+                // Name
+                Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Residences/" + residenceid + "/Residents/" + edittext_residence_residents_create_id.text.toString() + "/Data/Name")
+                    .setValue(edittext_residence_residents_create_name.text.toString())
+                // Surnames
+                Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Residences/" + residenceid + "/Residents/" + edittext_residence_residents_create_id.text.toString() + "/Data/Surnames")
+                    .setValue(edittext_residence_residents_create_surnames.text.toString())
+
+                var gender_aux = "";
+                if(spinner_residence_residents_create_gender.selectedItem.toString() == "Hombre"){
+                    gender_aux = "Male";
+                }
+                else{
+                    gender_aux = "Female";
+                }
+                // Gender
+                Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Residences/" + residenceid + "/Residents/" + edittext_residence_residents_create_id.text.toString() + "/Data/Gender")
+                    .setValue(gender_aux)
+                // Birthdate
+                Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Residences/" + residenceid + "/Residents/" + edittext_residence_residents_create_id.text.toString() + "/Data/Birthdate")
+                    .setValue(edittext_residence_residents_create_birthdate.text.toString())
+                // ID
+                Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                    .getReference("Residences/" + residenceid + "/Residents/" + edittext_residence_residents_create_id.text.toString() + "/Data/IDPillbox")
+                    .setValue(edittext_residence_residents_create_id.text.toString())
+
+            } else {
+
+                val toast = Toast.makeText(context, "Rellene todos los campos", Toast.LENGTH_SHORT)
+                toast.setMargin(50f, 50f)
+                toast.show()
+
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+        val nal = Navigation.findNavController(view)
+        var layout =
+            view?.findViewById(R.id.id_linearlayout_residence_residents_create) as LinearLayout
+
+        val user = FirebaseAuth.getInstance().currentUser
+        val args = this.arguments
+
+        showInfo(
+            user,
+            user?.uid.toString(),
+            layout,
+            nal
+        );
+
+        if (user != null) {
+            FirebaseAuth.getInstance().updateCurrentUser(user)
+        };
+
     }
 
     companion object {

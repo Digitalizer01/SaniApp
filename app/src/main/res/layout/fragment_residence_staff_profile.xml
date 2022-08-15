@@ -81,15 +81,6 @@
                 android:layout_height="wrap_content"
                 android:text="Género: " />
 
-            <EditText
-                android:id="@+id/edittext_residence_staff_profile_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Género"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
-
             <Spinner
                 android:id="@+id/spinner_residence_staff_profile_gender"
                 android:layout_width="match_parent"
@@ -112,25 +103,6 @@
                 android:ems="10"
                 android:hint="Fecha nacimiento"
                 android:inputType="date"
-                android:minHeight="48dp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="14dp" />
-
-            <TextView
-                android:id="@+id/text_residence_staff_profile_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email: " />
-
-            <EditText
-                android:id="@+id/edittextemail_residence_staff_profile_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
                 android:minHeight="48dp" />
 
             <Space

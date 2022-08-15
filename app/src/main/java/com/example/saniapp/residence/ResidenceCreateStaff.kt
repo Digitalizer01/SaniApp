@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -66,8 +63,13 @@ class ResidenceCreateStaff : Fragment() {
             view?.findViewById(R.id.edittextpassword_residence_staff_create_password) as TextView;
         var edittext_residence_staff_create_surnames =
             view?.findViewById(R.id.edittext_residence_staff_create_surnames) as TextView;
-        var edittext_residence_staff_create_gender =
-            view?.findViewById(R.id.edittext_residence_staff_create_gender) as TextView;
+        var spinner_residence_staff_create_gender =
+            view?.findViewById(R.id.spinner_residence_staff_create_gender) as Spinner;
+        var genders = arrayOf("Hombre", "Mujer")
+        spinner_residence_staff_create_gender.adapter = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_expandable_list_item_1, genders
+        )
         var edittext_residence_staff_create_birthdate =
             view?.findViewById(R.id.edittext_residence_staff_create_birthdate) as TextView;
         var edittext_residence_staff_create_email =
@@ -83,7 +85,7 @@ class ResidenceCreateStaff : Fragment() {
             if (edittext_residence_staff_create_name.text.isNotEmpty() &&
                 edittextpassword_residence_staff_create_password.text.isNotEmpty() &&
                 edittext_residence_staff_create_surnames.text.isNotEmpty() &&
-                edittext_residence_staff_create_gender.text.isNotEmpty() &&
+                spinner_residence_staff_create_gender.selectedItem.toString() != "" &&
                 edittext_residence_staff_create_birthdate.text.isNotEmpty() &&
                 edittext_residence_staff_create_email.text.isNotEmpty() &&
                 edittext_residence_staff_create_phone.text.isNotEmpty()) {
@@ -106,10 +108,18 @@ class ResidenceCreateStaff : Fragment() {
                             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                 .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Surnames")
                                 .setValue(edittext_residence_staff_create_surnames.text.toString())
+
+                            var gender_aux = "";
+                            if(spinner_residence_staff_create_gender.selectedItem.toString() == "Hombre"){
+                                gender_aux = "Male";
+                            }
+                            else{
+                                gender_aux = "Female";
+                            }
                             // Gender
                             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                 .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Gender")
-                                .setValue(edittext_residence_staff_create_gender.text.toString())
+                                .setValue(gender_aux)
                             // Birthdate
                             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                 .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Birthdate")

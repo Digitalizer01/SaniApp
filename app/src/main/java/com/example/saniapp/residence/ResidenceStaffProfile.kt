@@ -1,6 +1,9 @@
 package com.example.saniapp.residence
 
+import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +12,9 @@ import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -66,10 +71,12 @@ class ResidenceStaffProfile : Fragment() {
 
                         val snapshotIterator = dataSnapshot.children;
                         val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                        var residencestaffmap: HashMap<String, HashMap<String, String>> =  HashMap<String, HashMap<String, String>>();
+                        var residencestaffmap: HashMap<String, HashMap<String, String>> =
+                            HashMap<String, HashMap<String, String>>();
                         while (iterator.hasNext()) {
                             var hashmap = iterator.next();
-                            residencestaffmap = hashmap.value as HashMap<String, HashMap<String, String>>;
+                            residencestaffmap =
+                                hashmap.value as HashMap<String, HashMap<String, String>>;
                             if (hashmap.key == residencestaffkey) {
                                 var edittext_residence_staff_profile_title =
                                     view?.findViewById(R.id.text_residence_staff_profile_title) as TextView;
@@ -80,15 +87,16 @@ class ResidenceStaffProfile : Fragment() {
                                 var spinner_residence_staff_profile_gender =
                                     view?.findViewById(R.id.spinner_residence_staff_profile_gender) as Spinner;
                                 var genders = arrayOf("Hombre", "Mujer")
-                                spinner_residence_staff_profile_gender.adapter = ArrayAdapter<String>(
-                                    requireContext(),
-                                    android.R.layout.simple_expandable_list_item_1, genders
-                                )
+                                spinner_residence_staff_profile_gender.adapter =
+                                    ArrayAdapter<String>(
+                                        requireContext(),
+                                        android.R.layout.simple_expandable_list_item_1, genders
+                                    )
+
+                                var email = "";
 
                                 var edittextdate_residence_staff_profile_birthdate =
                                     view?.findViewById(R.id.edittextdate_residence_staff_profile_birthdate) as TextView;
-                                var edittextemail_residence_staff_profile_email =
-                                    view?.findViewById(R.id.edittextemail_residence_staff_profile_email) as TextView;
                                 var edittextphone_residence_staff_profile_phone =
                                     view?.findViewById(R.id.edittextphone_residence_staff_profile_phone) as TextView;
 
@@ -109,23 +117,21 @@ class ResidenceStaffProfile : Fragment() {
                                         "Surnames"
                                     )
                                 );
-                                if(residencestaffmap["Data"]?.get("Gender") == "Male"){
+                                if (residencestaffmap["Data"]?.get("Gender") == "Male") {
                                     spinner_residence_staff_profile_gender.setSelection(0);
-                                }
-                                else{
+                                } else {
                                     spinner_residence_staff_profile_gender.setSelection(1);
                                 }
 
                                 edittextdate_residence_staff_profile_birthdate.setText(
                                     residencestaffmap["Data"]?.get(
-                                        "BirthDate"
+                                        "Birthdate"
                                     )
                                 );
-                                edittextemail_residence_staff_profile_email.setText(
-                                    residencestaffmap["Data"]?.get(
-                                        "Email"
-                                    )
-                                );
+                                email = residencestaffmap["Data"]?.get(
+                                    "Email"
+                                ).toString();
+
                                 edittextphone_residence_staff_profile_phone.setText(
                                     residencestaffmap["Data"]?.get(
                                         "Phone"
@@ -148,10 +154,9 @@ class ResidenceStaffProfile : Fragment() {
                                         .setValue(edittext_residence_staff_profile_surnames.text.toString());
 
                                     var gender_aux = "";
-                                    if(spinner_residence_staff_profile_gender.selectedItem.toString() == "Hombre"){
+                                    if (spinner_residence_staff_profile_gender.selectedItem.toString() == "Hombre") {
                                         gender_aux = "Male";
-                                    }
-                                    else{
+                                    } else {
                                         gender_aux = "Female";
                                     }
 
@@ -164,11 +169,6 @@ class ResidenceStaffProfile : Fragment() {
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                         .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/BirthDate")
                                         .setValue(edittextdate_residence_staff_profile_birthdate.text.toString());
-
-                                    // Email
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey + "/Data/Email")
-                                        .setValue(edittextemail_residence_staff_profile_email.text.toString());
 
                                     // Phone
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -186,14 +186,57 @@ class ResidenceStaffProfile : Fragment() {
 
                                 btn_delete.setOnClickListener {
 
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                    /*Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                         .getReference("Residences/" + residenceid + "/Staff/" + residencestaffkey)
                                         .removeValue()
 
                                     val toast =
                                         Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
-                                    toast.show();
+                                    toast.show();*/
 
+                                    val builder = AlertDialog.Builder(context);
+                                    val inflater: LayoutInflater = layoutInflater;
+                                    val dialogLayout: View =
+                                        inflater.inflate(R.layout.fragment_dialog, null);
+                                    val editText: EditText =
+                                        dialogLayout.findViewById<EditText>(R.id.et_editText);
+
+                                    with(builder) {
+                                        setTitle("Enter some text!")
+                                        setPositiveButton("Ok") { dialog, which ->
+                                            val credential = EmailAuthProvider
+                                                .getCredential(email, editText.text.toString())
+                                            val useraux = Firebase.auth.currentUser!!
+
+                                            useraux.reauthenticate(credential)
+                                                .addOnCompleteListener {
+                                                    Log.d(
+                                                        TAG,
+                                                        "User re-authenticated."
+                                                    )
+                                                }
+                                            var toast = Toast.makeText(
+                                                context,
+                                                editText.text.toString(),
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            toast.setMargin(50f, 50f)
+                                            toast.show()
+                                        }
+
+                                        setNegativeButton("Cancel") { dialog, which ->
+                                            var toast = Toast.makeText(
+                                                context,
+                                                "NO ACEPTADO",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            toast.setMargin(50f, 50f)
+                                            toast.show()
+                                        }
+
+                                        setView(dialogLayout);
+                                        show();
+                                    }
                                 }
                             }
                         }
@@ -224,8 +267,14 @@ class ResidenceStaffProfile : Fragment() {
         var residencestafffullname = inputData[3];
 
         showInfo(
-            residenceid as String, residencestaffkey as String, residencestafffullname as String, layout, nal
+            residenceid as String,
+            residencestaffkey as String,
+            residencestafffullname as String,
+            layout,
+            nal
         );
+
+
 
         print("Ok");
     }
