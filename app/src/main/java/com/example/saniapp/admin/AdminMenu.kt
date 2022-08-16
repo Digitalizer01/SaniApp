@@ -91,7 +91,6 @@ class AdminMenu : Fragment() {
         println(plainText)
         val parts = plainText.split("\n");
 
-
         var btn_admin_residences = view?.findViewById(R.id.button_admin_menu_residences) as Button;
         btn_admin_residences.setOnClickListener {
             val bundle = Bundle();
