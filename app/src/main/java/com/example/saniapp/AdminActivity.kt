@@ -1,19 +1,10 @@
 package com.example.saniapp
 
-import android.media.tv.TvContract.Programs.Genres.encode
-import android.net.Uri.encode
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Base64.encode
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.util.Base64Utils.encode
-import java.io.File
-import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder.encode
-import java.security.InvalidKeyException
-import java.security.NoSuchAlgorithmException
-import java.security.Security
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 import javax.crypto.*
 import javax.crypto.spec.IvParameterSpec
@@ -39,26 +30,20 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val testing: ArrayList<String>? = this.intent.getStringArrayListExtra("userinfo");
 
-        val inputText = "abcdefghigklmnopqrstuvwxyz0123456789"
-        val algorithm = "AES/CBC/PKCS5Padding"
-        val key = SecretKeySpec(testing?.get(0)!!.toByteArray(), "AES")
-        val iv = IvParameterSpec(ByteArray(16))
+        val inputText = testing?.get(1) + "\n" + testing?.get(2);
+        val algorithm = "AES/CBC/PKCS5Padding";
+        val key = SecretKeySpec("1234567890123456".toByteArray(), "AES");
+        val iv = IvParameterSpec(ByteArray(16));
 
-        val cipherText = encrypt(algorithm, inputText, key, iv)
-        val plainText = decrypt(algorithm, cipherText, key, iv)
+        val cipherText = encrypt(algorithm, inputText, key, iv);
+        val plainText = decrypt(algorithm, cipherText, key, iv);
 
-        try {
-            val myObj = File("userdata.txt")
-            myObj.appendText("");
-            if (myObj.createNewFile()) {
-                println("File created: " + myObj.name)
-            } else {
-                println("File already exists.")
-            }
-        } catch (e: IOException) {
-            println("An error occurred.")
-            e.printStackTrace()
-        }
+        assert(inputText == plainText);
+
+        print("");
+
+        var file = File(getFilesDir().getAbsolutePath(), "admindata.txt");
+        file.writeText(cipherText);
 
         setContentView(R.layout.activity_admin);
     }
