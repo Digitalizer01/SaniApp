@@ -80,10 +80,8 @@ class AdminMenu : Fragment() {
         val iv = IvParameterSpec(ByteArray(16));
         var cipherText = "";
 
-
         val path = context?.filesDir?.absolutePath
         var file = File("$path/").walk().find { it.name == "admindata.txt"}
-
 
         cipherText = file!!.readText()
         val plainText = decrypt(algorithm, cipherText, key, iv);
@@ -94,7 +92,7 @@ class AdminMenu : Fragment() {
         var btn_admin_residences = view?.findViewById(R.id.button_admin_menu_residences) as Button;
         btn_admin_residences.setOnClickListener {
             val bundle = Bundle();
-            var argdata = arrayOf(user?.uid.toString());
+            var argdata = arrayOf(user?.uid.toString(), parts[0], parts[1]);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.adminResidences, bundle);
         }
@@ -103,7 +101,7 @@ class AdminMenu : Fragment() {
             view?.findViewById(R.id.button_admin_menu_create_residences) as Button;
         btn_admin_create_residences.setOnClickListener {
             val bundle = Bundle();
-            var argdata = arrayOf(user?.uid.toString());
+            var argdata = arrayOf(user?.uid.toString(), parts[0], parts[1]);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.adminCreateResidence, bundle);
         }
@@ -161,7 +159,6 @@ class AdminMenu : Fragment() {
         val iv = IvParameterSpec(ByteArray(16));
 
         val plainText = decrypt(algorithm, cipherText, key, iv);
-*/
         with(builder) {
             setTitle("Enter some text!")
             setPositiveButton("Ok") { dialog, which ->
@@ -179,6 +176,8 @@ class AdminMenu : Fragment() {
             setView(dialogLayout);
             show();
         }
+        */
+
     }
 
     companion object {

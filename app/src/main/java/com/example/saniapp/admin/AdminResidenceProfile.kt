@@ -1,18 +1,20 @@
 package com.example.saniapp.admin
 
+import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -54,6 +56,8 @@ class AdminResidenceProfile : Fragment() {
     fun showInfo(
         residencekey: String,
         layout: LinearLayout,
+        adminemail: String,
+        adminpass: String,
         nal: NavController
     ) {
         var mapUser: Map<String, String>? = null;
@@ -88,8 +92,7 @@ class AdminResidenceProfile : Fragment() {
                                     view?.findViewById(R.id.edittext_admin_residence_profile_street) as TextView;
                                 var edittext_admin_residence_profile_zc =
                                     view?.findViewById(R.id.edittext_admin_residence_profile_zc) as TextView;
-                                var edittextemail_admin_residence_profile_email =
-                                    view?.findViewById(R.id.edittextemail_admin_residence_profile_email) as TextView;
+                                var emailresidence = "";
                                 var edittextphone_admin_residence_profile_phone =
                                     view?.findViewById(R.id.edittextphone_admin_residence_profile_phone) as TextView;
                                 var edittext_admin_residence_profile_timetable =
@@ -130,11 +133,8 @@ class AdminResidenceProfile : Fragment() {
                                         "ZC"
                                     )
                                 );
-                                edittextemail_admin_residence_profile_email.setText(
-                                    residencemap["Data"]?.get(
-                                        "Email"
-                                    )
-                                );
+                                emailresidence = residencemap["Data"]?.get("Email").toString();
+
                                 edittextphone_admin_residence_profile_phone.setText(
                                     residencemap["Data"]?.get(
                                         "Phone"
@@ -184,7 +184,7 @@ class AdminResidenceProfile : Fragment() {
                                     // Email
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                                         .getReference("Residences/" + residencekey + "/Data/Email")
-                                        .setValue(edittextemail_admin_residence_profile_email.text.toString());
+                                        .setValue(emailresidence);
 
                                     // Phone
                                     Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -202,20 +202,7 @@ class AdminResidenceProfile : Fragment() {
 
                                 }
 
-                                var btn_delete =
-                                    view?.findViewById(R.id.button_admin_residence_profile_delete) as Button;
 
-                                btn_delete.setOnClickListener {
-
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey)
-                                        .removeValue()
-
-                                    val toast =
-                                        Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                }
                             }
                         }
                     }
@@ -239,15 +226,83 @@ class AdminResidenceProfile : Fragment() {
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residencemap = inputData[1];
-        var residencekey = inputData[2];
-        var residencefullname = inputData[3];
+        var residencekey = inputData[0];
+        var adminemail = inputData[1];
+        var adminpass = inputData[2];
+        var residencemail = inputData[3];
 
         showInfo(
             residencekey as String,
             layout,
+            adminemail as String,
+            adminpass as String,
             nal
         );
+
+        var btn_delete =
+            view?.findViewById(R.id.button_admin_residence_profile_delete) as Button;
+
+        btn_delete.setOnClickListener {
+
+            val builder = AlertDialog.Builder(context);
+            val inflater: LayoutInflater = layoutInflater;
+            val dialogLayout: View = inflater.inflate(R.layout.fragment_dialog, null);
+            val editText: EditText = dialogLayout.findViewById<EditText>(R.id.et_editText);
+
+            with(builder) {
+                setTitle("Introduzca la contraseña")
+                setPositiveButton("Ok") { dialog, which ->
+                    var toast = Toast.makeText(context, editText.text.toString(), Toast.LENGTH_SHORT)
+                    toast.setMargin(50f, 50f)
+                    toast.show()
+
+                    toast =
+                        Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
+                    toast.show();
+/*
+                                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                                                .getReference("Residences/" + residencekey)
+                                                .removeValue()
+*/
+                    val useraux = Firebase.auth.currentUser!!
+
+                    val credential = EmailAuthProvider
+                        .getCredential(residencemail.toString(), editText.text.toString())
+
+                    useraux.reauthenticate(credential)
+                        .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
+
+                    Firebase.auth.signOut();
+                    var usernuevo = Firebase.auth.signInWithCredential(credential);
+                    Thread.sleep(100);
+                    val usernuevo2 = Firebase.auth.currentUser!!
+
+                    /*usernuevo2.delete()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "User account deleted.")
+                            }
+                        }
+                    */
+                    var credential2 = EmailAuthProvider
+                        .getCredential(adminemail, adminpass)
+
+                    Firebase.auth.signOut();
+                    var usernuevo3 = Firebase.auth.signInWithCredential(credential2);
+
+                    print("");
+                }
+
+                setNegativeButton("Cancelar") { dialog, which ->
+                    var toast = Toast.makeText(context, "NO ACEPTADO", Toast.LENGTH_SHORT)
+                    toast.setMargin(50f, 50f)
+                    toast.show()
+                }
+
+                setView(dialogLayout);
+                show();
+            }
+        }
 
         print("Ok");
     }

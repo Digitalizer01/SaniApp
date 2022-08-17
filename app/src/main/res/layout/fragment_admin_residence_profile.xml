@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="Ciudad"
                 android:inputType="textPersonName" />
 
             <Space
@@ -117,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Street"
+                android:hint="Calle"
                 android:inputType="textPersonName" />
 
             <Space
@@ -137,24 +138,6 @@
                 android:ems="10"
                 android:hint="CP"
                 android:inputType="textPersonName" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="14dp" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email: " />
-
-            <EditText
-                android:id="@+id/edittextemail_admin_residence_profile_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
 
             <Space
                 android:layout_width="match_parent"

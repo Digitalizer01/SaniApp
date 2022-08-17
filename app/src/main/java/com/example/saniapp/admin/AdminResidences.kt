@@ -50,13 +50,13 @@ class AdminResidences : Fragment() {
         return inflater.inflate(R.layout.fragment_admin_residences, container, false)
     }
 
-    fun showInfo(id_user: String, layout: LinearLayout, nal: NavController) {
+    fun showInfo(id_user: String, adminid: String, adminemail: String, adminpass: String, layout: LinearLayout, nal: NavController) {
         var mapUser: Map<String, String>? = null;
 
         var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
-                    "/"
+                    "Residences/"
                 ).addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -67,6 +67,7 @@ class AdminResidences : Fragment() {
                         HashMap<String, HashMap<String, String>>();
                     while (iterator.hasNext()) {
                         var hashmap = iterator.next();
+                        var keyresidence = hashmap.key;
                         residences = hashmap.value as HashMap<String, HashMap<String, String>>;
 
                         val itr = residences?.keys?.iterator();
@@ -74,19 +75,22 @@ class AdminResidences : Fragment() {
                             val key = itr?.next()
                             val value: HashMap<String, HashMap<String, String>> =
                                 residences?.get(key) as HashMap<String, HashMap<String, String>>;
-                            val name_residence = value["Data"]?.get("Name");
+                            if(key == "Data"){
+                                val name_residence = value["Name"] as String;
+                                val residencemail = value["Email"] as String;
 
-                            var btn_residence = Button(context);
-                            btn_residence.setText(name_residence);
-                            btn_residence.setTextColor(Color.WHITE);
-                            btn_residence.setBackgroundColor(Color.rgb(98, 0, 238));
-                            btn_residence.setOnClickListener {
-                                val bundle = Bundle()
-                                var argdata = arrayOf(id_user, value, key, name_residence);
-                                bundle.putSerializable("argdata", argdata);
-                                nal.navigate(R.id.adminResidenceProfile, bundle);
+                                var btn_residence = Button(context);
+                                btn_residence.setText(name_residence);
+                                btn_residence.setTextColor(Color.WHITE);
+                                btn_residence.setBackgroundColor(Color.rgb(98, 0, 238));
+                                btn_residence.setOnClickListener {
+                                    val bundle = Bundle();
+                                    var argdata = arrayOf(keyresidence, adminemail, adminpass, residencemail);
+                                    bundle.putSerializable("argdata", argdata);
+                                    nal.navigate(R.id.adminResidenceProfile, bundle);
+                                }
+                                layout.addView(btn_residence);
                             }
-                            layout.addView(btn_residence);
                         }
                     }
                 }
@@ -105,7 +109,14 @@ class AdminResidences : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
-        showInfo(user?.uid.toString(), layout, nal);
+        val args = this.arguments
+
+        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
+        var adminid = inputData[0];
+        var adminemail = inputData[1];
+        var adminpass = inputData[2];
+
+        showInfo(user?.uid.toString(), adminid as String, adminemail as String, adminpass as String, layout, nal);
 
     }
 
