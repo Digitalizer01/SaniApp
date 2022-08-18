@@ -1,6 +1,8 @@
 package com.example.saniapp.admin
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,9 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -53,6 +57,8 @@ class AdminCreateResidence : Fragment() {
 
     fun showInfo(
         layout: LinearLayout,
+        adminemail: String,
+        adminpass: String,
         nal: NavController
     ) {
         var edittext_admin_create_residence_name =
@@ -97,6 +103,7 @@ class AdminCreateResidence : Fragment() {
                         edittextpassword_admin_create_residence_password.text.toString()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
+                            Thread.sleep(1000);
                             val toast = Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
                             toast.setMargin(50f, 50f)
                             toast.show()
@@ -139,7 +146,41 @@ class AdminCreateResidence : Fragment() {
                                 .getReference("Residences/" + user?.uid.toString() + "/Data/Timetable")
                                 .setValue(edittext_admin_create_residence_timetable.text.toString())
 
-                            //nal.navigate(R.id.perfil)
+
+                            val useraux = Firebase.auth.currentUser!!
+
+                            val credential = EmailAuthProvider
+                                .getCredential(edittextemail_admin_create_residence_email.text.toString(), edittextpassword_admin_create_residence_password.text.toString())
+
+                            useraux.reauthenticate(credential)
+                                .addOnCompleteListener { Log.d(ContentValues.TAG, "User re-authenticated.") }
+
+                            Firebase.auth.signOut();
+                            var usernuevo = Firebase.auth.signInWithCredential(credential);
+                            Thread.sleep(1000);
+                            val usernuevo2 = Firebase.auth.currentUser!!
+
+                            usernuevo2.delete()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Log.d(ContentValues.TAG, "User account deleted.")
+                                    }
+                                }
+
+                            val usernuevo4 = Firebase.auth.currentUser!!
+
+                            var credential2 = EmailAuthProvider
+                                .getCredential(adminemail, adminpass)
+
+                            usernuevo4.reauthenticate(credential2)
+                                .addOnCompleteListener { Log.d(ContentValues.TAG, "User re-authenticated.") }
+
+                            Firebase.auth.signOut();
+                            var usernuevo3 = Firebase.auth.signInWithCredential(credential2);
+
+                            print("");
+                            val bundle = Bundle();
+                            nal.navigate(R.id.adminMenu, bundle);
                         } else {
                             val toast = Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT)
                             toast.setMargin(50f, 50f)
@@ -166,9 +207,14 @@ class AdminCreateResidence : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser
 
         val args = this.arguments
+        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
+        var adminemail = inputData[1];
+        var adminpass = inputData[2];
 
         showInfo(
             layout,
+            adminemail as String,
+            adminpass as String,
             nal
         );
 

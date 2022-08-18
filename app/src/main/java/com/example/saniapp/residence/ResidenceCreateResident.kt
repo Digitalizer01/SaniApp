@@ -1,5 +1,6 @@
 package com.example.saniapp.residence
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +12,12 @@ import androidx.navigation.Navigation
 import com.example.saniapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -122,6 +127,52 @@ class ResidenceCreateResident : Fragment() {
         }
     }
 
+    fun getRandomString(length: Int) : String {
+        val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
+        return List(length) { charset.random() }
+            .joinToString("")
+    }
+
+    fun randomkey(residenceid: String) {
+        var mapUser: Map<String, String>? = null;
+
+        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference(
+            "Residences/$residenceid/"
+        ).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val snapshotIterator = dataSnapshot.children;
+                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
+                var residence_residents: HashMap<String, HashMap<String, String>> = HashMap<String, HashMap<String, String>>();
+                while (iterator.hasNext()) {
+                    var hashmap = iterator.next();
+                    if (hashmap.key.toString() == "Residents"){
+                        residence_residents = hashmap.value as HashMap<String, HashMap<String, String>>;
+                        var keys = residence_residents.keys;
+                        val itr = residence_residents?.keys?.iterator();
+                        while (itr?.hasNext() == true) {
+                            val key = itr?.next()
+                            val value: HashMap<String, HashMap<String, String>> = residence_residents?.get(key) as HashMap<String, HashMap<String, String>>;
+                            val name_surname_resident = value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames");
+
+                        }
+
+                        print("Done");
+                    }
+
+                    print("New")
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+            }
+        })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -131,6 +182,8 @@ class ResidenceCreateResident : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
         val args = this.arguments
+
+        randomkey(user?.uid.toString());
 
         showInfo(
             user,

@@ -80,6 +80,8 @@ class AdminResidenceProfile : Fragment() {
                             if (hashmap.key == residencekey) {
                                 var text_admin_residence_profile_title =
                                     view?.findViewById(R.id.text_admin_residence_profile_title) as TextView;
+                                var text_admin_residence_profile_id =
+                                    view?.findViewById(R.id.text_admin_residence_profile_id) as TextView;
                                 var edittext_admin_residence_profile_name =
                                     view?.findViewById(R.id.edittext_admin_residence_profile_name) as TextView;
                                 var edittext_admin_residence_profile_city =
@@ -92,6 +94,8 @@ class AdminResidenceProfile : Fragment() {
                                     view?.findViewById(R.id.edittext_admin_residence_profile_street) as TextView;
                                 var edittext_admin_residence_profile_zc =
                                     view?.findViewById(R.id.edittext_admin_residence_profile_zc) as TextView;
+                                var edittext_admin_residence_profile_email =
+                                    view?.findViewById(R.id.edittext_admin_residence_profile_email) as TextView;
                                 var emailresidence = "";
                                 var edittextphone_admin_residence_profile_phone =
                                     view?.findViewById(R.id.edittextphone_admin_residence_profile_phone) as TextView;
@@ -103,6 +107,11 @@ class AdminResidenceProfile : Fragment() {
                                         "Name"
                                     )
                                 );
+
+                                text_admin_residence_profile_id.setText(
+                                    "ID: " + residencekey
+                                );
+
                                 edittext_admin_residence_profile_name.setText(
                                     residencemap["Data"]?.get(
                                         "Name"
@@ -134,6 +143,7 @@ class AdminResidenceProfile : Fragment() {
                                     )
                                 );
                                 emailresidence = residencemap["Data"]?.get("Email").toString();
+                                edittext_admin_residence_profile_email.setText(emailresidence);
 
                                 edittextphone_admin_residence_profile_phone.setText(
                                     residencemap["Data"]?.get(
@@ -223,6 +233,7 @@ class AdminResidenceProfile : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
+
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
@@ -259,11 +270,11 @@ class AdminResidenceProfile : Fragment() {
                     toast =
                         Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
                     toast.show();
-/*
-                                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                                .getReference("Residences/" + residencekey)
-                                                .removeValue()
-*/
+
+                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
+                        .getReference("Residences/" + residencekey)
+                        .removeValue()
+
                     val useraux = Firebase.auth.currentUser!!
 
                     val credential = EmailAuthProvider
@@ -274,23 +285,30 @@ class AdminResidenceProfile : Fragment() {
 
                     Firebase.auth.signOut();
                     var usernuevo = Firebase.auth.signInWithCredential(credential);
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                     val usernuevo2 = Firebase.auth.currentUser!!
 
-                    /*usernuevo2.delete()
+                    usernuevo2.delete()
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "User account deleted.")
                             }
                         }
-                    */
+
+                    val usernuevo4 = Firebase.auth.currentUser!!
+
                     var credential2 = EmailAuthProvider
                         .getCredential(adminemail, adminpass)
+
+                    usernuevo4.reauthenticate(credential2)
+                        .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
 
                     Firebase.auth.signOut();
                     var usernuevo3 = Firebase.auth.signInWithCredential(credential2);
 
                     print("");
+                    val bundle = Bundle();
+                    nal.navigate(R.id.adminMenu, bundle);
                 }
 
                 setNegativeButton("Cancelar") { dialog, which ->

@@ -144,6 +144,25 @@
                 android:layout_height="14dp" />
 
             <TextView
+                android:id="@+id/text_admin_residence_profile_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: " />
+
+            <EditText
+                android:id="@+id/edittext_admin_residence_profile_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:ems="10"
+                android:inputType="none"
+                android:focusable="false"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <TextView
                 android:id="@+id/textView26"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
