@@ -108,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="ID pastillero y residente"
-                android:inputType="textPersonName" />
+                android:inputType="none"
+                android:focusable="false" />
 
             <Space
                 android:layout_width="match_parent"

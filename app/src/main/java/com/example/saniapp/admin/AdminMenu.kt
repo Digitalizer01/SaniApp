@@ -105,31 +105,6 @@ class AdminMenu : Fragment() {
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.adminCreateResidence, bundle);
         }
-/*
-        val useraux = Firebase.auth.currentUser!!
-
-        // Get auth credentials from the user for re-authentication. The example below shows
-        // email and password credentials but there are multiple possible providers,
-        // such as GoogleAuthProvider or FacebookAuthProvider.
-                val credential = EmailAuthProvider
-                    .getCredential("prueba@gmail.com", "123456")
-
-        // Prompt the user to re-provide their sign-in credentials
-                useraux.reauthenticate(credential)
-                    .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
-
-        Firebase.auth.signOut();
-        var usernuevo = Firebase.auth.signInWithCredential(credential);
-        val usernuevo2 = Firebase.auth.currentUser!!
-
-        usernuevo2.delete()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User account deleted.")
-                }
-            }
-        println("Hola");
-*/
 
         //var rootView: View = inflater.inflate(R.layout.fragment_dialog, container, false);
 

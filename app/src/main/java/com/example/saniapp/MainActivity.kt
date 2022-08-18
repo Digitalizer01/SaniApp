@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                                 userinfo.add(emailText.text.toString());
                                 userinfo.add(passText.text.toString());
                                 enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java).putExtra("userinfo", userinfo));
-                                enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java));
+                                enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java).putExtra("userinfo", userinfo));
                                 enterStaff(user?.uid.toString(), Intent(this, UserActivity::class.java));
 
                             } else {

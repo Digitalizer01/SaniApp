@@ -17,7 +17,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.HashMap
+import java.io.File
+import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -101,6 +105,18 @@ class ResidenceProfile : Fragment() {
         })
     }
 
+    fun decrypt(
+        algorithm: String,
+        cipherText: String,
+        key: SecretKeySpec,
+        iv: IvParameterSpec
+    ): String {
+        val cipher = Cipher.getInstance(algorithm)
+        cipher.init(Cipher.DECRYPT_MODE, key, iv)
+        val plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText))
+        return String(plainText)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState);
@@ -109,12 +125,28 @@ class ResidenceProfile : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
+        val algorithm = "AES/CBC/PKCS5Padding";
+        val key = SecretKeySpec("1234567890123456".toByteArray(), "AES");
+        val iv = IvParameterSpec(ByteArray(16));
+        var cipherText = "";
+
+        val path = context?.filesDir?.absolutePath
+        var file = File("$path/").walk().find { it.name == "residencedata.txt"}
+
+        cipherText = file!!.readText()
+        val plainText = decrypt(algorithm, cipherText, key, iv);
+
+        println(plainText)
+        val parts = plainText.split("\n");
+        var residenceemail = parts[0];
+        var residencepassword = parts[1];
+
         showInfo(user?.uid.toString(), layout, nal);
 
         var btn_residence_staff = view?.findViewById(R.id.button_residence_staff) as Button;
         btn_residence_staff.setOnClickListener{
             val bundle = Bundle();
-            var argdata = arrayOf(user?.uid.toString());
+            var argdata = arrayOf(user?.uid.toString(), residenceemail, residencepassword);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.residenceStaff, bundle);
         }
@@ -122,7 +154,7 @@ class ResidenceProfile : Fragment() {
         var btn_residence_residents = view?.findViewById(R.id.button_residence_residents) as Button;
         btn_residence_residents.setOnClickListener{
             val bundle = Bundle();
-            var argdata = arrayOf(user?.uid.toString());
+            var argdata = arrayOf(user?.uid.toString(), residenceemail, residencepassword);
             bundle.putSerializable("argdata", argdata);
             nal.navigate(R.id.residenceResidents, bundle);
         }

@@ -119,6 +119,13 @@ class ResidenceResidents : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
+        val args = this.arguments
+
+        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
+        var residencekey = inputData[0];
+        var residenceemail = inputData[1];
+        var residencepass = inputData[2];
+
         showInfo(user?.uid.toString(), layout, nal);
 
     }

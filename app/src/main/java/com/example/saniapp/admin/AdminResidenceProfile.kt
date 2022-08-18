@@ -233,7 +233,6 @@ class AdminResidenceProfile : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
-
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
