@@ -166,7 +166,6 @@ class AdminCreateResidence : Fragment() {
                                         Log.d(ContentValues.TAG, "User account deleted.")
                                     }
                                 }
-
                             val usernuevo4 = Firebase.auth.currentUser!!
 
                             var credential2 = EmailAuthProvider
