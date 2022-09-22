@@ -185,6 +185,8 @@ class AdminCreateResidence : Fragment() {
                             toast.setMargin(50f, 50f)
                             toast.show()
                         }
+
+
                     }
             } else {
 
