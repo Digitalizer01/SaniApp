@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,14 @@
             android:id="@+id/id_linearlayout_resident_medication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/text_medication_resident_weekday"
@@ -27,19 +35,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="14dp" />
 
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="match_parent"
+                android:layout_height="77dp"
+                android:src="@drawable/icons8_medication_64" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mañana: 7:00 - 11:59\nTarde: 12:00 - 17:59\nNoche: 18:00 - 23:59\nMadrugada: 00:00 - 6:59"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icons8_morning_48"
                 android:text="Mañana"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_gravity="center|right"
+                android:gravity="center|right" />
 
             <TextView
                 android:id="@+id/text_medication_resident_morning_medication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Medicamento:" />
+
+            <Switch
+                android:id="@+id/switch_medication_resident_morning_activate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicamento" />
 
             <EditText
                 android:id="@+id/edittext_medication_resident_morning_medication"
@@ -76,6 +115,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:drawableLeft="@drawable/icons8_evening_48"
+                android:gravity="center|right"
                 android:text="Tarde"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -85,6 +127,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Medicamento:" />
+
+            <Switch
+                android:id="@+id/switch_medication_resident_afternoon_activate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicamento" />
 
             <EditText
                 android:id="@+id/edittext_medication_resident_afternoon_medication"
@@ -120,6 +168,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:drawableLeft="@drawable/icons8_night_48"
+                android:gravity="center|right"
                 android:text="Noche"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -129,6 +180,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Medicamento:" />
+
+            <Switch
+                android:id="@+id/switch_medication_resident_evening_activate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicamento" />
 
             <EditText
                 android:id="@+id/edittext_medication_resident_evening_medication"
@@ -161,11 +218,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="33dp" />
 
+            <TextView
+                android:id="@+id/textView38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:drawableLeft="@drawable/icons8_night_48"
+                android:gravity="center|right"
+                android:text="Madrugada"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:drawableTint="#6C76B1"
+                app:drawableTintMode="multiply" />
+
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicamento:" />
+
+            <Switch
+                android:id="@+id/switch_medication_resident_night_activate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medicamento" />
+
+            <EditText
+                android:id="@+id/edittext_medication_resident_night_medication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Medicamento madrugada"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/textView40"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hora:" />
+
+            <EditText
+                android:id="@+id/edittext_medication_resident_night_hour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <Switch
+                android:id="@+id/switch_medication_resident_night_taken"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tomado" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="33dp" />
+
             <Button
                 android:id="@+id/button_medication_resident_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Actualizar" />
+                android:text="Actualizar"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

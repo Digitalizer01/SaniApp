@@ -1,22 +1,21 @@
 package com.example.saniapp.user
 
-import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.resident.ResidentAlert
+import com.example.saniapp.resident.ResidentMedication
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import java.util.HashMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,187 +48,287 @@ class UserResidentMedication : Fragment() {
         return inflater.inflate(R.layout.fragment_user_resident_medication, container, false)
     }
 
-    fun showInfo(residenceid: String, weekday: String, idresident: String, layout: LinearLayout, nal: NavController) {
-        var mapUser: Map<String, String>? = null;
-
-        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/").addValueEventListener(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                val snapshotIterator = dataSnapshot.children;
-                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-
-                var morning_medication: String = "";
-                var morning_hour: String = "";
-                var morning_taken: String = "";
-
-                var afternoon_medication: String = "";
-                var afternoon_hour: String = "";
-                var afternoon_taken: String = "";
-
-                var evening_medication: String = "";
-                var evening_hour: String = "";
-                var evening_taken: String = "";
-
-                while (iterator.hasNext()) {
-                    var hashmap = iterator.next();
-                    val info: HashMap<String, String> = hashmap.value as HashMap<String, String>;
-                    when(hashmap.key)
-                    {
-                        "Morning" -> {
-                            morning_medication = info["Medication"].toString();
-                            morning_hour = info["Hour"].toString();
-                            morning_taken = info["Taken"].toString();
-                        }
-                        "Afternoon" -> {
-                            afternoon_medication = info["Medication"].toString();
-                            afternoon_hour = info["Hour"].toString();
-                            afternoon_taken = info["Taken"].toString();
-                        }
-                        "Evening" -> {
-                            evening_medication = info["Medication"].toString();
-                            evening_hour = info["Hour"].toString();
-                            evening_taken = info["Taken"].toString();
-                        }
-                    }
-                }
-
-                var edittext_resident_medication_day = view?.findViewById(R.id.text_medication_resident_weekday) as TextView;
-
-                when(weekday){
-                    "Monday" -> edittext_resident_medication_day.setText("Lunes");
-                    "Tuesday" -> edittext_resident_medication_day.setText("Martes");
-                    "Wednesday" -> edittext_resident_medication_day.setText("Miércoles");
-                    "Thursday" -> edittext_resident_medication_day.setText("Jueves");
-                    "Friday" -> edittext_resident_medication_day.setText("Viernes");
-                    "Saturday" -> edittext_resident_medication_day.setText("Sábado");
-                    "Sunday" -> edittext_resident_medication_day.setText("Domingo");
-                }
+    private fun showResidentMedication(residenceid: String, weekday: String, residentalert: ResidentAlert) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var residentalertinfo = findResidentMedicationByDayAndIdResidenceAndIdResident(weekday, residenceid, residentalert.resident?.id.toString());
+            var aux2 = residentalert;
+            withContext(Dispatchers.Main) {
+                var aux3 = aux2;
+                (aux3);
+                var text_medication_resident_weekday = view?.findViewById(R.id.text_medication_resident_weekday) as TextView;
 
                 var edittext_morning_medication = view?.findViewById(R.id.edittext_medication_resident_morning_medication) as TextView;
                 var edittext_morning_hour = view?.findViewById(R.id.edittext_medication_resident_morning_hour) as TextView;
                 var switch_morning_taken = view?.findViewById(R.id.switch_medication_resident_morning_taken) as Switch;
+                var switch_morning_activate = view?.findViewById(R.id.switch_medication_resident_morning_activate) as Switch;
 
                 var edittext_afternoon_medication = view?.findViewById(R.id.edittext_medication_resident_afternoon_medication) as TextView;
                 var edittext_afternoon_hour = view?.findViewById(R.id.edittext_medication_resident_afternoon_hour) as TextView;
                 var switch_afternoon_taken = view?.findViewById(R.id.switch_medication_resident_afternoon_taken) as Switch;
+                var switch_afternoon_activate = view?.findViewById(R.id.switch_medication_resident_afternoon_activate) as Switch;
 
                 var edittext_evening_medication = view?.findViewById(R.id.edittext_medication_resident_evening_medication) as TextView;
                 var edittext_evening_hour = view?.findViewById(R.id.edittext_medication_resident_evening_hour) as TextView;
                 var switch_evening_taken = view?.findViewById(R.id.switch_medication_resident_evening_taken) as Switch;
+                var switch_evening_activate = view?.findViewById(R.id.switch_medication_resident_evening_activate) as Switch;
 
-                edittext_morning_medication.setText(morning_medication);
-                edittext_morning_hour.setText(morning_hour);
+                var edittext_night_medication = view?.findViewById(R.id.edittext_medication_resident_night_medication) as TextView;
+                var edittext_night_hour = view?.findViewById(R.id.edittext_medication_resident_night_hour) as TextView;
+                var switch_night_taken = view?.findViewById(R.id.switch_medication_resident_night_taken) as Switch;
+                var switch_night_activate = view?.findViewById(R.id.switch_medication_resident_night_activate) as Switch;
 
-                edittext_afternoon_medication.setText(afternoon_medication);
-                edittext_afternoon_hour.setText(afternoon_hour);
-
-                edittext_evening_medication.setText(evening_medication);
-                edittext_evening_hour.setText(evening_hour);
-
-                if(morning_taken == "Yes") switch_morning_taken.isChecked = true else switch_morning_taken.isChecked = false;
-                if(afternoon_taken == "Yes") switch_afternoon_taken.isChecked = true else switch_afternoon_taken.isChecked = false;
-                if(evening_taken == "Yes") switch_evening_taken.isChecked = true else switch_evening_taken.isChecked = false;
-
-                var btn_update = view?.findViewById(R.id.button_medication_resident_update) as Button;
-
-                btn_update.setOnClickListener{
-
-                    var switch_morning_taken_value = "";
-                    var switch_afternoon_taken_value = "";
-                    var switch_evening_taken_value = "";
-
-                    if(switch_morning_taken.isChecked == true) switch_morning_taken_value = "Yes" else switch_morning_taken_value = "No";
-                    if(switch_afternoon_taken.isChecked == true) switch_afternoon_taken_value = "Yes" else switch_afternoon_taken_value = "No";
-                    if(switch_evening_taken.isChecked == true) switch_evening_taken_value = "Yes" else switch_evening_taken_value = "No";
-
-                    var split_morning_hour = edittext_morning_hour.text.split(":");
-                    var split_afternoon_hour = edittext_afternoon_hour.text.split(":");
-                    var split_evening_hour = edittext_evening_hour.text.split(":");
-
-                    // Morning: 8:00 - 13:59
-                    try{
-                        if(split_morning_hour[0].toInt() >= 8 && split_morning_hour[0].toInt() <= 13){
-                            // Morning
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Hour")
-                                .setValue(edittext_morning_hour.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Medication")
-                                .setValue(edittext_morning_medication.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Morning/Taken")
-                                .setValue(switch_morning_taken_value);
-                        }
-                        else{
-                            val toast = Toast.makeText(context, "Error al actualizar la mañana", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    }
-                    catch (e: NumberFormatException){
-                        val toast = Toast.makeText(context, "Error en la hora de mañana", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    // Afternoon: 14:00 - 19:59
-                    try{
-                        if(split_afternoon_hour[0].toInt() >= 14 && split_afternoon_hour[0].toInt() <= 19){
-                            // Afternoon
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Hour")
-                                .setValue(edittext_afternoon_hour.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Medication")
-                                .setValue(edittext_afternoon_medication.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Afternoon/Taken")
-                                .setValue(switch_afternoon_taken_value);
-                        }
-                        else{
-                            val toast = Toast.makeText(context, "Error al actualizar la tarde", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    }
-                    catch (e: NumberFormatException){
-                        val toast = Toast.makeText(context, "Error en la hora de tarde", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    // Evening: 20:00 - 7:59
-                    try{
-                        if((split_evening_hour[0].toInt() >= 20 && split_evening_hour[0].toInt() <= 23) || (split_evening_hour[0].toInt() >= 0 && split_evening_hour[0].toInt() <= 7)){
-                            // Evening
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Hour")
-                                .setValue(edittext_evening_hour.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Medication")
-                                .setValue(edittext_evening_medication.text.toString());
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/"+residenceid+"/Residents/"+idresident+"/Medication/"+weekday+"/Evening/Taken")
-                                .setValue(switch_evening_taken_value);
-                        }
-                        else{
-                            val toast = Toast.makeText(context, "Error al actualizar la noche", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    }
-                    catch (e: NumberFormatException){
-                        val toast = Toast.makeText(context, "Error en la hora de noche", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    val toast = Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                    }
+                when (weekday) {
+                    "Monday" -> text_medication_resident_weekday.setText("Lunes");
+                    "Tuesday" -> text_medication_resident_weekday.setText("Martes");
+                    "Wednesday" -> text_medication_resident_weekday.setText("Miércoles");
+                    "Thursday" -> text_medication_resident_weekday.setText("Jueves");
+                    "Friday" -> text_medication_resident_weekday.setText("Viernes");
+                    "Saturday" -> text_medication_resident_weekday.setText("Sábado");
+                    "Sunday" -> text_medication_resident_weekday.setText("Domingo");
                 }
 
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
+                edittext_morning_medication.setText(residentalertinfo.morning_medication.toString());
+                edittext_morning_hour.setText(residentalertinfo.morning_hour.toString());
+
+                edittext_afternoon_medication.setText(residentalertinfo.afternoon_medication.toString());
+                edittext_afternoon_hour.setText(residentalertinfo.afternoon_hour.toString());
+
+                edittext_evening_medication.setText(residentalertinfo.evening_medication.toString());
+                edittext_evening_hour.setText(residentalertinfo.evening_hour.toString());
+
+                edittext_night_medication.setText(residentalertinfo.night_medication.toString());
+                edittext_night_hour.setText(residentalertinfo.night_hour.toString());
+
+                if(residentalertinfo.morning_taken.toString() == "Yes") switch_morning_taken.isChecked = true else switch_morning_taken.isChecked = false;
+                if(residentalertinfo.afternoon_taken.toString() == "Yes") switch_afternoon_taken.isChecked = true else switch_afternoon_taken.isChecked = false;
+                if(residentalertinfo.evening_taken.toString() == "Yes") switch_evening_taken.isChecked = true else switch_evening_taken.isChecked = false;
+                if(residentalertinfo.night_taken.toString() == "Yes") switch_night_taken.isChecked = true else switch_night_taken.isChecked = false;
+
+                if(residentalertinfo.morning_medication.toString() != "---") switch_morning_activate.isChecked = true else switch_morning_activate.isChecked = false;
+                if(residentalertinfo.afternoon_medication.toString() != "---") switch_afternoon_activate.isChecked = true else switch_afternoon_activate.isChecked = false;
+                if(residentalertinfo.evening_medication.toString() != "---") switch_evening_activate.isChecked = true else switch_evening_activate.isChecked = false;
+                if(residentalertinfo.night_medication.toString() != "---") switch_night_activate.isChecked = true else switch_night_activate.isChecked = false;
+
+                if(switch_morning_activate.isChecked == false){
+                    edittext_morning_medication.visibility = View.INVISIBLE;
+                    edittext_morning_hour.visibility = View.INVISIBLE;
+                    switch_morning_taken.visibility = View.INVISIBLE;
+                };
+                if(switch_afternoon_activate.isChecked == false){
+                    edittext_afternoon_medication.visibility = View.INVISIBLE;
+                    edittext_afternoon_hour.visibility = View.INVISIBLE;
+                    switch_afternoon_taken.visibility = View.INVISIBLE;
+                };
+                if(switch_evening_activate.isChecked == false){
+                    edittext_evening_medication.visibility = View.INVISIBLE;
+                    edittext_evening_hour.visibility = View.INVISIBLE;
+                    switch_evening_taken.visibility = View.INVISIBLE;
+                };
+                if(switch_night_activate.isChecked == false){
+                    edittext_night_medication.visibility = View.INVISIBLE;
+                    edittext_night_hour.visibility = View.INVISIBLE;
+                    switch_night_taken.visibility = View.INVISIBLE;
+                };
+
+                switch_morning_activate?.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        edittext_morning_medication.visibility = View.VISIBLE;
+                        edittext_morning_hour.visibility = View.VISIBLE;
+                        switch_morning_taken.visibility = View.VISIBLE;
+                    } else {
+                        edittext_morning_medication.visibility = View.INVISIBLE;
+                        edittext_morning_hour.visibility = View.INVISIBLE;
+                        switch_morning_taken.visibility = View.INVISIBLE;
+                    }
+                };
+
+                switch_afternoon_activate?.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        edittext_afternoon_medication.visibility = View.VISIBLE;
+                        edittext_afternoon_hour.visibility = View.VISIBLE;
+                        switch_afternoon_taken.visibility = View.VISIBLE;
+                    } else {
+                        edittext_afternoon_medication.visibility = View.INVISIBLE;
+                        edittext_afternoon_hour.visibility = View.INVISIBLE;
+                        switch_afternoon_taken.visibility = View.INVISIBLE;
+                    }
+                };
+
+                switch_evening_activate?.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        edittext_evening_medication.visibility = View.VISIBLE;
+                        edittext_evening_hour.visibility = View.VISIBLE;
+                        switch_evening_taken.visibility = View.VISIBLE;
+                    } else {
+                        edittext_evening_medication.visibility = View.INVISIBLE;
+                        edittext_evening_hour.visibility = View.INVISIBLE;
+                        switch_evening_taken.visibility = View.INVISIBLE;
+                    }
+                };
+
+                switch_night_activate?.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        edittext_night_medication.visibility = View.VISIBLE;
+                        edittext_night_hour.visibility = View.VISIBLE;
+                        switch_night_taken.visibility = View.VISIBLE;
+                    } else {
+                        edittext_night_medication.visibility = View.INVISIBLE;
+                        edittext_night_hour.visibility = View.INVISIBLE;
+                        switch_night_taken.visibility = View.INVISIBLE;
+                    }
+                };
             }
-        })
+        }
+    }
+
+    private fun updateResidentMedication(residenceid: String, weekday: String, residentalert: ResidentAlert, nal: NavController){
+        var btn_update = view?.findViewById(R.id.button_medication_resident_update) as Button;
+
+
+        btn_update.setOnClickListener{
+            var edittext_morning_medication = view?.findViewById(R.id.edittext_medication_resident_morning_medication) as TextView;
+            var edittext_morning_hour = view?.findViewById(R.id.edittext_medication_resident_morning_hour) as TextView;
+            var switch_morning_taken = view?.findViewById(R.id.switch_medication_resident_morning_taken) as Switch;
+            var switch_morning_activate = view?.findViewById(R.id.switch_medication_resident_morning_activate) as Switch;
+
+            var edittext_afternoon_medication = view?.findViewById(R.id.edittext_medication_resident_afternoon_medication) as TextView;
+            var edittext_afternoon_hour = view?.findViewById(R.id.edittext_medication_resident_afternoon_hour) as TextView;
+            var switch_afternoon_taken = view?.findViewById(R.id.switch_medication_resident_afternoon_taken) as Switch;
+            var switch_afternoon_activate = view?.findViewById(R.id.switch_medication_resident_afternoon_activate) as Switch;
+
+            var edittext_evening_medication = view?.findViewById(R.id.edittext_medication_resident_evening_medication) as TextView;
+            var edittext_evening_hour = view?.findViewById(R.id.edittext_medication_resident_evening_hour) as TextView;
+            var switch_evening_taken = view?.findViewById(R.id.switch_medication_resident_evening_taken) as Switch;
+            var switch_evening_activate = view?.findViewById(R.id.switch_medication_resident_evening_activate) as Switch;
+
+            var edittext_night_medication = view?.findViewById(R.id.edittext_medication_resident_night_medication) as TextView;
+            var edittext_night_hour = view?.findViewById(R.id.edittext_medication_resident_night_hour) as TextView;
+            var switch_night_taken = view?.findViewById(R.id.switch_medication_resident_afternoon_taken) as Switch;
+            var switch_night_activate = view?.findViewById(R.id.switch_medication_resident_night_activate) as Switch;
+
+            var switch_morning_taken_value = "";
+            var switch_afternoon_taken_value = "";
+            var switch_evening_taken_value = "";
+            var switch_night_taken_value = "";
+
+            if(switch_morning_taken.isChecked) switch_morning_taken_value = "Yes" else switch_morning_taken_value = "No";
+            if(switch_afternoon_taken.isChecked) switch_afternoon_taken_value = "Yes" else switch_afternoon_taken_value = "No";
+            if(switch_evening_taken.isChecked) switch_evening_taken_value = "Yes" else switch_evening_taken_value = "No";
+            if(switch_night_taken.isChecked) switch_night_taken_value = "Yes" else switch_night_taken_value = "No";
+
+            var edittext_morning_medication_value = "";
+            var edittext_afternoon_medication_value = "";
+            var edittext_evening_medication_value = "";
+            var edittext_night_medication_value = "";
+
+            // Night: 00:00 - 6:59
+            // Morning: 7:00 - 11:59
+            // Afternoon: 12:00 - 17:59
+            // Evening: 18:00 - 23:59
+
+            if(!switch_morning_activate.isChecked){
+                edittext_morning_medication_value = "---";
+                edittext_morning_medication.setText(edittext_morning_medication_value);
+                edittext_morning_hour.setText("07:00");
+            } else {
+                edittext_morning_medication_value = edittext_morning_medication.text.toString();
+            };
+
+            if(!switch_afternoon_activate.isChecked){
+                edittext_afternoon_medication_value = "---";
+                edittext_afternoon_medication.setText(edittext_afternoon_medication_value);
+                edittext_afternoon_hour.setText("12:00");
+            } else {
+                edittext_afternoon_medication_value = edittext_afternoon_medication.text.toString();
+            };
+
+            if(!switch_evening_activate.isChecked){
+                edittext_evening_medication_value = "---";
+                edittext_evening_medication.setText(edittext_evening_medication_value);
+                edittext_evening_hour.setText("18:00");
+            } else {
+                edittext_evening_medication_value = edittext_evening_medication.text.toString();
+            };
+
+            if(!switch_night_activate.isChecked){
+                edittext_night_medication_value = "---";
+                edittext_night_medication.setText(edittext_night_medication_value);
+                edittext_night_hour.setText("00:00");
+            } else {
+                edittext_night_medication_value = edittext_night_medication.text.toString();
+            };
+
+            try {
+                if(edittext_morning_hour.text.isNotEmpty() &&
+                    edittext_afternoon_hour.text.isNotEmpty() &&
+                    edittext_evening_hour.text.isNotEmpty() &&
+                    edittext_night_hour.text.isNotEmpty() &&
+
+                    edittext_morning_medication.text.isNotEmpty() &&
+                    edittext_afternoon_medication.text.isNotEmpty() &&
+                    edittext_evening_medication.text.isNotEmpty() &&
+                    edittext_night_medication.text.isNotEmpty() &&
+
+                    edittext_morning_medication.text.toString().isNotEmpty() &&
+                    edittext_afternoon_medication.text.toString().isNotEmpty() &&
+                    edittext_evening_medication.text.toString().isNotEmpty() &&
+                    edittext_night_medication.text.toString().isNotEmpty()){
+
+                    var hour_morning = edittext_morning_hour.text.toString().split(":");
+                    var hour_afternoon = edittext_afternoon_hour.text.toString().split(":");
+                    var hour_evening = edittext_evening_hour.text.toString().split(":");
+                    var hour_night = edittext_night_hour.text.toString().split(":");
+
+                    if((Integer.parseInt(hour_morning[0]) >= 7 && Integer.parseInt(hour_morning[0]) <= 11) &&
+                        (Integer.parseInt(hour_afternoon[0]) >= 12 && Integer.parseInt(hour_afternoon[0]) <= 17) &&
+                        (Integer.parseInt(hour_evening[0]) >= 18 && Integer.parseInt(hour_evening[0]) <= 23) &&
+                        (Integer.parseInt(hour_night[0]) >= 0 && Integer.parseInt(hour_night[0]) <= 6) &&
+
+                        (Integer.parseInt(hour_morning[1]) >= 0 && Integer.parseInt(hour_morning[1]) <= 59) &&
+                        (Integer.parseInt(hour_afternoon[1]) >= 0 && Integer.parseInt(hour_afternoon[1]) <= 59) &&
+                        (Integer.parseInt(hour_evening[1]) >= 0 && Integer.parseInt(hour_evening[1]) <= 59) &&
+                        (Integer.parseInt(hour_night[1]) >= 0 && Integer.parseInt(hour_night[1]) <= 59) ){
+
+                        var residentMedication: ResidentMedication = ResidentMedication(
+                            weekday,
+                            edittext_morning_hour.text.toString(),
+                            edittext_morning_medication_value,
+                            switch_morning_taken_value,
+                            edittext_afternoon_hour.text.toString(),
+                            edittext_afternoon_medication_value,
+                            switch_afternoon_taken_value,
+                            edittext_evening_hour.text.toString(),
+                            edittext_evening_medication_value,
+                            switch_evening_taken_value,
+                            edittext_night_hour.text.toString(),
+                            edittext_night_medication_value,
+                            switch_night_taken_value
+                        );
+
+                        GlobalScope.launch(Dispatchers.IO) {
+                            Thread.sleep(250);
+                            updateResidentMedicationByDayAndIdResidenceAndIdResident(weekday, residenceid, residentalert.resident?.id.toString(), residentMedication);
+                        }
+                        var toast = Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
+                        toast.setMargin(50f, 50f);
+                        toast.show();
+                        nal.popBackStack();
+                    }
+
+                }
+                else{
+                    var toast = Toast.makeText(context, "Rellene todos los datos con datos válidos", Toast.LENGTH_SHORT);
+                    toast.setMargin(50f, 50f);
+                    toast.show();
+                }
+            }
+            catch (e: Exception){
+                var toast = Toast.makeText(context, "Introduzca datos válidos", Toast.LENGTH_SHORT);
+                toast.setMargin(50f, 50f);
+                toast.show();
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -243,11 +342,12 @@ class UserResidentMedication : Fragment() {
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
         var residenceid: String = inputData[0] as String;
         var weekday: String = inputData[1] as String;
-        var residentmap: HashMap<String, HashMap<String, String>> = inputData[2] as HashMap<String, HashMap<String, String>>;
+        var residentalert: ResidentAlert = inputData[2] as ResidentAlert;
 
-        var idresident: String = residentmap["Data"]?.get("IDPillbox").toString();
+        var idresident: String = residentalert?.resident?.id.toString();
 
-        showInfo(residenceid, weekday, idresident, layout, nal);
+        showResidentMedication(residenceid, weekday, residentalert);
+        updateResidentMedication(residenceid, weekday, residentalert, nal);
     }
 
     companion object {

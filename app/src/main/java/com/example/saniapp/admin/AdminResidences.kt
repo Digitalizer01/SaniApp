@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.core.view.setPadding
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
@@ -17,7 +19,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 import java.util.HashMap
+import kotlin.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,55 +54,53 @@ class AdminResidences : Fragment() {
         return inflater.inflate(R.layout.fragment_admin_residences, container, false)
     }
 
-    fun showInfo(id_user: String, adminid: String, adminemail: String, adminpass: String, layout: LinearLayout, nal: NavController) {
-        var mapUser: Map<String, String>? = null;
+    private fun findResidences(layout: LinearLayout, nal: NavController) {
+        GlobalScope.launch(Dispatchers.IO) {
 
-        var info =
-            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference(
-                    "Residences/"
-                ).addValueEventListener(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+            try {
+                var residencelist = findResidenceAll();
+                ;
+                ;
+                var aux = "hola"
+                var aux2 = residencelist
+                Thread.sleep(500);
+                var aux9 = aux2
+                ;
 
-                    val snapshotIterator = dataSnapshot.children;
-                    val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                    var residences: HashMap<String, HashMap<String, String>> =
-                        HashMap<String, HashMap<String, String>>();
-                    while (iterator.hasNext()) {
-                        var hashmap = iterator.next();
-                        var keyresidence = hashmap.key;
-                        residences = hashmap.value as HashMap<String, HashMap<String, String>>;
+                withContext(Dispatchers.Main) {
+                    var aux3 = aux2
+                    try {
+                        var aux6 = aux2?.get(0)
+                        var it = aux2?.iterator()
+                        while (it?.hasNext() == true) {
+                            var residence = it?.next();
+                            (residence?.id);
+                            ;
 
-                        val itr = residences?.keys?.iterator();
-                        while (itr?.hasNext() == true) {
-                            val key = itr?.next()
-                            val value: HashMap<String, HashMap<String, String>> =
-                                residences?.get(key) as HashMap<String, HashMap<String, String>>;
-                            if(key == "Data"){
-                                val name_residence = value["Name"] as String;
-                                val residencemail = value["Email"] as String;
-
-                                var btn_residence = Button(context);
-                                btn_residence.setText(name_residence);
-                                btn_residence.setTextColor(Color.WHITE);
-                                btn_residence.setBackgroundColor(Color.rgb(98, 0, 238));
-                                btn_residence.setOnClickListener {
-                                    val bundle = Bundle();
-                                    var argdata = arrayOf(keyresidence, adminemail, adminpass, residencemail);
-                                    bundle.putSerializable("argdata", argdata);
-                                    nal.navigate(R.id.adminResidenceProfile, bundle);
-                                }
-                                layout.addView(btn_residence);
+                            var btn_residence = Button(context);
+                            btn_residence.setText(residence?.name);
+                            btn_residence.setTextColor(Color.WHITE);
+                            btn_residence.setBackgroundColor(Color.rgb(98, 0, 238));
+                            btn_residence.setOnClickListener {
+                                val bundle = Bundle();
+                                var argdata = residence?.id;
+                                bundle.putSerializable("argdata", argdata);
+                                nal.navigate(R.id.adminResidenceProfile, bundle);
                             }
+                            layout.addView(btn_residence);
                         }
                     }
-                }
+                    catch (e: Exception){
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Failed to read value
+                    }
                 }
-            })
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+
+                    findResidences(layout, nal)
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,9 +117,7 @@ class AdminResidences : Fragment() {
         var adminid = inputData[0];
         var adminemail = inputData[1];
         var adminpass = inputData[2];
-
-        showInfo(user?.uid.toString(), adminid as String, adminemail as String, adminpass as String, layout, nal);
-
+        findResidences(layout, nal);
     }
 
     companion object {

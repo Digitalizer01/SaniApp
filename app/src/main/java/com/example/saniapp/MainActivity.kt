@@ -17,7 +17,7 @@ import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
 
-    fun enterAdmin(userid: String, intent: Intent){
+    private fun enterAdmin(userid: String, intent: Intent){
         var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    fun enterResidence(userid: String, intent: Intent){
+    private fun enterResidence(userid: String, intent: Intent){
         var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    fun enterStaff(userid: String, intent: Intent){
+    private fun enterStaff(userid: String, intent: Intent){
         var info =
             Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference(
@@ -121,19 +121,26 @@ class MainActivity : AppCompatActivity() {
                         ).addOnCompleteListener {
                             if (it.isSuccessful) {
                                 val user = FirebaseAuth.getInstance().currentUser
+                                try{
 
-                                var toast = Toast.makeText(this, "Logeado", Toast.LENGTH_SHORT)
-                                toast.setMargin(50f, 50f)
-                                toast.show()
+                                    var mapUser: Map<String, String>? = null;
+                                    var userinfo: ArrayList<String> = ArrayList()
+                                    userinfo.add(user?.uid.toString());
+                                    userinfo.add(emailText.text.toString());
+                                    userinfo.add(passText.text.toString());
+                                    enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java).putExtra("userinfo", userinfo));
+                                    enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java).putExtra("userinfo", userinfo));
+                                    enterStaff(user?.uid.toString(), Intent(this, UserActivity::class.java));
+                                    var toast = Toast.makeText(this, "Sesión iniciada", Toast.LENGTH_SHORT)
+                                    toast.setMargin(50f, 50f)
+                                    toast.show()
 
-                                var mapUser: Map<String, String>? = null;
-                                var userinfo: ArrayList<String> = ArrayList()
-                                userinfo.add(user?.uid.toString());
-                                userinfo.add(emailText.text.toString());
-                                userinfo.add(passText.text.toString());
-                                enterAdmin(user?.uid.toString(), Intent(this, AdminActivity::class.java).putExtra("userinfo", userinfo));
-                                enterResidence(user?.uid.toString(), Intent(this, ResidenceActivity::class.java).putExtra("userinfo", userinfo));
-                                enterStaff(user?.uid.toString(), Intent(this, UserActivity::class.java));
+                                }
+                                catch (e: Exception){
+                                    val toast = Toast.makeText(this, "Error al iniciar sesión", Toast.LENGTH_SHORT);
+                                    toast.setMargin(50f, 50f);
+                                    toast.show();
+                                }
 
                             } else {
                                 val toast = Toast.makeText(this, "No logeado", Toast.LENGTH_SHORT)

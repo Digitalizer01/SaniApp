@@ -13,12 +13,20 @@ import com.example.saniapp.AdminActivity
 import com.example.saniapp.R
 import com.example.saniapp.ResidenceActivity
 import com.example.saniapp.UserActivity
+import com.example.saniapp.admin.createResidence
+import com.example.saniapp.user.Staff
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,11 +59,9 @@ class ResidenceCreateStaff : Fragment() {
         return inflater.inflate(R.layout.fragment_residence_create_staff, container, false)
     }
 
-    fun showInfo(
-        userResidence: FirebaseUser?,
-        residenceid: String,
-        layout: LinearLayout,
-        nal: NavController
+    private fun createStaff(
+        residenceemail: String,
+        residencepass: String
     ) {
         var edittext_residence_staff_create_name =
             view?.findViewById(R.id.edittext_residence_staff_create_name) as TextView;
@@ -88,71 +94,57 @@ class ResidenceCreateStaff : Fragment() {
                 spinner_residence_staff_create_gender.selectedItem.toString() != "" &&
                 edittext_residence_staff_create_birthdate.text.isNotEmpty() &&
                 edittext_residence_staff_create_email.text.isNotEmpty() &&
-                edittext_residence_staff_create_phone.text.isNotEmpty()) {
-                FirebaseAuth.getInstance()
-                    .createUserWithEmailAndPassword(
-                        edittext_residence_staff_create_email.text.toString(),
-                        edittextpassword_residence_staff_create_password.text.toString()
-                    ).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            val toast = Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
-                            toast.setMargin(50f, 50f)
-                            toast.show()
-                            val user = FirebaseAuth.getInstance().currentUser
+                edittext_residence_staff_create_phone.text.isNotEmpty()
+            ) {
+                var gender_aux = "";
+                if (spinner_residence_staff_create_gender.selectedItem.toString() == "Hombre") {
+                    gender_aux = "Male";
+                } else {
+                    gender_aux = "Female";
+                }
 
-                            // Name
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Name")
-                                .setValue(edittext_residence_staff_create_name.text.toString())
-                            // Surnames
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Surnames")
-                                .setValue(edittext_residence_staff_create_surnames.text.toString())
+                var staff: Staff = Staff(
+                    edittext_residence_staff_create_birthdate.text.toString(),
+                    edittext_residence_staff_create_email.text.toString(),
+                    gender_aux,
+                    edittext_residence_staff_create_name.text.toString(),
+                    edittext_residence_staff_create_phone.text.toString(),
+                    edittext_residence_staff_create_surnames.text.toString(),
+                    null
+                );
 
-                            var gender_aux = "";
-                            if(spinner_residence_staff_create_gender.selectedItem.toString() == "Hombre"){
-                                gender_aux = "Male";
+                GlobalScope.launch(Dispatchers.IO) {
+                    var success = false;
+                    try{
+                        while (!success){
+                            Thread.sleep(500);
+                            success = createStaff(staff, edittextpassword_residence_staff_create_password.text.toString(), Firebase.auth.currentUser?.uid.toString(), residenceemail, residencepass) == true;
+                        }
+                        withContext(Dispatchers.Main){
+                            if(success){
+                                var toast = Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
+                                toast.setMargin(50f, 50f)
+                                toast.show()
                             }
                             else{
-                                gender_aux = "Female";
+                                var toast = Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT)
+                                toast.setMargin(50f, 50f)
+                                toast.show()
                             }
-                            // Gender
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Gender")
-                                .setValue(gender_aux)
-                            // Birthdate
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Birthdate")
-                                .setValue(edittext_residence_staff_create_birthdate.text.toString())
-                            // Email
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Email")
-                                .setValue(edittext_residence_staff_create_email.text.toString())
-                            // Phone
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + residenceid + "/Staff/" + user?.uid.toString() + "/Data/Phone")
-                                .setValue(edittext_residence_staff_create_phone.text.toString())
-
-                                FirebaseAuth.getInstance().signInWithEmailAndPassword("residenciaprado@prado.com", "123456").addOnCompleteListener {
-                                    nal.navigate(R.id.residenceProfile);
-                                }
-                        } else {
-                            val toast = Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT)
-                            toast.setMargin(50f, 50f)
-                            toast.show()
                         }
-
                     }
-                print("hola")
-
-                print("hola")
-
+                    catch(e: Exception){
+                        withContext(Dispatchers.Main){
+                            var toast = Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT);
+                            toast.setMargin(50f, 50f);
+                            toast.show();
+                        }
+                    }
+                }
             } else {
-
                 val toast = Toast.makeText(context, "Rellene todos los campos", Toast.LENGTH_SHORT)
                 toast.setMargin(50f, 50f)
                 toast.show()
-
             }
         }
     }
@@ -166,12 +158,13 @@ class ResidenceCreateStaff : Fragment() {
 
         val user = FirebaseAuth.getInstance().currentUser
         val args = this.arguments
+        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
+        var residenceemail = inputData[1];
+        var residencepass = inputData[2];
 
-        showInfo(
-            user,
-            user?.uid.toString(),
-            layout,
-            nal
+        createStaff(
+            residenceemail as String,
+            residencepass as String
         );
 
         if (user != null) {

@@ -13,13 +13,36 @@
             android:id="@+id/id_linearlayout_residence_residents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Residentes" />
+                android:text="Residentes"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:src="@drawable/icons8_person_40" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

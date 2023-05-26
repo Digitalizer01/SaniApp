@@ -1,22 +1,27 @@
 package com.example.saniapp.user
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.residence.Residence
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlin.collections.HashMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,133 +54,284 @@ class UserProfile : Fragment() {
         return inflater.inflate(R.layout.fragment_user_profile, container, false)
     }
 
-    fun showInfo(id_user: String, layout: LinearLayout, nal: NavController) {
-        var mapUser: Map<String, String>? = null;
+    private fun showStaffInfo() {
+        GlobalScope.launch(Dispatchers.IO) {
+            var staff: Staff = Staff(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
 
-        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            while (staff.name == null) {
+                staff =
+                    findStaffById(FirebaseAuth.getInstance().currentUser?.uid.toString())!!
+                Thread.sleep(100);
+            }
 
-                val snapshotIterator = dataSnapshot.children;
-                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                var user: HashMap<String, String> = HashMap<String, String>();
-                var residence_name: String = "";
-                var residence: HashMap<String, String> = HashMap<String, String>();
-                var residents: HashMap<String, HashMap<HashMap<String, String>, HashMap<String, String>>> = HashMap<String, HashMap<HashMap<String, String>, HashMap<String, String>>>();
-                var found: Boolean = false;
-                while (iterator.hasNext() && !found) {
-                    var hashmap = iterator.next();
-                    residence_name = hashmap.key.toString();
-                    residence = hashmap.child("Data")!!.value as HashMap<String, String>;
-                    if(hashmap.child("Residents")!!.value != null){
-                        residents = hashmap.child("Residents")!!.value as HashMap<String, HashMap<HashMap<String, String>, HashMap<String, String>>>;
-                    }
-                    if(hashmap.child("Staff")!! != null){
-                        var staff = hashmap.child("Staff")!!;
-                        if(staff.value != null){
-                            var userHashMap: HashMap<String, HashMap<String, HashMap<String, String>>> =
-                                staff.value as HashMap<String, HashMap<String, HashMap<String, String>>>;
-                            user = userHashMap[id_user]?.get("Data")!!;
-                            if(user != null){
-                                found = true;
+            var text_name = view?.findViewById(R.id.text_user_name) as? TextView;
+            var text_surnames = view?.findViewById(R.id.text_user_surnames) as? TextView;
+            var text_gender = view?.findViewById(R.id.text_user_gender) as? TextView;
+            var text_birthdate = view?.findViewById(R.id.text_user_birthdate) as? TextView;
+            var text_email = view?.findViewById(R.id.text_user_email) as? TextView;
+            var text_phone = view?.findViewById(R.id.text_user_phone) as? TextView;
+            var text_id = view?.findViewById(R.id.text_user_id) as? TextView;
+
+            text_name?.setText("Nombre: " + staff.name);
+            text_surnames?.setText("Apellidos: " + staff.surnames);
+            if (staff.gender == "Male") {
+                text_gender?.setText("Género: Hombre");
+            } else {
+                text_gender?.setText("Género: Mujer");
+            }
+            text_birthdate?.setText("Fecha nacimiento: " + staff.birthdate);
+            text_email?.setText("Email: " + staff.email);
+            text_phone?.setText("Móvil: " + staff.phone);
+            text_id?.setText("ID: " + Firebase.auth.currentUser?.uid.toString());
+        }
+    }
+
+    private fun showResidenceInfo() {
+        GlobalScope.launch(Dispatchers.IO) {
+            var residence: Residence = Residence(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+
+            while (residence.name == null) {
+                residence =
+                    findResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString())!!
+                Thread.sleep(100);
+            }
+
+            var text_residence_name =
+                view?.findViewById(R.id.text_user_residence_name) as? TextView;
+            var text_residence_country =
+                view?.findViewById(R.id.text_user_residence_country) as? TextView;
+            var text_residence_city =
+                view?.findViewById(R.id.text_user_residence_city) as? TextView;
+            var text_residence_provience =
+                view?.findViewById(R.id.text_user_residence_provience) as? TextView;
+            var text_residence_street =
+                view?.findViewById(R.id.text_user_residence_street) as? TextView;
+            var text_residence_zc =
+                view?.findViewById(R.id.text_user_residence_zc) as? TextView;
+            var text_residence_phone =
+                view?.findViewById(R.id.text_user_residence_phone) as? TextView;
+            var text_residence_email =
+                view?.findViewById(R.id.text_user_residence_email) as? TextView;
+            var text_residence_timetable =
+                view?.findViewById(R.id.text_user_residence_timetable) as? TextView;
+
+            text_residence_name?.setText("Nombre: " + residence.name);
+            text_residence_country?.setText("País: " + residence.country);
+            text_residence_city?.setText("Ciudad: " + residence.city);
+            text_residence_provience?.setText("Provincia: " + residence.province);
+            text_residence_street?.setText("Calle: " + residence.street);
+            text_residence_zc?.setText("CP: " + residence.zc);
+            text_residence_phone?.setText("Teléfono: " + residence.phone);
+            text_residence_email?.setText("Email: " + residence.email);
+            text_residence_timetable?.setText("Horario: " + residence.timetable);
+
+        }
+    }
+
+    private fun showResidents(layout: LinearLayout, nal: NavController) {
+        print("");
+        print("");
+        print("");
+        print("");
+        print("");
+        print("");
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                Thread.sleep(250);
+                var residence: Residence = Residence(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "aCIqITDyZPTzD5NMdRpA4t9InLt1"
+                );
+
+                /*while (residence.name == null) {
+                    residence =
+                        findResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString())!!
+                    Thread.sleep(100);
+                }*/
+                Thread.sleep(250);
+                var residentlist = findResidentAllByIdResidence(residence!!.id.toString());
+                var aux2 = residentlist
+                if (aux2 != null) {
+                    var aux9 = aux2
+                    ;
+
+                    withContext(Dispatchers.Main) {
+                        var aux3 = aux2
+                        var aux6 = aux2?.get(0)
+                        var it = aux2?.iterator()
+                        while (it?.hasNext() == true) {
+                            var resident = it?.next();
+                            (resident?.id);
+                            Thread.sleep(500);
+                            var residence =
+                                    findResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString())!!
+                                Thread.sleep(100);
+
+
+                            var btn_resident = Button(context);
+                            btn_resident.setText(resident?.name);
+                            btn_resident.setTextColor(Color.WHITE);
+
+                            if (resident?.alert == true) {
+                                btn_resident.setBackgroundColor(Color.RED);
+                            } else {
+                                btn_resident.setBackgroundColor(Color.rgb(98, 0, 238));
                             }
+
+                            btn_resident.setOnClickListener {
+                                val bundle = Bundle();
+                                var argdata = arrayOf(residence?.id, resident);
+                                bundle.putSerializable("argdata", argdata);
+                                nal.navigate(R.id.userResident, bundle);
+                            }
+                            layout.addView(btn_resident);
                         }
                     }
                 }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showResidents(layout, nal);
+                }
+            }
+        }
+        print("");
+        print("");
+        print("");
+        print("");
+        print("");
+        print("");
+    }
 
-                var text_name = view?.findViewById(R.id.text_user_name) as? TextView;
-                var text_surnames = view?.findViewById(R.id.text_user_surnames) as? TextView;
-                var text_gender = view?.findViewById(R.id.text_user_gender) as? TextView;
-                var text_birthdate = view?.findViewById(R.id.text_user_birthdate) as? TextView;
-                var text_email = view?.findViewById(R.id.text_user_email) as? TextView;
-                var text_phone = view?.findViewById(R.id.text_user_phone) as? TextView;
-                var text_id = view?.findViewById(R.id.text_user_id) as? TextView;
+    private fun deleteStaff(nal: NavController) {
+        GlobalScope.launch(Dispatchers.IO) {
 
-                text_name?.setText("Nombre: " + user["Name"]);
-                text_surnames?.setText("Apellidos: " + user["Surnames"]);
-                text_gender?.setText("Género: " + user["Gender"]);
-                text_birthdate?.setText("Fecha nacimiento: " + user["Birthdate"]);
-                text_email?.setText("Email: " + user["Email"]);
-                text_phone?.setText("Móvil: " + user["Phone"]);
-                text_id?.setText("ID: " + id_user);
+            try {
+                var idResidence =
+                    findIdResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString());
+                while (idResidence == null) {
+                    idResidence =
+                        findIdResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString());
+                }
+                var residentlist = findResidentAllByIdResidence(idResidence);
+                var aux2 = residentlist
+                if (aux2 != null) {
+                    var aux9 = aux2
+                    ;
 
-                var text_residence_name = view?.findViewById(R.id.text_user_residence_name) as? TextView;
-                var text_residence_country = view?.findViewById(R.id.text_user_residence_country) as? TextView;
-                var text_residence_city = view?.findViewById(R.id.text_user_residence_city) as? TextView;
-                var text_residence_provience = view?.findViewById(R.id.text_user_residence_provience) as? TextView;
-                var text_residence_street = view?.findViewById(R.id.text_user_residence_street) as? TextView;
-                var text_residence_zc = view?.findViewById(R.id.text_user_residence_zc) as? TextView;
-                var text_residence_phone = view?.findViewById(R.id.text_user_residence_phone) as? TextView;
-                var text_residence_email = view?.findViewById(R.id.text_user_residence_email) as? TextView;
-                var text_residence_timetable = view?.findViewById(R.id.text_user_residence_timetable) as? TextView;
+                    withContext(Dispatchers.Main) {
+                        var aux3 = aux2
+                        var aux6 = aux2?.get(0)
+                        var it = aux2?.iterator()
+                        while (it?.hasNext() == true) {
+                            var resident = it?.next();
+                            (resident?.id);
+                            var residence: Residence = Residence(
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                            );
 
-                text_residence_name?.setText("Nombre: " + residence["Name"]);
-                text_residence_country?.setText("País: " + residence["Country"]);
-                text_residence_city?.setText("Ciudad: " + residence["City"]);
-                text_residence_provience?.setText("Provincia: " + residence["Province"]);
-                text_residence_street?.setText("Calle: " + residence["Street"]);
-                text_residence_zc?.setText("CP: " + residence["ZC"]);
-                text_residence_phone?.setText("Teléfono: " + residence["Phone"]);
-                text_residence_email?.setText("Email: " + residence["Email"]);
-                text_residence_timetable?.setText("Horario: " + residence["Timetable"]);
+                            while (residence.name == null) {
+                                residence =
+                                    findResidenceByIdStaff(FirebaseAuth.getInstance().currentUser?.uid.toString())!!
+                                Thread.sleep(100);
+                            }
 
+                            var btn_delete =
+                                view?.findViewById(R.id.button_user_delete) as Button;
 
-                var mapresidents: HashMap<String, String> = HashMap<String, String>();
-                val itr = residents.keys.iterator()
-                while (itr.hasNext()) {
-                    val key = itr.next()
-                    val valuehashmap: HashMap<String, HashMap<String, String>> = residents[key] as HashMap<String, HashMap<String, String>>;
-                    val resident_medication = valuehashmap["Medication"];
-                    val name_surname_resident = valuehashmap["Data"]?.get("Name") + " " + valuehashmap["Data"]?.get("Surnames");
-                    mapresidents.put(key,  valuehashmap["Data"]?.get("Name") + " " + valuehashmap["Data"]?.get("Surnames"));
+                            btn_delete.setOnClickListener {
 
-                    var btn_resident = Button(context);
-                    btn_resident.setText(name_surname_resident);
-                    btn_resident.setTextColor(Color.WHITE);
-                    btn_resident.setBackgroundColor(Color.rgb(98, 0, 238));
+                                val builder = AlertDialog.Builder(context);
+                                val inflater: LayoutInflater = layoutInflater;
+                                val dialogLayout: View =
+                                    inflater.inflate(R.layout.fragment_dialog_confirm, null);
 
-                    var taken = false;
-                    if(resident_medication != null){
-                        valuehashmap?.forEach { (key, value) ->
-                            if(key == "Medication"){
-                                var partsday = value as HashMap<String, HashMap<String, String>>;
-                                partsday?.forEach { (keypartsday, valuepartsday) ->
-                                    var partsdayinfo = valuepartsday as HashMap<String, HashMap<String, String>>;
-                                    partsdayinfo?.forEach { (keypartsdayinfo, valuepartsdayinfo) ->
-                                        if(valuepartsdayinfo["Taken"] == "Yes"){
-                                            taken = true;
-                                            return@forEach;
+                                with(builder) {
+                                    setTitle("¿Está seguro de que desea borrar su cuenta?")
+                                    setPositiveButton("Ok") { dialog, which ->
+                                        try {
+                                            deleteStaffByIdResidenceAndIdStaff(
+                                                residence.id.toString(),
+                                                Firebase.auth.currentUser?.uid.toString()
+                                            );
+                                            var toast =
+                                                Toast.makeText(
+                                                    context,
+                                                    "Borrado. Se reinicará la aplicación.",
+                                                    Toast.LENGTH_SHORT
+                                                );
+                                            toast.show();
+                                            Thread.sleep(2000);
+                                            System.exit(0);
+                                        } catch (e: Exception) {
+                                            var toast = Toast.makeText(
+                                                context,
+                                                "Borrado cancelado",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            toast.setMargin(50f, 50f)
+                                            toast.show()
                                         }
                                     }
-                                    if(!taken){
-                                        return@forEach;
+
+                                    setNegativeButton("Cancelar") { dialog, which ->
+                                        var toast = Toast.makeText(
+                                            context,
+                                            "NO ACEPTADO",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        toast.setMargin(50f, 50f)
+                                        toast.show()
                                     }
-                                }
-                                if(!taken){
-                                    return@forEach;
+
+                                    setView(dialogLayout);
+                                    show();
                                 }
                             }
                         }
-                        if(taken){
-                            btn_resident.setBackgroundColor(Color.RED);
-                        }
                     }
-
-                    btn_resident.setOnClickListener{
-                        val bundle = Bundle()
-                        var argdata = arrayOf(residence_name, valuehashmap);
-                        bundle.putSerializable("argdata", argdata);
-                        nal.navigate(R.id.userResident, bundle);
-                    }
-                    layout.addView(btn_resident);
                 }
-
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    deleteStaff(nal);
+                }
             }
-
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -185,9 +341,10 @@ class UserProfile : Fragment() {
         var layout = view?.findViewById(R.id.id_linearlayout_user) as LinearLayout
 
         val user = FirebaseAuth.getInstance().currentUser
-
-        showInfo(user?.uid.toString(), layout, nal);
-
+        showStaffInfo();
+        showResidenceInfo();
+        showResidents(layout as LinearLayout, nal as NavController);
+        deleteStaff(nal);
     }
 
     companion object {

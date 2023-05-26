@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_user_profile" >
         <action
             android:id="@+id/action_userProfile_to_userResident"
-            app:destination="@id/userResident" />
+            app:destination="@id/userResident"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/userResident"
@@ -21,7 +22,8 @@
         tools:layout="@layout/fragment_user_resident" >
         <action
             android:id="@+id/action_userResident_to_userResidentMedication"
-            app:destination="@id/userResidentMedication" />
+            app:destination="@id/userResidentMedication"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/userResidentMedication"

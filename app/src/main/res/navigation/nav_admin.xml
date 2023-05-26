@@ -15,7 +15,9 @@
             app:destination="@id/adminResidences" />
         <action
             android:id="@+id/action_adminMenu_to_adminCreateResidence"
-            app:destination="@id/adminCreateResidence" />
+            app:destination="@id/adminCreateResidence"
+            app:popUpTo="@id/adminMenu"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/adminResidences"
@@ -24,7 +26,10 @@
         tools:layout="@layout/fragment_admin_residences" >
         <action
             android:id="@+id/action_adminResidences_to_adminResidenceProfile"
-            app:destination="@id/adminResidenceProfile" />
+            app:destination="@id/adminResidenceProfile"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/adminMenu"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/adminResidenceProfile"

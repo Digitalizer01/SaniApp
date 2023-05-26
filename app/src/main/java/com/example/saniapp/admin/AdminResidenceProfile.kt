@@ -2,6 +2,7 @@ package com.example.saniapp.admin
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.residence.Residence
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -20,6 +22,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,179 +59,142 @@ class AdminResidenceProfile : Fragment() {
         return inflater.inflate(R.layout.fragment_admin_residence_profile, container, false)
     }
 
-    fun showInfo(
-        residencekey: String,
-        layout: LinearLayout,
-        adminemail: String,
-        adminpass: String,
-        nal: NavController
+    private fun showResidence(
+        residencekey: String
     ) {
-        var mapUser: Map<String, String>? = null;
+        GlobalScope.launch(Dispatchers.IO) {
 
-        var info =
-            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("Residences/")
-                .addValueEventListener(object :
-                    ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+            try {
+                var residence = findResidenceById(residencekey);
+                var residencedata = residence;
 
-                        val snapshotIterator = dataSnapshot.children;
-                        val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                        var residencemap: HashMap<String, HashMap<String, String>> =
-                            HashMap<String, HashMap<String, String>>();
-                        while (iterator.hasNext()) {
-                            var hashmap = iterator.next();
-                            residencemap =
-                                hashmap.value as HashMap<String, HashMap<String, String>>;
-                            if (hashmap.key == residencekey) {
-                                var text_admin_residence_profile_title =
-                                    view?.findViewById(R.id.text_admin_residence_profile_title) as TextView;
-                                var text_admin_residence_profile_id =
-                                    view?.findViewById(R.id.text_admin_residence_profile_id) as TextView;
-                                var edittext_admin_residence_profile_name =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_name) as TextView;
-                                var edittext_admin_residence_profile_city =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_city) as TextView;
-                                var edittext_admin_residence_profile_province =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_province) as TextView;
-                                var edittext_admin_residence_profile_country =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_country) as TextView;
-                                var edittext_admin_residence_profile_street =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_street) as TextView;
-                                var edittext_admin_residence_profile_zc =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_zc) as TextView;
-                                var edittext_admin_residence_profile_email =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_email) as TextView;
-                                var emailresidence = "";
-                                var edittextphone_admin_residence_profile_phone =
-                                    view?.findViewById(R.id.edittextphone_admin_residence_profile_phone) as TextView;
-                                var edittext_admin_residence_profile_timetable =
-                                    view?.findViewById(R.id.edittext_admin_residence_profile_timetable) as TextView;
+                withContext(Dispatchers.Main) {
+                    var residencedata2 = residencedata;
+                    if (residencedata2?.name != null) {
+                        var text_admin_residence_profile_title =
+                            view?.findViewById(R.id.text_admin_residence_profile_title) as TextView;
+                        var text_admin_residence_profile_id =
+                            view?.findViewById(R.id.text_admin_residence_profile_id) as TextView;
+                        var edittext_admin_residence_profile_name =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_name) as TextView;
+                        var edittext_admin_residence_profile_city =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_city) as TextView;
+                        var edittext_admin_residence_profile_province =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_province) as TextView;
+                        var edittext_admin_residence_profile_country =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_country) as TextView;
+                        var edittext_admin_residence_profile_street =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_street) as TextView;
+                        var edittext_admin_residence_profile_zc =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_zc) as TextView;
+                        var edittext_admin_residence_profile_email =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_email) as TextView;
+                        var emailresidence = "";
+                        var edittextphone_admin_residence_profile_phone =
+                            view?.findViewById(R.id.edittextphone_admin_residence_profile_phone) as TextView;
+                        var edittext_admin_residence_profile_timetable =
+                            view?.findViewById(R.id.edittext_admin_residence_profile_timetable) as TextView;
 
-                                text_admin_residence_profile_title.setText(
-                                    residencemap["Data"]?.get(
-                                        "Name"
-                                    )
-                                );
-
-                                text_admin_residence_profile_id.setText(
-                                    "ID: " + residencekey
-                                );
-
-                                edittext_admin_residence_profile_name.setText(
-                                    residencemap["Data"]?.get(
-                                        "Name"
-                                    )
-                                );
-                                edittext_admin_residence_profile_city.setText(
-                                    residencemap["Data"]?.get(
-                                        "City"
-                                    )
-                                );
-                                edittext_admin_residence_profile_province.setText(
-                                    residencemap["Data"]?.get(
-                                        "Province"
-                                    )
-                                );
-                                edittext_admin_residence_profile_country.setText(
-                                    residencemap["Data"]?.get(
-                                        "Country"
-                                    )
-                                );
-                                edittext_admin_residence_profile_street.setText(
-                                    residencemap["Data"]?.get(
-                                        "Street"
-                                    )
-                                );
-                                edittext_admin_residence_profile_zc.setText(
-                                    residencemap["Data"]?.get(
-                                        "ZC"
-                                    )
-                                );
-                                emailresidence = residencemap["Data"]?.get("Email").toString();
-                                edittext_admin_residence_profile_email.setText(emailresidence);
-
-                                edittextphone_admin_residence_profile_phone.setText(
-                                    residencemap["Data"]?.get(
-                                        "Phone"
-                                    )
-                                );
-                                edittext_admin_residence_profile_timetable.setText(
-                                    residencemap["Data"]?.get(
-                                        "Timetable"
-                                    )
-                                );
-
-                                var btn_update =
-                                    view?.findViewById(R.id.button_admin_residence_profile_update) as Button;
-
-                                btn_update.setOnClickListener {
-
-                                    // Name
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Name")
-                                        .setValue(edittext_admin_residence_profile_name.text.toString());
-
-                                    // City
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/City")
-                                        .setValue(edittext_admin_residence_profile_city.text.toString());
-
-                                    // Province
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Province")
-                                        .setValue(edittext_admin_residence_profile_province.text.toString());
-
-                                    // Country
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Country")
-                                        .setValue(edittext_admin_residence_profile_country.text.toString());
-
-                                    // Street
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Street")
-                                        .setValue(edittext_admin_residence_profile_street.text.toString());
-
-                                    // ZC
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/ZC")
-                                        .setValue(edittext_admin_residence_profile_zc.text.toString());
-
-                                    // Email
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Email")
-                                        .setValue(emailresidence);
-
-                                    // Phone
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Phone")
-                                        .setValue(edittextphone_admin_residence_profile_phone.text.toString());
-
-                                    // Timetable
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residencekey + "/Data/Timetable")
-                                        .setValue(edittext_admin_residence_profile_timetable.text.toString());
-
-                                    val toast =
-                                        Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                }
-
-
-                            }
-                        }
+                        text_admin_residence_profile_title.setText(residencedata2.name);
+                        text_admin_residence_profile_id.setText("ID: " + residencedata2.id);
+                        edittext_admin_residence_profile_name.setText(residencedata2.name);
+                        edittext_admin_residence_profile_city.setText(residencedata2.city);
+                        edittext_admin_residence_profile_province.setText(residencedata2.province);
+                        edittext_admin_residence_profile_country.setText(residencedata2.country);
+                        edittext_admin_residence_profile_street.setText(residencedata2.street);
+                        edittext_admin_residence_profile_zc.setText(residencedata2.zc);
+                        edittext_admin_residence_profile_email.setText(residencedata2.email);
+                        edittextphone_admin_residence_profile_phone.setText(residencedata2.phone);
+                        edittext_admin_residence_profile_timetable.setText(residencedata2.timetable);
                     }
+                    (residencedata2);
+                    (residencedata2?.id);
+                }
+            }
+            catch(e: Exception){
+                withContext(Dispatchers.Main) {
+                    var toast = Toast.makeText(context, "No se cargado la residencia", Toast.LENGTH_SHORT)
+                    toast.setMargin(50f, 50f)
+                    toast.show()
+                    showResidence(residencekey)
+                }
+            }
 
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                    }
-                })
+        }
+    }
+
+    private fun updateResidence() {
+        var text_admin_residence_profile_title =
+            view?.findViewById(R.id.text_admin_residence_profile_title) as TextView;
+        var text_admin_residence_profile_id =
+            view?.findViewById(R.id.text_admin_residence_profile_id) as TextView;
+        var edittext_admin_residence_profile_name =
+            view?.findViewById(R.id.edittext_admin_residence_profile_name) as TextView;
+        var edittext_admin_residence_profile_city =
+            view?.findViewById(R.id.edittext_admin_residence_profile_city) as TextView;
+        var edittext_admin_residence_profile_province =
+            view?.findViewById(R.id.edittext_admin_residence_profile_province) as TextView;
+        var edittext_admin_residence_profile_country =
+            view?.findViewById(R.id.edittext_admin_residence_profile_country) as TextView;
+        var edittext_admin_residence_profile_street =
+            view?.findViewById(R.id.edittext_admin_residence_profile_street) as TextView;
+        var edittext_admin_residence_profile_zc =
+            view?.findViewById(R.id.edittext_admin_residence_profile_zc) as TextView;
+        var edittextphone_admin_residence_profile_phone =
+            view?.findViewById(R.id.edittextphone_admin_residence_profile_phone) as TextView;
+        var edittext_admin_residence_profile_timetable =
+            view?.findViewById(R.id.edittext_admin_residence_profile_timetable) as TextView;
+        var edittext_admin_residence_profile_email =
+            view?.findViewById(R.id.edittext_admin_residence_profile_email) as TextView;
+
+        var btn_update =
+            view?.findViewById(R.id.button_admin_residence_profile_update) as Button;
+
+        btn_update.setOnClickListener {
+            if (edittext_admin_residence_profile_name.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_city.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_province.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_country.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_street.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_zc.text.toString().isNotEmpty() &&
+                edittextphone_admin_residence_profile_phone.text.toString().isNotEmpty() &&
+                edittext_admin_residence_profile_timetable.text.toString().isNotEmpty()
+            ) {
+
+                var residence: Residence = Residence(
+                    edittext_admin_residence_profile_city.text.toString(),
+                    edittext_admin_residence_profile_country.text.toString(),
+                    edittext_admin_residence_profile_email.text.toString(),
+                    edittext_admin_residence_profile_name.text.toString(),
+                    edittextphone_admin_residence_profile_phone.text.toString(),
+                    edittext_admin_residence_profile_province.text.toString(),
+                    edittext_admin_residence_profile_street.text.toString(),
+                    edittext_admin_residence_profile_timetable.text.toString(),
+                    edittext_admin_residence_profile_zc.text.toString(),
+                    text_admin_residence_profile_id.text.toString()
+                )
+
+                try{
+                    updateResidenceByResidence(residence);
+                    val toast =
+                        Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                catch (e: Exception){
+                    val toast =
+                        Toast.makeText(context, "No se ha podido actualizar", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            } else {
+                val toast =
+                    Toast.makeText(context, "Rellene todos los campos", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         val nal = Navigation.findNavController(view)
         var layout =
@@ -235,93 +204,15 @@ class AdminResidenceProfile : Fragment() {
 
         val args = this.arguments
 
-        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residencekey = inputData[0];
-        var adminemail = inputData[1];
-        var adminpass = inputData[2];
-        var residencemail = inputData[3];
+        val inputData: String = args?.getString("argdata") as String;
+        var residencekey = inputData;
 
-        showInfo(
-            residencekey as String,
-            layout,
-            adminemail as String,
-            adminpass as String,
-            nal
+        showResidence(
+            residencekey as String
         );
 
-        var btn_delete =
-            view?.findViewById(R.id.button_admin_residence_profile_delete) as Button;
+        updateResidence();
 
-        btn_delete.setOnClickListener {
-
-            val builder = AlertDialog.Builder(context);
-            val inflater: LayoutInflater = layoutInflater;
-            val dialogLayout: View = inflater.inflate(R.layout.fragment_dialog, null);
-            val editText: EditText = dialogLayout.findViewById<EditText>(R.id.et_editText);
-
-            with(builder) {
-                setTitle("Introduzca la contraseña")
-                setPositiveButton("Ok") { dialog, which ->
-                    var toast = Toast.makeText(context, editText.text.toString(), Toast.LENGTH_SHORT)
-                    toast.setMargin(50f, 50f)
-                    toast.show()
-
-                    toast =
-                        Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                        .getReference("Residences/" + residencekey)
-                        .removeValue()
-
-                    val useraux = Firebase.auth.currentUser!!
-
-                    val credential = EmailAuthProvider
-                        .getCredential(residencemail.toString(), editText.text.toString())
-
-                    useraux.reauthenticate(credential)
-                        .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
-
-                    Firebase.auth.signOut();
-                    var usernuevo = Firebase.auth.signInWithCredential(credential);
-                    Thread.sleep(1000);
-                    val usernuevo2 = Firebase.auth.currentUser!!
-
-                    usernuevo2.delete()
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Log.d(TAG, "User account deleted.")
-                            }
-                        }
-
-                    val usernuevo4 = Firebase.auth.currentUser!!
-
-                    var credential2 = EmailAuthProvider
-                        .getCredential(adminemail, adminpass)
-
-                    usernuevo4.reauthenticate(credential2)
-                        .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
-
-                    Firebase.auth.signOut();
-                    var usernuevo3 = Firebase.auth.signInWithCredential(credential2);
-
-                    print("");
-                    val bundle = Bundle();
-                    nal.navigate(R.id.adminMenu, bundle);
-                }
-
-                setNegativeButton("Cancelar") { dialog, which ->
-                    var toast = Toast.makeText(context, "NO ACEPTADO", Toast.LENGTH_SHORT)
-                    toast.setMargin(50f, 50f)
-                    toast.show()
-                }
-
-                setView(dialogLayout);
-                show();
-            }
-        }
-
-        print("Ok");
     }
 
     companion object {

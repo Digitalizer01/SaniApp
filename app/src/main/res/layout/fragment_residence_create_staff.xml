@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,13 +16,32 @@
             android:id="@+id/id_linearlayout_residence_staff_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear personal" />
+                android:text="Crear personal"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:src="@drawable/icons8_avatar_64" />
 
             <Space
                 android:layout_width="match_parent"
@@ -154,7 +174,10 @@
                 android:id="@+id/button_residence_staff_create_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear" />
+                android:text="Crear"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
         </LinearLayout>
     </ScrollView>
 

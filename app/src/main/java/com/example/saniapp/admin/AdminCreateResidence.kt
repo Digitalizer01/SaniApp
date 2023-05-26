@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.residence.Residence
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import java.lang.Exception
 import java.util.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
@@ -55,12 +58,7 @@ class AdminCreateResidence : Fragment() {
         return inflater.inflate(R.layout.fragment_admin_create_residence, container, false)
     }
 
-    fun showInfo(
-        layout: LinearLayout,
-        adminemail: String,
-        adminpass: String,
-        nal: NavController
-    ) {
+    private fun createResidence(adminemail: String, adminpass: String) {
         var edittext_admin_create_residence_name =
             view?.findViewById(R.id.edittext_admin_create_residence_name) as TextView;
         var edittextpassword_admin_create_residence_password =
@@ -96,104 +94,58 @@ class AdminCreateResidence : Fragment() {
                 edittext_admin_create_residence_zc.text.isNotEmpty() &&
                 edittextemail_admin_create_residence_email.text.isNotEmpty() &&
                 edittextphone_admin_create_residence_phone.text.isNotEmpty() &&
-                edittext_admin_create_residence_timetable.text.isNotEmpty()) {
-                FirebaseAuth.getInstance()
-                    .createUserWithEmailAndPassword(
-                        edittextemail_admin_create_residence_email.text.toString(),
-                        edittextpassword_admin_create_residence_password.text.toString()
-                    ).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            Thread.sleep(1000);
-                            val toast = Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
-                            toast.setMargin(50f, 50f)
-                            toast.show()
-                            val user = FirebaseAuth.getInstance().currentUser
+                edittext_admin_create_residence_timetable.text.isNotEmpty()
+            ) {
+                var residence = Residence(
+                    edittext_admin_create_residence_city.text.toString(),
+                    edittext_admin_create_residence_country.text.toString(),
+                    edittextemail_admin_create_residence_email.text.toString(),
+                    edittext_admin_create_residence_name.text.toString(),
+                    edittextphone_admin_create_residence_phone.text.toString(),
+                    edittext_admin_create_residence_province.text.toString(),
+                    edittext_admin_create_residence_street.text.toString(),
+                    edittext_admin_create_residence_timetable.text.toString(),
+                    edittext_admin_create_residence_zc.text.toString(),
+                    ""
+                );
 
-                            // Name
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Name")
-                                .setValue(edittext_admin_create_residence_name.text.toString())
-                            // City
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/City")
-                                .setValue(edittext_admin_create_residence_city.text.toString())
-                            // Province
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Province")
-                                .setValue(edittext_admin_create_residence_province.text.toString())
-                            // Country
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Country")
-                                .setValue(edittext_admin_create_residence_country.text.toString())
-                            // Street
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Street")
-                                .setValue(edittext_admin_create_residence_street.text.toString())
-                            // ZC
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/ZC")
-                                .setValue(edittext_admin_create_residence_zc.text.toString())
-                            // Email
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Email")
-                                .setValue(edittextemail_admin_create_residence_email.text.toString())
-                            // Phone
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Phone")
-                                .setValue(edittextphone_admin_create_residence_phone.text.toString())
-                            // Timetable
-                            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                .getReference("Residences/" + user?.uid.toString() + "/Data/Timetable")
-                                .setValue(edittext_admin_create_residence_timetable.text.toString())
-
-
-                            val useraux = Firebase.auth.currentUser!!
-
-                            val credential = EmailAuthProvider
-                                .getCredential(edittextemail_admin_create_residence_email.text.toString(), edittextpassword_admin_create_residence_password.text.toString())
-
-                            useraux.reauthenticate(credential)
-                                .addOnCompleteListener { Log.d(ContentValues.TAG, "User re-authenticated.") }
-
-                            Firebase.auth.signOut();
-                            var usernuevo = Firebase.auth.signInWithCredential(credential);
-                            Thread.sleep(1000);
-                            val usernuevo2 = Firebase.auth.currentUser!!
-
-                            usernuevo2.delete()
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        Log.d(ContentValues.TAG, "User account deleted.")
-                                    }
-                                }
-                            val usernuevo4 = Firebase.auth.currentUser!!
-
-                            var credential2 = EmailAuthProvider
-                                .getCredential(adminemail, adminpass)
-
-                            usernuevo4.reauthenticate(credential2)
-                                .addOnCompleteListener { Log.d(ContentValues.TAG, "User re-authenticated.") }
-
-                            Firebase.auth.signOut();
-                            var usernuevo3 = Firebase.auth.signInWithCredential(credential2);
-
-                            print("");
-                            val bundle = Bundle();
-                            nal.navigate(R.id.adminMenu, bundle);
-                        } else {
-                            val toast = Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT)
-                            toast.setMargin(50f, 50f)
-                            toast.show()
+                GlobalScope.launch(Dispatchers.IO) {
+                    var success = false;
+                    try {
+                        while (!success) {
+                            success = createResidence(
+                                residence,
+                                edittextpassword_admin_create_residence_password.text.toString(),
+                                adminemail,
+                                adminpass
+                            ) == true;
                         }
-
-
+                        withContext(Dispatchers.Main) {
+                            if (success) {
+                                var toast =
+                                    Toast.makeText(context, "Registrado", Toast.LENGTH_SHORT)
+                                toast.setMargin(50f, 50f)
+                                toast.show()
+                            } else {
+                                var toast =
+                                    Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT)
+                                toast.setMargin(50f, 50f)
+                                toast.show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            var toast =
+                                Toast.makeText(context, "No registrado", Toast.LENGTH_SHORT);
+                            toast.setMargin(50f, 50f);
+                            toast.show();
+                        }
                     }
+                }
             } else {
-
                 val toast = Toast.makeText(context, "Rellene todos los campos", Toast.LENGTH_SHORT)
                 toast.setMargin(50f, 50f)
                 toast.show()
-
             }
         }
     }
@@ -212,12 +164,7 @@ class AdminCreateResidence : Fragment() {
         var adminemail = inputData[1];
         var adminpass = inputData[2];
 
-        showInfo(
-            layout,
-            adminemail as String,
-            adminpass as String,
-            nal
-        );
+        createResidence(adminemail as String, adminpass as String);
 
         print("Ok");
     }

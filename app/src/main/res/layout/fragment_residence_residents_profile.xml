@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,13 +14,32 @@
             android:id="@+id/id_linearlayout_residence_residents_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/text_residence_residents_profile_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                android:text="Nombre"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:src="@drawable/icons8_person_40" />
 
             <Space
                 android:layout_width="match_parent"
@@ -106,7 +126,11 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="ID pastillero y residente"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:background="#AD5692DC"
+                android:backgroundTintMode="multiply"
+                android:clickable="false"
+                android:focusable="false"/>
 
             <Space
                 android:layout_width="match_parent"
@@ -116,14 +140,20 @@
                 android:id="@+id/button_residence_residents_profile_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Actualizar" />
+                android:text="Actualizar"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
 
             <Button
                 android:id="@+id/button_residence_residents_profile_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#DD3434"
-                android:text="Eliminar" />
+                android:text="Eliminar"
+                app:icon="@drawable/icons8_delete_64"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

@@ -11,12 +11,18 @@ import android.widget.LinearLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.admin.findResidenceAll
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,65 +56,63 @@ class ResidenceResidents : Fragment() {
         return inflater.inflate(R.layout.fragment_residence_residents, container, false)
     }
 
-    fun showInfo(id_user: String, layout: LinearLayout, nal: NavController) {
-        var mapUser: Map<String, String>? = null;
+    private fun showInfo(id_user: String, layout: LinearLayout, nal: NavController) {
+        GlobalScope.launch(Dispatchers.IO) {
 
-        var info = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference(
-            "Residences/$id_user/"
-        ).addValueEventListener(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            try {
+                var residentlist = findResidentAll();
+                ;
+                ;
+                var aux = "hola"
+                Thread.sleep(500);
+                var aux2 = residentlist
+                if(aux2 != null){
+                    var aux9 = aux2
+                    ;
 
-                val snapshotIterator = dataSnapshot.children;
-                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                var residence_residents: HashMap<String, HashMap<String, String>> = HashMap<String, HashMap<String, String>>();
-                while (iterator.hasNext()) {
-                    var hashmap = iterator.next();
-                    if (hashmap.key.toString() == "Residents"){
-                        residence_residents = hashmap.value as HashMap<String, HashMap<String, String>>;
+                    withContext(Dispatchers.Main) {
+                        
+                        
+                        (aux);
+                        aux = "adios"
+                        var aux3 = aux2
+                        var aux6 = aux2?.get(0)
+                        var it = aux2?.iterator()
+                        while (it?.hasNext() == true) {
+                            var resident = it?.next();
+                            (resident?.id);
+                            ;
 
-                        val itr = residence_residents?.keys?.iterator();
-                        while (itr?.hasNext() == true) {
-                            val key = itr?.next()
-                            val value: HashMap<String, HashMap<String, String>> = residence_residents?.get(key) as HashMap<String, HashMap<String, String>>;
-                            val name_surname_resident = value["Data"]?.get("Name") + " " + value["Data"]?.get("Surnames");
-
-                            var btn_residence_resident = Button(context);
-
-                            btn_residence_resident.setText(name_surname_resident);
-                            btn_residence_resident.setTextColor(Color.WHITE);
-                            btn_residence_resident.setBackgroundColor(Color.rgb(98, 0, 238));
-                            btn_residence_resident.setOnClickListener{
-                                val bundle = Bundle()
-                                var argdata = arrayOf(id_user, value, key, name_surname_resident);
+                            var btn_resident = Button(context);
+                            btn_resident.setText(resident?.name);
+                            btn_resident.setTextColor(Color.WHITE);
+                            btn_resident.setBackgroundColor(Color.rgb(98, 0, 238));
+                            btn_resident.setOnClickListener {
+                                val bundle = Bundle();
+                                var argdata = resident?.id;
                                 bundle.putSerializable("argdata", argdata);
                                 nal.navigate(R.id.residenceResidentsProfile, bundle);
                             }
-                            layout.addView(btn_residence_resident);
+                            layout.addView(btn_resident);
                         }
-
-                        var btn_residence_resident_create = Button(context);
-                        btn_residence_resident_create.setText("Crear");
-                        btn_residence_resident_create.setTextColor(Color.WHITE);
-                        btn_residence_resident_create.setBackgroundColor(Color.RED);
-                        btn_residence_resident_create.setOnClickListener{
-                            val bundle = Bundle();
-                            nal.navigate(R.id.residenceCreateResident, bundle);
-                        }
-                        layout.addView(btn_residence_resident_create);
-
-                        print("Done");
+                        
+                        
+                        
+                        
+                        
+                        
                     }
-
-                    print("New")
                 }
 
-            }
+                print(aux);
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
+                ("");
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showInfo(Firebase.auth.currentUser?.uid.toString(), layout, nal);
+                }
             }
-        })
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,10 +125,15 @@ class ResidenceResidents : Fragment() {
 
         val args = this.arguments
 
-        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residencekey = inputData[0];
-        var residenceemail = inputData[1];
-        var residencepass = inputData[2];
+        var btn_residence_resident_create = Button(context);
+        btn_residence_resident_create.setText("Crear");
+        btn_residence_resident_create.setTextColor(Color.WHITE);
+        btn_residence_resident_create.setBackgroundColor(Color.RED);
+        btn_residence_resident_create.setOnClickListener{
+            val bundle = Bundle();
+            nal.navigate(R.id.residenceCreateResident, bundle);
+        }
+        layout.addView(btn_residence_resident_create);
 
         showInfo(user?.uid.toString(), layout, nal);
 

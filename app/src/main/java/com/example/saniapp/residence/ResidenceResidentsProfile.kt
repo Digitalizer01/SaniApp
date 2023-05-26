@@ -1,5 +1,6 @@
 package com.example.saniapp.residence
 
+import android.content.Intent.getIntent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,13 +10,13 @@ import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.ResidenceActivity
+import com.example.saniapp.resident.Resident
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import java.util.HashMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,151 +49,154 @@ class ResidenceResidentsProfile : Fragment() {
         return inflater.inflate(R.layout.fragment_residence_residents_profile, container, false)
     }
 
-    fun showInfo(
-        residenceid: String,
-        residenceresidentkey: String,
-        residenceresidentfullname: String,
+    private fun showInfo(
+        idResident: String,
         layout: LinearLayout,
         nal: NavController
     ) {
-        var mapUser: Map<String, String>? = null;
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                Thread.sleep(100);
+                var resident = findResidentById(idResident);
+                ;
+                ;
+                ;
+                var residentdata = resident;
+                ;
+                ;
+                ;
 
-        var info =
-            Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("Residences/$residenceid/Residents/")
-                .addValueEventListener(object :
-                    ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                withContext(Dispatchers.Main) {
 
-                        val snapshotIterator = dataSnapshot.children;
-                        val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-                        var residenceresidentmap: HashMap<String, HashMap<String, String>> =
-                            HashMap<String, HashMap<String, String>>();
-                        while (iterator.hasNext()) {
-                            var hashmap = iterator.next();
-                            residenceresidentmap =
-                                hashmap.value as HashMap<String, HashMap<String, String>>;
-                            if (hashmap.key == residenceresidentkey) {
-                                var edittext_residence_residents_profile_title =
-                                    view?.findViewById(R.id.text_residence_residents_profile_title) as TextView;
-                                var edittext_residence_residents_profile_name =
-                                    view?.findViewById(R.id.edittext_residence_residents_profile_name) as TextView;
-                                var edittext_residence_residents_profile_surnames =
-                                    view?.findViewById(R.id.edittext_residence_residents_profile_surnames) as TextView;
-                                var spinner_residence_residents_profile_gender =
-                                    view?.findViewById(R.id.spinner_residence_residents_profile_gender) as Spinner;
-                                var genders = arrayOf("Hombre", "Mujer")
-                                spinner_residence_residents_profile_gender.adapter = ArrayAdapter<String>(
-                                    requireContext(),
-                                    android.R.layout.simple_expandable_list_item_1, genders
-                                )
-                                var edittextdate_residence_residents_profile_birthdate =
-                                    view?.findViewById(R.id.edittextdate_residence_residents_profile_birthdate) as TextView;
-                                var edittext_residence_residents_profile_id =
-                                    view?.findViewById(R.id.edittext_residence_residents_profile_id) as TextView;
+                    Thread.sleep(100);
 
-                                edittext_residence_residents_profile_title.setText(
-                                    residenceresidentmap["Data"]?.get(
-                                        "Name"
-                                    ) + " " + residenceresidentmap["Data"]?.get(
-                                        "Surnames"
-                                    )
-                                );
-                                edittext_residence_residents_profile_name.setText(
-                                    residenceresidentmap["Data"]?.get(
-                                        "Name"
-                                    )
-                                );
-                                edittext_residence_residents_profile_surnames.setText(
-                                    residenceresidentmap["Data"]?.get(
-                                        "Surnames"
-                                    )
-                                );
+                    var residentdata2 = residentdata;
+                    if (residentdata2?.name != null) {
+                        var edittext_residence_residents_profile_title =
+                            view?.findViewById(R.id.text_residence_residents_profile_title) as TextView;
+                        var edittext_residence_residents_profile_name =
+                            view?.findViewById(R.id.edittext_residence_residents_profile_name) as TextView;
+                        var edittext_residence_residents_profile_surnames =
+                            view?.findViewById(R.id.edittext_residence_residents_profile_surnames) as TextView;
+                        var spinner_residence_residents_profile_gender =
+                            view?.findViewById(R.id.spinner_residence_residents_profile_gender) as Spinner;
+                        var genders = arrayOf("Hombre", "Mujer")
+                        spinner_residence_residents_profile_gender.adapter =
+                            ArrayAdapter<String>(
+                                requireContext(),
+                                android.R.layout.simple_expandable_list_item_1, genders
+                            )
+                        var edittextdate_residence_residents_profile_birthdate =
+                            view?.findViewById(R.id.edittextdate_residence_residents_profile_birthdate) as TextView;
+                        var edittext_residence_residents_profile_id =
+                            view?.findViewById(R.id.edittext_residence_residents_profile_id) as TextView;
 
-                                if(residenceresidentmap["Data"]?.get("Gender") == "Male"){
-                                    spinner_residence_residents_profile_gender.setSelection(0);
-                                }
-                                else{
-                                    spinner_residence_residents_profile_gender.setSelection(1);
-                                }
-
-                                edittextdate_residence_residents_profile_birthdate.setText(
-                                    residenceresidentmap["Data"]?.get(
-                                        "Birthdate"
-                                    )
-                                );
-                                edittext_residence_residents_profile_id.setText(
-                                    residenceresidentmap["Data"]?.get(
-                                        "IDPillbox"
-                                    )
-                                );
-
-                                var btn_update =
-                                    view?.findViewById(R.id.button_residence_residents_profile_update) as Button;
-
-                                btn_update.setOnClickListener {
-
-                                    // Name
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Name")
-                                        .setValue(edittext_residence_residents_profile_name.text.toString());
-
-                                    // Surnames
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Surnames")
-                                        .setValue(edittext_residence_residents_profile_surnames.text.toString());
-
-                                    var gender_aux = "";
-                                    if(spinner_residence_residents_profile_gender.selectedItem.toString() == "Hombre"){
-                                        gender_aux = "Male";
-                                    }
-                                    else{
-                                        gender_aux = "Female";
-                                    }
-                                    // Gender
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/Gender")
-                                        .setValue(gender_aux);
-
-                                    // Birthdate
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/BirthDate")
-                                        .setValue(edittextdate_residence_residents_profile_birthdate.text.toString());
-
-                                    // ID
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey + "/Data/IDPillbox")
-                                        .setValue(edittext_residence_residents_profile_id.text.toString());
-
-                                    val toast =
-                                        Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                }
-
-                                var btn_delete =
-                                    view?.findViewById(R.id.button_residence_residents_profile_delete) as Button;
-
-                                btn_delete.setOnClickListener {
-
-                                    Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/")
-                                        .getReference("Residences/" + residenceid + "/Residents/" + residenceresidentkey)
-                                        .removeValue()
-
-                                    val toast =
-                                        Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                }
-                            }
+                        edittext_residence_residents_profile_title.setText(residentdata2?.name + " " + residentdata2?.surnames);
+                        edittext_residence_residents_profile_name.setText(residentdata2?.name);
+                        edittext_residence_residents_profile_surnames.setText(residentdata2?.surnames);
+                        if (residentdata2?.gender == "Male") {
+                            spinner_residence_residents_profile_gender.setSelection(0);
+                        } else {
+                            spinner_residence_residents_profile_gender.setSelection(1);
                         }
+
+                        edittextdate_residence_residents_profile_birthdate.setText(residentdata2?.birthdate);
+                        edittext_residence_residents_profile_id.setText(residentdata2?.id);
                     }
+                    
+                    
+                    
+                    
+                    
+                }
+
+                ("");
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    var toast =
+                        Toast.makeText(context, "No se cargado el trabajador", Toast.LENGTH_SHORT);
+                    toast.setMargin(50f, 50f);
+                    toast.show();
+                    showInfo(idResident, layout, nal);
+                }
+            }
 
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                    }
-                })
+        }
+    }
+
+    private fun deleteResident(idResident: String, nal: NavController) {
+        var btn_delete =
+            view?.findViewById(R.id.button_residence_residents_profile_delete) as Button;
+        btn_delete.setOnClickListener {
+
+            deleteResidentById(idResident);
+
+            val toast =
+                Toast.makeText(context, "Borrado", Toast.LENGTH_SHORT);
+            toast.show();
+            nal.popBackStack();
+        }
+    }
+
+    private fun updateResidentNal(nal: NavController) {
+
+        var edittext_residence_residents_profile_title =
+            view?.findViewById(R.id.text_residence_residents_profile_title) as TextView;
+        var edittext_residence_residents_profile_name =
+            view?.findViewById(R.id.edittext_residence_residents_profile_name) as TextView;
+        var edittext_residence_residents_profile_surnames =
+            view?.findViewById(R.id.edittext_residence_residents_profile_surnames) as TextView;
+        var spinner_residence_residents_profile_gender =
+            view?.findViewById(R.id.spinner_residence_residents_profile_gender) as Spinner;
+        var genders = arrayOf("Hombre", "Mujer")
+        spinner_residence_residents_profile_gender.adapter =
+            ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_expandable_list_item_1, genders
+            )
+        var edittextdate_residence_residents_profile_birthdate =
+            view?.findViewById(R.id.edittextdate_residence_residents_profile_birthdate) as TextView;
+        var edittext_residence_residents_profile_id =
+            view?.findViewById(R.id.edittext_residence_residents_profile_id) as TextView;
+
+        var btn_update =
+            view?.findViewById(R.id.button_residence_residents_profile_update) as Button;
+
+        btn_update.setOnClickListener {
+            if (edittext_residence_residents_profile_title.text.isNotEmpty() &&
+                edittext_residence_residents_profile_name.text.isNotEmpty() &&
+                edittext_residence_residents_profile_surnames.text.isNotEmpty() &&
+                edittextdate_residence_residents_profile_birthdate.text.isNotEmpty() &&
+                edittext_residence_residents_profile_id.text.isNotEmpty()
+            ) {
+                var gender_aux = "";
+                if (spinner_residence_residents_profile_gender.selectedItem.toString() == "Hombre") {
+                    gender_aux = "Male";
+                } else {
+                    gender_aux = "Female";
+                }
+
+                var resident: Resident = Resident(
+                    edittextdate_residence_residents_profile_birthdate.text.toString(),
+                    gender_aux,
+                    edittext_residence_residents_profile_name.text.toString(),
+                    edittext_residence_residents_profile_surnames.text.toString(),
+                    edittext_residence_residents_profile_id.text.toString(),
+                    null
+                );
+
+                updateResident(resident);
+
+                val toast =
+                    Toast.makeText(context, "Actualizado", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                val toast =
+                    Toast.makeText(context, "Rellene todos los campos", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -206,20 +210,16 @@ class ResidenceResidentsProfile : Fragment() {
 
         val args = this.arguments
 
-        val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residenceid = inputData[0];
-        var residenceresidentmap = inputData[1];
-        var residenceresidentkey = inputData[2];
-        var residenceresidentfullname = inputData[3];
+        val idResident: String = args?.getSerializable("argdata") as String;
 
         showInfo(
-            residenceid as String,
-            residenceresidentkey as String,
-            residenceresidentfullname as String,
+            idResident as String,
             layout,
             nal
         );
 
+        updateResidentNal(nal as NavController);
+        deleteResident(idResident as String, nal as NavController);
         print("Ok");
     }
 

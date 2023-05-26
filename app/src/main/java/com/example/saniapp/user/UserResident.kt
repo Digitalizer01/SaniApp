@@ -10,12 +10,17 @@ import android.widget.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.saniapp.R
+import com.example.saniapp.resident.Resident
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.Serializable
 import java.util.HashMap
 
@@ -50,151 +55,158 @@ class UserResident : Fragment() {
         return inflater.inflate(R.layout.fragment_user_resident, container, false)
     }
 
-    fun showInfo(residenceid: String, residentmap: HashMap<String, HashMap<String, String>>, layout: LinearLayout, nal: NavController) {
-        var resident_birthdate: String = "";
-        var resident_gender: String = "";
-        var resident_idpillbox: String = "";
-        var resident_name: String = "";
-        var resident_surnames: String = "";
+    private fun showResidentInfo(residenceid: String, residentData: Resident, layout: LinearLayout, nal: NavController) {
+        GlobalScope.launch(Dispatchers.IO) {
+            Thread.sleep(250);
+            var residentalert = getResidentAlertByIdResidenceAndIdResident(
+                residenceid,
+                residentData?.id.toString()
+            );
 
-        resident_birthdate = residentmap["Data"]?.get("Birthdate").toString();
-        resident_gender = residentmap["Data"]?.get("Gender").toString();
-        resident_idpillbox = residentmap["Data"]?.get("IDPillbox").toString();
-        resident_name = residentmap["Data"]?.get("Name").toString();
-        resident_surnames = residentmap["Data"]?.get("Surnames").toString();
+            var aux2 = residentalert;
+            withContext(Dispatchers.Main) {
+                var aux3 = aux2;
+                var resident_birthdate: String = "";
+                var resident_gender: String = "";
+                var resident_idpillbox: String = "";
+                var resident_name: String = "";
+                var resident_surnames: String = "";
 
-        var text_birthdate = view?.findViewById(R.id.text_resident_birthdate) as TextView;
-        var text_gender = view?.findViewById(R.id.text_resident_gender) as TextView;
-        var text_idpillbox = view?.findViewById(R.id.text_resident_id) as TextView;
-        var text_name = view?.findViewById(R.id.text_resident_name) as TextView;
-        var text_surnames = view?.findViewById(R.id.text_resident_surnames) as TextView;
-
-        text_birthdate.setText("Fecha nacimiento: " + resident_birthdate);
-        text_gender.setText("Género: " + resident_gender);
-        text_idpillbox.setText("ID: " + resident_idpillbox);
-        text_name.setText("Nombre: " + resident_name);
-        text_surnames.setText("Apellidos: " + resident_surnames);
-
-        var btn_monday = Button(context);
-        var btn_tuesday = Button(context);
-        var btn_wednesday = Button(context);
-        var btn_thursday = Button(context);
-        var btn_friday = Button(context);
-        var btn_saturday = Button(context);
-        var btn_sunday = Button(context);
-
-        btn_monday.setText("Lunes");
-        btn_tuesday.setText("Martes");
-        btn_wednesday.setText("Miércoles");
-        btn_thursday.setText("Jueves");
-        btn_friday.setText("Viernes");
-        btn_saturday.setText("Sábado");
-        btn_sunday.setText("Domingo");
-
-        val bundle = Bundle()
-
-        btn_monday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Monday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_tuesday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Tuesday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_wednesday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Wednesday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_thursday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Thursday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_friday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Friday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_saturday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Saturday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-        btn_sunday.setOnClickListener{
-            var argdata = arrayOf(residenceid, "Sunday", residentmap);
-            bundle.putSerializable("argdata", argdata);
-            nal.navigate(R.id.userResidentMedication, bundle);
-        }
-
-        var info2 = Firebase.database("https://pastilleroelectronico-f32c6-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Residences/"+residenceid+"/Residents/"+residentmap["Data"]?.get("IDPillbox").toString()+"/Medication/").addValueEventListener(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                val snapshotIterator = dataSnapshot.children;
-                val iterator: Iterator<DataSnapshot> = snapshotIterator.iterator();
-
-                var morning_medication: String = "";
-                var morning_hour: String = "";
-                var morning_taken: String = "";
-
-                var afternoon_medication: String = "";
-                var afternoon_hour: String = "";
-                var afternoon_taken: String = "";
-
-                var evening_medication: String = "";
-                var evening_hour: String = "";
-                var evening_taken: String = "";
-
-                while (iterator.hasNext()) {
-                    var hashmap = iterator.next();
-                    val info: HashMap<String, HashMap<String, String>> = hashmap.value as HashMap<String, HashMap<String, String>>;
-                    var takenmorning = info["Morning"]?.get("Taken").toString();
-                    var takenafternoon = info["Afternoon"]?.get("Taken").toString();
-                    var takenevening = info["Evening"]?.get("Taken").toString();
-                    if(takenmorning == "No" || takenafternoon == "No" || takenevening == "No") {
-                        when(hashmap.key)
-                        {
-                            "Monday" -> {
-                                btn_monday.setBackgroundColor(Color.RED);
-                            }
-                            "Tuesday" -> {
-                                btn_tuesday.setBackgroundColor(Color.RED);
-                            }
-                            "Wednesday" -> {
-                                btn_wednesday.setBackgroundColor(Color.RED);
-                            }
-                            "Thursday" -> {
-                                btn_thursday.setBackgroundColor(Color.RED);
-                            }
-                            "Friday" -> {
-                                btn_friday.setBackgroundColor(Color.RED);
-                            }
-                            "Saturday" -> {
-                                btn_saturday.setBackgroundColor(Color.RED);
-                            }
-                            "Sunday" -> {
-                                btn_sunday.setBackgroundColor(Color.RED);
-                            }
-                        }
-                    }
+                resident_birthdate = aux3?.resident?.birthdate.toString();
+                if (aux3?.resident?.gender.toString() == "Male") {
+                    resident_gender = "Hombre";
+                } else {
+                    resident_gender = "Mujer";
                 }
+                resident_idpillbox = aux3?.resident?.id.toString();
+                resident_name = aux3?.resident?.name.toString();
+                resident_surnames = aux3?.resident?.surnames.toString();
+
+                var text_title = view?.findViewById(R.id.text_resident_title) as TextView;
+                var text_birthdate = view?.findViewById(R.id.text_resident_birthdate) as TextView;
+                var text_gender = view?.findViewById(R.id.text_resident_gender) as TextView;
+                var text_idpillbox = view?.findViewById(R.id.text_resident_id) as TextView;
+                var text_name = view?.findViewById(R.id.text_resident_name) as TextView;
+                var text_surnames = view?.findViewById(R.id.text_resident_surnames) as TextView;
+
+                text_birthdate.setText("Fecha nacimiento: " + resident_birthdate);
+                text_gender.setText("Género: " + resident_gender);
+                text_idpillbox.setText("ID: " + resident_idpillbox);
+                text_name.setText("Nombre: " + resident_name);
+                text_title.setText(resident_name);
+                text_surnames.setText("Apellidos: " + resident_surnames);
+
+                var btn_monday = Button(context);
+                var btn_tuesday = Button(context);
+                var btn_wednesday = Button(context);
+                var btn_thursday = Button(context);
+                var btn_friday = Button(context);
+                var btn_saturday = Button(context);
+                var btn_sunday = Button(context);
+
+                btn_monday.setText("Lunes");
+                btn_tuesday.setText("Martes");
+                btn_wednesday.setText("Miércoles");
+                btn_thursday.setText("Jueves");
+                btn_friday.setText("Viernes");
+                btn_saturday.setText("Sábado");
+                btn_sunday.setText("Domingo");
+
+                btn_monday.setTextColor(Color.WHITE);
+                btn_tuesday.setTextColor(Color.WHITE);
+                btn_wednesday.setTextColor(Color.WHITE);
+                btn_thursday.setTextColor(Color.WHITE);
+                btn_friday.setTextColor(Color.WHITE);
+                btn_saturday.setTextColor(Color.WHITE);
+                btn_sunday.setTextColor(Color.WHITE);
+
+                btn_monday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_tuesday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_wednesday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_thursday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_friday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_saturday.setBackgroundColor(Color.rgb(98, 0, 238));
+                btn_sunday.setBackgroundColor(Color.rgb(98, 0, 238));
+
+                if (residentalert?.monday == true) {
+                    btn_monday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.tuesday == true) {
+                    btn_tuesday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.wednesday == true) {
+                    btn_wednesday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.thursday == true) {
+                    btn_thursday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.friday == true) {
+                    btn_friday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.saturday == true) {
+                    btn_saturday.setBackgroundColor(Color.RED);
+                }
+                if (residentalert?.sunday == true) {
+                    btn_sunday.setBackgroundColor(Color.RED);
+                }
+
+                val bundle = Bundle()
+
+                btn_monday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Monday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_tuesday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Tuesday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_wednesday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Wednesday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_thursday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Thursday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_friday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Friday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_saturday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Saturday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+                btn_sunday.setOnClickListener {
+                    var argdata = arrayOf(residenceid, "Sunday", residentalert);
+                    bundle.putSerializable("argdata", argdata);
+                    nal.navigate(R.id.userResidentMedication, bundle);
+                }
+
+                layout.addView(btn_monday);
+                layout.addView(btn_tuesday);
+                layout.addView(btn_wednesday);
+                layout.addView(btn_thursday);
+                layout.addView(btn_friday);
+                layout.addView(btn_saturday);
+                layout.addView(btn_sunday);
+                
+                
+                
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
 
-        layout.addView(btn_monday);
-        layout.addView(btn_tuesday);
-        layout.addView(btn_wednesday);
-        layout.addView(btn_thursday);
-        layout.addView(btn_friday);
-        layout.addView(btn_saturday);
-        layout.addView(btn_sunday);
+
+            
+            
+            
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -206,10 +218,14 @@ class UserResident : Fragment() {
         val args = this.arguments
 
         val inputData: Array<*> = args?.getSerializable("argdata") as Array<*>;
-        var residenceid = inputData[0];
-        var residentmap = inputData[1];
-        showInfo(residenceid as String,
-            residentmap as HashMap<String, HashMap<String, String>>, layout, nal);
+        var residenceid = inputData[0] as String;
+        var resident = inputData[1] as Resident;
+        showResidentInfo(
+            residenceid as String,
+            resident as Resident,
+            layout as LinearLayout,
+            nal as NavController
+        );
     }
 
     companion object {

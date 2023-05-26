@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,13 +16,32 @@
             android:id="@+id/id_linearlayout_residence_staff_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/text_residence_staff_profile_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title" />
+                android:text="Nombre"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icons8_avatar_64" />
 
             <Space
                 android:layout_width="match_parent"
@@ -128,18 +148,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="14dp" />
 
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email:" />
+
+            <EditText
+                android:id="@+id/edittext_residence_staff_profile_email"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:background="#AD5692DC"
+                android:backgroundTintMode="multiply"
+                android:clickable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:inputType="none" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <Button
                 android:id="@+id/button_residence_staff_profile_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Actualizar" />
-
-            <Button
-                android:id="@+id/button_residence_staff_profile_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#DD3434"
-                android:text="Eliminar" />
+                android:text="Actualizar"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply"/>
 
         </LinearLayout>
     </ScrollView>

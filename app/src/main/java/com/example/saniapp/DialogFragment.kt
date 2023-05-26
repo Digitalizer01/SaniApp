@@ -1,4 +1,4 @@
-package com.example.saniapp.admin
+package com.example.saniapp
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

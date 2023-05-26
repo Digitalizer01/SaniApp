@@ -3,27 +3,40 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.171" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.171" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_admin.xml" value="0.26132246376811596" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_main.xml" value="0.13592233009708737" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_residence.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/activity_user.xml" value="0.25" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_create_residence.xml" value="0.33" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_create_residence.xml" value="0.21331521739130435" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_menu.xml" value="0.26132246376811596" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_residence_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_residences.xml" value="0.1" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_dialog.xml" value="0.1911231884057971" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_residence_profile.xml" value="0.25" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_admin_residences.xml" value="0.33" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_dialog.xml" value="0.5" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_dialog_confirm.xml" value="0.10283687943262411" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_create_resident.xml" value="0.30833333333333335" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_create_staff.xml" value="0.25" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_create_staff.xml" value="0.22" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_residents_profile.xml" value="0.3523550724637681" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_residents.xml" value="0.21331521739130435" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_residents_profile.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_staff.xml" value="0.26132246376811596" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_staff_profile.xml" value="0.3523550724637681" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_residence_staff_profile.xml" value="0.2" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_profile.xml" value="0.25" />
         <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident.xml" value="0.32592592592592595" />
-        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident_medication.xml" value="0.3907407407407407" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/layout/fragment_user_resident_medication.xml" value="0.33" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.118" />
+        <entry key="..\:/Users/digit/AndroidStudioProjects/SaniApp/app/src/main/res/mipmap-anydpi-v26/icon_apk.xml" value="0.1" />
       </map>
     </option>
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="D:/Descargas" />
+    <option name="OPTION_SCOPE" value="private" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="false" />
+    <option name="OPTION_DEPRECATED_LIST" value="false" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

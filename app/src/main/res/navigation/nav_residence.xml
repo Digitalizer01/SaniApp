@@ -24,10 +24,12 @@
         tools:layout="@layout/fragment_residence_staff" >
         <action
             android:id="@+id/action_residenceStaff_to_residenceStaffProfile"
-            app:destination="@id/residenceStaffProfile" />
+            app:destination="@id/residenceStaffProfile"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_residenceStaff_to_residenceCreateStaff"
-            app:destination="@id/residenceCreateStaff" />
+            app:destination="@id/residenceCreateStaff"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/residenceStaffProfile"
@@ -46,10 +48,12 @@
         tools:layout="@layout/fragment_residence_residents" >
         <action
             android:id="@+id/action_residenceResidents_to_residenceResidentsProfile"
-            app:destination="@id/residenceResidentsProfile" />
+            app:destination="@id/residenceResidentsProfile"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_residenceResidents_to_residenceCreateResident"
-            app:destination="@id/residenceCreateResident" />
+            app:destination="@id/residenceCreateResident"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/residenceResidentsProfile"

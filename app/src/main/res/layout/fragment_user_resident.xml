@@ -15,7 +15,36 @@
             android:id="@+id/id_linearlayout_resident"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/text_resident_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:src="@drawable/icons8_person_40" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_resident_name"
@@ -23,11 +52,19 @@
                 android:layout_height="wrap_content"
                 android:text="Nombre:" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_resident_surnames"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Apellidos: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_resident_gender"
@@ -35,11 +72,19 @@
                 android:layout_height="wrap_content"
                 android:text="Género: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_resident_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fecha nacimiento: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_resident_id"
@@ -47,11 +92,42 @@
                 android:layout_height="wrap_content"
                 android:text="ID: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_resident_medication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mediación:" />
+                android:text="Medicación"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView18"
+                android:layout_width="match_parent"
+                android:layout_height="77dp"
+                android:src="@drawable/icons8_medication_64" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Si el botón tiene el color rojo, el residente no ha tomado su medicación."
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
         </LinearLayout>
     </ScrollView>
 

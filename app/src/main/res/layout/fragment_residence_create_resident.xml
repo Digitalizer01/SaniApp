@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,13 +16,28 @@
             android:id="@+id/id_linearlayout_residence_residents_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear residente" />
+                android:text="Crear residente"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:src="@drawable/icons8_person_40" />
 
             <Space
                 android:layout_width="match_parent"
@@ -105,11 +121,14 @@
             <EditText
                 android:id="@+id/edittext_residence_residents_create_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="39dp"
+                android:background="#AD5692DC"
+                android:backgroundTintMode="multiply"
+                android:clickable="false"
                 android:ems="10"
+                android:focusable="false"
                 android:hint="ID pastillero y residente"
-                android:inputType="none"
-                android:focusable="false" />
+                android:inputType="none" />
 
             <Space
                 android:layout_width="match_parent"
@@ -119,7 +138,10 @@
                 android:id="@+id/button_residence_residents_create_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear" />
+                android:text="Crear"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
         </LinearLayout>
     </ScrollView>
 

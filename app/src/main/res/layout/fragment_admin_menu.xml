@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
@@ -15,24 +16,46 @@
             android:id="@+id/id_linearlayout_admin_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Admin" />
+                android:text="Administrador"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="34sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icons8_security_configuration_100" />
 
             <Button
                 android:id="@+id/button_admin_menu_residences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Residencias" />
+                android:backgroundTintMode="add"
+                android:text="Buscar residencias"
+                app:icon="@drawable/icons8_search_48"
+                app:iconTintMode="multiply" />
 
             <Button
                 android:id="@+id/button_admin_menu_create_residences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Crear residencia" />
+                android:text="Crear residencia"
+                app:icon="@drawable/icons8_task_100"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
         </LinearLayout>
     </ScrollView>
 

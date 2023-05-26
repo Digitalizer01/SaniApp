@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,13 +14,36 @@
             android:id="@+id/id_linearlayout_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/text_user_welcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bienvenido, " />
+                android:text="Bienvenido"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icons8_avatar_64" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_name"
@@ -27,11 +51,19 @@
                 android:layout_height="wrap_content"
                 android:text="Nombre: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_surnames"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Apellidos: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_gender"
@@ -39,11 +71,19 @@
                 android:layout_height="wrap_content"
                 android:text="Género: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fecha nacimiento: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_email"
@@ -51,11 +91,19 @@
                 android:layout_height="wrap_content"
                 android:text="Email: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Móvil: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_id"
@@ -67,11 +115,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="17dp" />
 
+            <Button
+                android:id="@+id/button_user_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DD3434"
+                android:text="Eliminar staff"
+                app:icon="@drawable/icons8_delete_64"
+                app:iconSize="50dp"
+                app:iconTintMode="multiply" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="17dp" />
+
             <TextView
                 android:id="@+id/text_user_residence_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos residencia:" />
+                android:text="Datos residencia"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icons8_hospital_96" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_residence_name"
@@ -79,11 +157,19 @@
                 android:layout_height="wrap_content"
                 android:text="Nombre: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_residence_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="País: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_residence_city"
@@ -91,11 +177,19 @@
                 android:layout_height="wrap_content"
                 android:text="Ciudad: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_residence_provience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Provincia: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_residence_street"
@@ -103,11 +197,19 @@
                 android:layout_height="wrap_content"
                 android:text="Calle: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_residence_zc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="CP: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_residence_phone"
@@ -115,11 +217,19 @@
                 android:layout_height="wrap_content"
                 android:text="Teléfono: " />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
             <TextView
                 android:id="@+id/text_user_residence_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email: " />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
 
             <TextView
                 android:id="@+id/text_user_residence_timetable"
@@ -135,7 +245,34 @@
                 android:id="@+id/text_user_residents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Residentes:" />
+                android:text="Residentes"
+                android:textAlignment="center"
+                android:textSize="34sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:src="@drawable/icons8_person_40" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <TextView
+                android:id="@+id/textView43"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Si el botón tiene el color rojo, el residente no ha tomado su medicación."
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
         </LinearLayout>
     </ScrollView>
 
