@@ -74,7 +74,18 @@ The system supports three types of user roles:
 
 Before accessing the system, users need to log in with their account credentials. If they don't have an account, they can sign up and create a new account. All user account information is encrypted and securely stored for privacy and security reasons.
 
-Note: Firebase credentials have been removed from this project for security reasons.
+Note: To use the SaniApp Android app with Firebase, you will need to provide the necessary Firebase credentials. Please note that the specific details about the Firebase credentials, such as the Firebase project ID, API key, and other configuration settings, are not included in this repository.
+
+To set up the Firebase credentials for the app, follow these steps:
+
+1. Create a new Firebase project on the [Firebase Console](https://console.firebase.google.com/).
+2. Generate the required Firebase configuration files (google-services.json) and place them in the appropriate directory within your project.
+3. Replace the placeholder values in the configuration files with your actual Firebase credentials.
+4. Build and run the Gamection Android app on your device or emulator.
+
+Make sure to keep your Firebase credentials secure and avoid committing them to version control or sharing them publicly. It is recommended to use a secure and private method to handle Firebase credentials, such as using environment variables or a secure configuration file that is excluded from version control.
+
+Please refer to the Firebase documentation for detailed instructions on setting up Firebase credentials for your Android app.
 
 ## 7. Pillbox repository<a name="pillbox-repository"></a>
 
