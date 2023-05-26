@@ -12,12 +12,12 @@ Built on Android and Firebase, SaniApp offers a secure and user-friendly solutio
 6. [Authentication and Account Management](#authentication-and-account-management)
 7. [Pillbox repository](#pillbox-repository)
 
-## 1. Introduction
+## 1. Introduction<a name="introduction"></a>
 
 This repository is dedicated to a mobile platform application designed to streamline and enhance the management of residential pillbox systems. The application aims to provide an efficient and user-friendly solution for residences, staff members, and residents involved in medication management. By leveraging the power of Android and Firebase, the platform offers a robust and secure environment for managing medication schedules, resident profiles, and staff operations.
 The repository includes the necessary code, documentation, and database structure to facilitate the development, deployment, and maintenance of the mobile platform application. With a focus on usability, security, and scalability, this repository serves as a comprehensive resource for building a reliable and intuitive solution for residential pillbox management.
 
-## 2. Android
+## 2. Android<a name="android"></a>
 
 Android is an open-source operating system for smart devices such as mobile phones or tablets. It was developed by Google and Open Handset Alliance based on the Linux kernel and other open-source software.
 
@@ -30,7 +30,7 @@ Android supports a variety of programming languages, making it accessible to peo
 - CSS: It complements the previous languages as it takes care of the graphical representation of documents written in HTML5. This includes design and style.
 - Kotlin: It appeared in 2017 and has become the most suitable language for programming applications on this operating system. This shift is due to the fact that its code is simpler than the previous code.
 
-## 3. Firebase
+## 3. Firebase<a name="firebase"></a>
 
 Firebase is a web and mobile application development platform launched in 2011 and acquired by Google in 2014.
 
@@ -42,7 +42,7 @@ In the case of this application, two services will be used:
 - Firebase Authentication: It is a service that can authenticate users using client-side code only. Authentication can be performed through popular login providers such as Facebook, GitHub, Twitter, Google, Yahoo, and Microsoft, as well as classic login methods using email and password. It also includes a user management system through which developers can enable user authentication using emails and passwords stored in Firebase, all in an encrypted and secure manner.
 - Firebase Realtime Database: It is a real-time backend database organized as a JSON tree. The service provides application developers with an API to synchronize and store application data in the Firebase cloud. The company allows integration with Android, iOS, JavaScript, Java, Objective-C, Swift, and Node.js applications. The database can also be accessed through a REST API and has integration for various JavaScript frameworks like AngularJS, React, Ember.js, and Backbone.js.
 
-## 4. Database Structure
+## 4. Database Structure<a name="database-structure"></a>
 
 The Firebase database structure consists of the following components:
 - **Admin**: This node contains the ID of the admin user who manages the system.
@@ -63,19 +63,21 @@ The Firebase database structure consists of the following components:
 
 This database structure allows for efficient organization and retrieval of data related to residences, residents, and staff members involved in the pillbox project.
 
-## 5. User Roles
+## 5. User Roles<a name="user-roles"></a>
 
 The system supports three types of user roles:
 - **Admin**: Has full access to all system features and functionalities.
 - **Residence Admin**: Manages a specific residence and has permissions to perform administrative tasks within that residence.
 - **Residence Staff**: Works in a specific residence and has restricted permissions to perform certain tasks within that residence.
 
-## 6. Authentication and Account Management
+## 6. Authentication and Account Management<a name="authentication-and-account-management"></a>
 
 Before accessing the system, users need to log in with their account credentials. If they don't have an account, they can sign up and create a new account. All user account information is encrypted and securely stored for privacy and security reasons.
 
 Note: Firebase credentials have been removed from this project for security reasons.
 
-## 7. Pillbox repository
+## 7. Pillbox repository<a name="pillbox-repository"></a>
 
 There is a respository for the pillbox that contains the code and resources for the pillbox management functionality of SaniApp. It includes the logic and interfaces required for medication tracking, scheduling, and administration. The repository provides the necessary components to integrate the pillbox management feature into the main application seamlessly. Developers can refer to the Pillbox Repository for detailed implementation guidelines and access the codebase to understand the inner workings of the pillbox management functionality.
+
+You can visit the repository [here]([https://openai.com](https://github.com/Digitalizer01/SaniApp-Pillbox)).
