@@ -80,4 +80,4 @@ Note: Firebase credentials have been removed from this project for security reas
 
 There is a respository for the pillbox that contains the code and resources for the pillbox management functionality of SaniApp. It includes the logic and interfaces required for medication tracking, scheduling, and administration. The repository provides the necessary components to integrate the pillbox management feature into the main application seamlessly. Developers can refer to the Pillbox Repository for detailed implementation guidelines and access the codebase to understand the inner workings of the pillbox management functionality.
 
-You can visit the repository [here](https://openai.com](https://github.com/Digitalizer01/SaniApp-Pillbox).
+You can visit the repository [here](https://github.com/Digitalizer01/SaniApp-Pillbox).
