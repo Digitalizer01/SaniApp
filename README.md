@@ -16,7 +16,6 @@ Built on Android and Firebase, SaniApp offers a secure and user-friendly solutio
 
 This repository is dedicated to a mobile platform application designed to streamline and enhance the management of residential pillbox systems. The application aims to provide an efficient and user-friendly solution for residences, staff members, and residents involved in medication management. By leveraging the power of Android and Firebase, the platform offers a robust and secure environment for managing medication schedules, resident profiles, and staff operations.
 The repository includes the necessary code, documentation, and database structure to facilitate the development, deployment, and maintenance of the mobile platform application. With a focus on usability, security, and scalability, this repository serves as a comprehensive resource for building a reliable and intuitive solution for residential pillbox management.
-Whether you are a developer looking to contribute, a residence administrator seeking an efficient medication management tool, or a staff member aiming to streamline your daily tasks, this repository provides the foundation for creating a tailored and effective solution in the realm of residential pillbox systems.
 
 ## 2. Android
 
